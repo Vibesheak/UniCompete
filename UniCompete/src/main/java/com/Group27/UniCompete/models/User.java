@@ -29,17 +29,42 @@ public class User {
     @Size(max = 120)
     private String password;
 
+    @NotBlank
+    @Size(max = 20)
+    private int age;
+
+    @NotBlank
+    @Size(max=20)
+    private int phonenumber;
+
     @DBRef
     private Set<Role> roles = new HashSet<>();
 
     public User() {
     }
 
-    public User(String username, String email, String password) {
+    public User(String username, String email, String password, int age, int phonenumber) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.age=age;
+        this.phonenumber=phonenumber;
+    }
 
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setPhonenumber(int phonenumber) {
+        this.phonenumber = phonenumber;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public int getPhonenumber() {
+        return phonenumber;
     }
 
     public String getId() {

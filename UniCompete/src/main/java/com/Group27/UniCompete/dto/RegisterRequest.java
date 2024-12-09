@@ -6,6 +6,33 @@ public class RegisterRequest {
     private String username;
     private String password;
     private Set<String> roles;
+    private String email;
+    private int age;
+    private int phonenumber;
+
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public int getPhonenumber() {
+        return phonenumber;
+    }
+
+    public void setPhonenumber(int phonenumber) {
+        this.phonenumber = phonenumber;
+    }
+
+    public String getEmail(){
+        return email;
+    }
+    public String setEmail(String email){
+        return email;
+    }
 
     public String getUsername() {
         return username;
