@@ -3,7 +3,7 @@ package com.Group27.UniCompete.models;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "Competition")
+@Document(collection = "Competitions")
 public class Competition {
     @Id
     private Long id;

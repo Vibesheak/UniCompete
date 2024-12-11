@@ -13,53 +13,71 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.Optional;
 import java.util.Set;
-import java.util.jar.JarException;
 import java.util.stream.Collectors;
 
 @Component
 public class JwtUtil {
-    //secret key
-    private static final SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
-    //expiration time
+    // Secure static secret key for HS512 (at least 64 bytes)
+    private static final SecretKey secretKey = Keys.hmacShaKeyFor(
+            "my-super-secret-key-my-super-secret-key-my-super-secret-key-my-key-123".getBytes());
+
+    // Expiration time (1 day)
     private final int jwtExpirationMs = 86400000;
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public JwtUtil(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    //Generate Token
+    // Generate Token
     public String generateToken(String username) {
         Optional<User> user = userRepository.findByUsername(username);
+        if (user.isEmpty()) {
+            throw new RuntimeException("User not found: " + username);
+        }
+
         Set<Role> roles = user.get().getRoles();
 
-        //Add roles to the token
-
-        return Jwts.builder().setSubject(username).claim("roles", roles.stream()
-                        .map(role -> role.getname()).collect(Collectors.joining(",")))
-                .setIssuedAt(new Date()).setExpiration(new Date(new Date().getTime() + jwtExpirationMs))
-                .signWith(secretKey).compact();
+        return Jwts.builder()
+                .setSubject(username)
+                .claim("roles", roles.stream()
+                        .map(Role::getname)
+                        .collect(Collectors.joining(",")))
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
+                .signWith(secretKey, SignatureAlgorithm.HS512)
+                .compact();
     }
 
-    //Extract Username
+    // Extract Username
     public String extractUsername(String token) {
-        return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
     }
 
-    //Extract roles
+    // Extract Roles
     public Set<String> extractRoles(String token) {
-        String rolesString = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().get("roles", String.class);
-        return Set.of(rolesString);
+        String rolesString = Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("roles", String.class);
+
+        return Set.of(rolesString.split(","));
     }
 
-    //Token Validation
-
-    public boolean isTokenVaild(String token){
+    // Validate Token
+    public boolean isTokenVaild(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
             return true;
-        }catch (JwtException | IllegalArgumentException e){
+        } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
     }

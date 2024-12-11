@@ -20,10 +20,10 @@ public class UserController {
     private JwtUtil jwtUtil;
 
     @Value("${role.admin}")
-    private String roleAdmin;
+    private String ADMIN;
 
     @Value("${role.user}")
-    private String roleUser;
+    private String USER;
 
     //Endpoint to access user protected resources
     @GetMapping("/protected-data")
@@ -37,10 +37,10 @@ public class UserController {
 
                     Set<String> roles = jwtUtil.extractRoles(jwtToken);
 
-                    if(roles.contains(roleAdmin)){
-                        return ResponseEntity.ok("Welcome"+username+"Here is the"+roles+"Specific data");
-                    }else if(roles.contains(roleUser)){
-                        return ResponseEntity.ok("Welcome"+username+"Here is the"+roles+"Specific data");
+                    if(roles.contains(ADMIN)){
+                        return ResponseEntity.ok("Welcome "+username+" Here is the "+roles+" Specific data");
+                    }else if(roles.contains(USER)){
+                        return ResponseEntity.ok("Welcome "+username+" Here is the "+roles+" Specific data");
                     }
                     else {
                         return ResponseEntity.status(403).body("Access Denied");
