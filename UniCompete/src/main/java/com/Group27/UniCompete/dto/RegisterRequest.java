@@ -1,37 +1,24 @@
 package com.Group27.UniCompete.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
+
 import java.util.Set;
 
 public class RegisterRequest {
     private String username;
     private String password;
+
+    private String Email;
     private Set<String> roles;
-    private String email;
-    private int age;
-    private int phonenumber;
 
 
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public int getPhonenumber() {
-        return phonenumber;
-    }
-
-    public void setPhonenumber(int phonenumber) {
-        this.phonenumber = phonenumber;
-    }
 
     public String getEmail(){
-        return email;
+        return Email;
     }
-    public String setEmail(String email){
-        return email;
+    public void setEmail(String Email){
+        this.Email=Email;
     }
 
     public String getUsername() {

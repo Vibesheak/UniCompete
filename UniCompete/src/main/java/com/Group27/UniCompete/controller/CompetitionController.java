@@ -4,6 +4,7 @@ import com.Group27.UniCompete.security.SecurityConfig;
 import com.Group27.UniCompete.models.Competition;
 import com.Group27.UniCompete.service.CompetitionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +39,7 @@ public class CompetitionController {
     }
 
     // Admin: Add a competition
+
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/admin/add")
     public ResponseEntity<Competition> createCompetition(@RequestBody Competition competition) {

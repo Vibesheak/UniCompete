@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 @Component
 public class JwtUtil {
 
-    // Secure static secret key for HS512 (at least 64 bytes)
     private static final SecretKey secretKey = Keys.hmacShaKeyFor(
             "my-super-secret-key-my-super-secret-key-my-super-secret-key-my-key-123".getBytes());
 

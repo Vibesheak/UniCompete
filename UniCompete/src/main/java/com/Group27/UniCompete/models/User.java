@@ -11,6 +11,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
+
 @Document(collection = "users")
 public class User {
     @Id
@@ -29,44 +31,26 @@ public class User {
     @Size(max = 120)
     private String password;
 
-    @NotBlank
-    @Size(max = 20)
-    private int age;
-
-    @NotBlank
-    @Size(max=20)
-    private int phonenumber;
 
     @DBRef
     private Set<Role> roles = new HashSet<>();
 
+    // Additional fields for email verification
+    private boolean enabled;
+    private String verificationCode;
+    private LocalDateTime verificationCodeExpiresAt;
+
     public User() {
     }
 
-    public User(String username, String email, String password, int age, int phonenumber) {
+    public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.age=age;
-        this.phonenumber=phonenumber;
+        this.enabled = false; // Default to false for new users
     }
 
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public void setPhonenumber(int phonenumber) {
-        this.phonenumber = phonenumber;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public int getPhonenumber() {
-        return phonenumber;
-    }
-
+    // Getters and setters for existing fields
     public String getId() {
         return id;
     }
@@ -75,11 +59,11 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() {
+    public String getusername() {
         return username;
     }
 
-    public void setUsername(String username) {
+    public void setusername(String username) {
         this.username = username;
     }
 
@@ -91,18 +75,45 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
+    public String getpassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setpassword(String password) {
         this.password = password;
     }
+
 
     public Set<Role> getRoles() {
         return roles;
     }
+
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    // Getters and setters for new fields
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+
+    public LocalDateTime getVerificationCodeExpiresAt() {
+        return verificationCodeExpiresAt;
+    }
+
+    public void setVerificationCodeExpiresAt(LocalDateTime verificationCodeExpiresAt) {
+        this.verificationCodeExpiresAt = verificationCodeExpiresAt;
     }
 }
