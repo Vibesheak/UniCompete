@@ -1,19 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
-import bannerImage from "./bannerimage.jpg"; // Correct relative path to the image
-import profilePic from "./profile.jpg"; // Assuming the profile picture is the same or imported separately
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
+import bannerImage from "./bannerimage.jpg";
 
 function CompetitionDetails() {
   const { id } = useParams();
   const [competition, setCompetition] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState({
-    name: "Nilojitha Mariyathas",
-    profilePic: profilePic, // Profile picture
-    email: "n123.doe@example.com",
-    location: "New York, USA",
-  });
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [showCalendar, setShowCalendar] = useState(false); // State for showing calendar
+  const [calendarDate, setCalendarDate] = useState(null); // State for selected date
+  const calendarRef = useRef(null); // Reference to the calendar to handle clicks outside
+  const [likes, setLikes] = useState(0);
+  const [expandedSection, setExpandedSection] = useState("");
 
   const fetchCompetitionDetails = (id) => {
     const competitions = [
@@ -21,6 +20,7 @@ function CompetitionDetails() {
         id: 1,
         name: "Tech Innovation Contest",
         date: "2024-12-20",
+        registrationDeadline: "2024-12-15",
         location: "University A",
         description:
           "A contest for tech enthusiasts to showcase innovative solutions in AI, robotics, and software development.",
@@ -33,6 +33,7 @@ function CompetitionDetails() {
         id: 2,
         name: "Art and Design Exhibition",
         date: "2024-12-25",
+        registrationDeadline: "2024-12-10",
         location: "University B",
         description:
           "An exhibition showcasing the best in arts, design, and creativity from students around the country.",
@@ -46,22 +47,47 @@ function CompetitionDetails() {
     const competitionData = competitions.find(
       (comp) => comp.id === parseInt(id)
     );
-    setCompetition(competitionData);
-    setLoading(false);
+    if (competitionData) {
+      setCompetition(competitionData);
+      setLoading(false);
+    } else {
+      setLoading(false);
+      setCompetition(null); // Handle case where competition is not found
+    }
   };
 
   useEffect(() => {
     fetchCompetitionDetails(id);
   }, [id]);
 
-  const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
+  const handleLike = () => {
+    setLikes(likes + 1);
   };
 
-  const getInitials = (name) => {
-    const nameParts = name.split(" ");
-    const initials = nameParts.map((part) => part.charAt(0)).join("");
-    return initials.toUpperCase();
+  const toggleSection = (section) => {
+    setExpandedSection((prev) => (prev === section ? "" : section));
+  };
+
+  const handleClickOutside = (event) => {
+    if (calendarRef.current && !calendarRef.current.contains(event.target)) {
+      setShowCalendar(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
+  const handleDateClick = () => {
+    setShowCalendar(!showCalendar); // Toggle calendar visibility
+  };
+
+  const handleDateSelect = (date) => {
+    setCalendarDate(date); // Set the selected date
+    setShowCalendar(false); // Close the calendar after selecting a date
   };
 
   if (loading) {
@@ -81,125 +107,177 @@ function CompetitionDetails() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-100 via-gray-200 to-gray-300 text-gray-900">
-      <div className="max-w-7xl mx-auto p-6">
+    <div className="min-h-screen bg-gray-50 text-gray-900">
+      <div className="max-w-4xl mx-auto p-6 space-y-6">
         {/* Hero Section */}
-        <div className="relative mb-8 rounded-lg overflow-hidden shadow-lg">
+        <div className="relative rounded-xl overflow-hidden shadow-lg transition-transform transform hover:scale-105 duration-500">
           <img
             src={competition.image}
             alt="Competition Banner"
-            className="w-full h-80 object-cover"
+            className="w-full h-64 object-cover transition-transform duration-500 hover:scale-110"
           />
-          <div className="absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center text-white text-center p-6">
-            <div>
-              <h1 className="text-4xl font-extrabold leading-tight">
-                {competition.name}
-              </h1>
-              <p className="mt-2 text-lg font-medium">
-                {competition.date} - {competition.location}
-              </p>
-              <button className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-all duration-300 transform hover:scale-105">
-                Join Now
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Profile Circle in Top-Right Corner */}
-        <div
-          className="absolute top-4 right-4 w-14 h-14 bg-blue-600 text-white rounded-full flex items-center justify-center cursor-pointer"
-          onClick={toggleDropdown}
-        >
-          {user.profilePic ? (
-            <img
-              src={user.profilePic}
-              alt="Profile"
-              className="w-full h-full rounded-full object-cover"
-            />
-          ) : (
-            <span className="text-lg font-semibold">
-              {getInitials(user.name)}
-            </span>
-          )}
-        </div>
-
-        {/* Dropdown Menu */}
-        {dropdownOpen && (
-          <div className="absolute top-16 right-4 w-48 bg-white shadow-lg rounded-lg p-4">
-            <p className="text-sm font-semibold text-gray-900">{user.name}</p>
-            <p className="text-sm text-gray-600">{user.email}</p>
-            <p className="text-sm text-gray-600">{user.location}</p>
+          <div className="absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-center items-center text-white text-center p-6">
+            <h1 className="text-3xl font-extrabold animate__animated animate__fadeInUp">
+              {competition.name}
+            </h1>
+            <p className="mt-2 text-lg font-medium flex items-center">
+              🗓️{" "}
+              <span
+                className="ml-2 cursor-pointer"
+                onClick={handleDateClick}
+                role="button"
+                aria-expanded={showCalendar}
+                aria-controls="calendar-popup"
+              >
+                {calendarDate
+                  ? calendarDate.toLocaleDateString()
+                  : competition.date}
+              </span>{" "}
+              - {competition.location}
+            </p>
+            {showCalendar && (
+              <div
+                id="calendar-popup"
+                ref={calendarRef}
+                className="absolute top-16 left-1/2 transform -translate-x-1/2 z-10"
+              >
+                <Calendar
+                  onChange={handleDateSelect}
+                  value={calendarDate || new Date()}
+                  className="w-64 p-2 rounded-lg shadow-lg"
+                />
+              </div>
+            )}
             <button
-              onClick={() => {
-                setUser({});
-                setDropdownOpen(false);
-              }}
-              className="bg-red-600 text-white w-full mt-2 px-4 py-2 rounded-lg"
+              className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-transform duration-300 hover:scale-105"
+              onClick={handleLike}
             >
-              Logout
+              Join Now
             </button>
           </div>
-        )}
+        </div>
 
-        {/* Competition Details */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div>
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-              Overview
+        {/* Competition Details Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="card p-6 bg-white shadow-lg rounded-lg transition-transform duration-300 hover:scale-105">
+            <h2
+              className="text-xl font-semibold text-blue-600 cursor-pointer"
+              onClick={() => toggleSection("overview")}
+              aria-expanded={expandedSection === "overview"}
+              aria-controls="overview-section"
+            >
+              📝 Overview
             </h2>
-            <p className="text-gray-700 mb-4">{competition.description}</p>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">Prizes</h3>
-            <p className="text-gray-700 mb-4">{competition.prizes}</p>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">
-              Schedule
-            </h3>
-            <p className="text-gray-700">{competition.schedule}</p>
+            {expandedSection === "overview" ? (
+              <p className="text-gray-700 mt-2">{competition.description}</p>
+            ) : (
+              <p className="text-gray-700 mt-2">
+                {competition.description.substring(0, 100)}...
+              </p>
+            )}
+            <button
+              onClick={() => toggleSection("overview")}
+              className="text-blue-500 mt-2 hover:underline"
+            >
+              {expandedSection === "overview" ? "Read Less" : "Read More"}
+            </button>
           </div>
 
-          <div>
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-              Rules & Regulations
+          <div className="card p-6 bg-white shadow-lg rounded-lg transition-transform duration-300 hover:scale-105">
+            <h2
+              className="text-xl font-semibold text-blue-600 cursor-pointer"
+              onClick={() => toggleSection("prizes")}
+              aria-expanded={expandedSection === "prizes"}
+              aria-controls="prizes-section"
+            >
+              🎁 Prizes
             </h2>
-            <p className="text-gray-700">{competition.rules}</p>
+            {expandedSection === "prizes" ? (
+              <ul className="text-gray-700 mt-2 space-y-2">
+                <li>🏆 First place: $1000</li>
+                <li>🥈 Second place: $500</li>
+                <li>🥉 Third place: $250</li>
+              </ul>
+            ) : (
+              <p className="text-gray-700 mt-2">
+                {competition.prizes.substring(0, 50)}...
+              </p>
+            )}
+            <button
+              onClick={() => toggleSection("prizes")}
+              className="text-blue-500 mt-2 hover:underline"
+            >
+              {expandedSection === "prizes" ? "Read Less" : "Read More"}
+            </button>
           </div>
         </div>
 
-        {/* Event Timeline */}
-        <div className="mt-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            Event Timeline
-          </h2>
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <p className="text-gray-600">Registration Deadline</p>
-              <span className="font-semibold text-blue-600">
-                {competition.schedule.split(",")[0].split(":")[1].trim()}
-              </span>
-            </div>
-            <div className="flex justify-between items-center">
-              <p className="text-gray-600">Event Date</p>
-              <span className="font-semibold text-blue-600">
-                {competition.date}
-              </span>
-            </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="card p-6 bg-white shadow-lg rounded-lg transition-transform duration-300 hover:scale-105">
+            <h2
+              className="text-xl font-semibold text-blue-600 cursor-pointer"
+              onClick={() => toggleSection("schedule")}
+              aria-expanded={expandedSection === "schedule"}
+              aria-controls="schedule-section"
+            >
+              🗓️ Schedule
+            </h2>
+            {expandedSection === "schedule" ? (
+              <ul className="text-gray-700 mt-2 space-y-2">
+                <li>
+                  📅 Registration Deadline: {competition.registrationDeadline}
+                </li>
+                <li>📅 Event Date: {competition.date}</li>
+              </ul>
+            ) : (
+              <p className="text-gray-700 mt-2">
+                {competition.schedule.substring(0, 50)}...
+              </p>
+            )}
+            <button
+              onClick={() => toggleSection("schedule")}
+              className="text-blue-500 mt-2 hover:underline"
+            >
+              {expandedSection === "schedule" ? "Read Less" : "Read More"}
+            </button>
+          </div>
+
+          <div className="card p-6 bg-white shadow-lg rounded-lg transition-transform duration-300 hover:scale-105">
+            <h2
+              className="text-xl font-semibold text-blue-600 cursor-pointer"
+              onClick={() => toggleSection("rules")}
+              aria-expanded={expandedSection === "rules"}
+              aria-controls="rules-section"
+            >
+              📜 Rules & Regulations
+            </h2>
+            {expandedSection === "rules" ? (
+              <p className="text-gray-700 mt-2">{competition.rules}</p>
+            ) : (
+              <p className="text-gray-700 mt-2">
+                {competition.rules.substring(0, 50)}...
+              </p>
+            )}
+            <button
+              onClick={() => toggleSection("rules")}
+              className="text-blue-500 mt-2 hover:underline"
+            >
+              {expandedSection === "rules" ? "Read Less" : "Read More"}
+            </button>
           </div>
         </div>
 
-        {/* Stats Section */}
-        <div className="mt-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            Competition Stats
-          </h2>
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <p className="text-gray-600">Entries</p>
-              <span className="font-semibold text-blue-600">120 Entries</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <p className="text-gray-600">Likes</p>
-              <span className="font-semibold text-blue-600">2000 Likes</span>
-            </div>
-          </div>
+        {/* Like Section */}
+        <div className="mt-6 flex items-center space-x-4">
+          <button
+            onClick={handleLike}
+            className="bg-red-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-red-700 transition-transform duration-300 hover:scale-105"
+          >
+            ❤️ Like
+          </button>
+          <span className="text-lg font-semibold text-gray-800">
+            {likes} Likes
+          </span>
         </div>
       </div>
     </div>
