@@ -1,51 +1,56 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { IoMdPhonePortrait } from "react-icons/io";
 import { FaUser } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { MdEmail } from "react-icons/md";
+import { IoMdPhonePortrait } from "react-icons/io";
 
 function LoginPage() {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
   const [errors, setErrors] = useState({});
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+    email: "",
+    phone: "",
+    role: "",
+    institute: "",
+  });
 
-  const handleRegisterLink = () => setIsLogin(false);
-  const handleLoginLink = () => setIsLogin(true);
+  const handleRegisterLink = () => {
+    setIsLogin(false);
+    setErrors({}); // Reset errors when switching
+  };
+
+  const handleLoginLink = () => {
+    setIsLogin(true);
+    setErrors({}); // Reset errors when switching
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
   const validateLogin = () => {
     const errors = {};
-    const username = document.querySelector(
-      "input[placeholder='Username']"
-    ).value;
-    const password = document.querySelector(
-      "input[placeholder='Password']"
-    ).value;
-
-    if (!username) errors.username = "Username is required.";
-    if (!password) errors.password = "Password is required.";
-
+    if (!formData.username) errors.username = "Username is required.";
+    if (!formData.password) errors.password = "Password is required.";
     return errors;
   };
 
   const validateRegistration = () => {
     const errors = {};
-    const username = document.querySelector(
-      "input[placeholder='Username']"
-    ).value;
-    const password = document.querySelector(
-      "input[placeholder='Password']"
-    ).value;
-    const email = document.querySelector("input[placeholder='Email']").value;
-    const phone = document.querySelector(
-      "input[placeholder='Phone Number']"
-    ).value;
-
-    if (!username) errors.username = "Username is required.";
-    if (!password) errors.password = "Password is required.";
-    if (!email) errors.email = "Email is required.";
-    if (!phone) errors.phone = "Phone number is required.";
-
+    if (!formData.username) errors.username = "Username is required.";
+    if (!formData.password) errors.password = "Password is required.";
+    if (!formData.email) errors.email = "Email is required.";
+    if (!formData.phone) errors.phone = "Phone number is required.";
+    if (!formData.role) errors.role = "Role is required.";
+    if (!formData.institute) errors.institute = "Institute is required.";
     return errors;
   };
 
@@ -56,17 +61,18 @@ function LoginPage() {
       setErrors(validationErrors);
     } else {
       setErrors({});
-      navigate("/dashboard");
+      // Save user data to localStorage (or sessionStorage) after successful login
+      localStorage.setItem("user", JSON.stringify(formData));
+      // After login, navigate back to the /profile page
+      navigate("/profile");
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-white">
-      {" "}
-      {/* Solid background color */}
       <div className="relative w-full max-w-lg p-8 rounded-xl shadow-2xl bg-white bg-opacity-90">
         <div className="p-8 rounded-lg shadow-xl bg-white">
-          {isLogin && (
+          {isLogin ? (
             <form
               onSubmit={handleSubmit}
               className="form-box transition-all transform hover:scale-105 duration-500 ease-in-out"
@@ -77,7 +83,10 @@ function LoginPage() {
               <div className="input-box relative mb-6">
                 <input
                   type="text"
+                  name="username"
                   placeholder="Username"
+                  value={formData.username}
+                  onChange={handleInputChange}
                   className="w-full p-4 pl-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
                 />
                 <FaUser className="absolute left-4 top-4 text-gray-400" />
@@ -88,7 +97,10 @@ function LoginPage() {
               <div className="input-box relative mb-6">
                 <input
                   type="password"
+                  name="password"
                   placeholder="Password"
+                  value={formData.password}
+                  onChange={handleInputChange}
                   className="w-full p-4 pl-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
                 />
                 <RiLockPasswordFill className="absolute left-4 top-4 text-gray-400" />
@@ -115,8 +127,7 @@ function LoginPage() {
                 </p>
               </div>
             </form>
-          )}
-          {!isLogin && (
+          ) : (
             <form
               onSubmit={handleSubmit}
               className="form-box transition-all transform hover:scale-105 duration-500 ease-in-out"
@@ -127,7 +138,10 @@ function LoginPage() {
               <div className="input-box relative mb-6">
                 <input
                   type="text"
+                  name="username"
                   placeholder="Username"
+                  value={formData.username}
+                  onChange={handleInputChange}
                   className="w-full p-4 pl-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
                 />
                 <FaUser className="absolute left-4 top-4 text-gray-400" />
@@ -138,7 +152,10 @@ function LoginPage() {
               <div className="input-box relative mb-6">
                 <input
                   type="password"
+                  name="password"
                   placeholder="Password"
+                  value={formData.password}
+                  onChange={handleInputChange}
                   className="w-full p-4 pl-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
                 />
                 <RiLockPasswordFill className="absolute left-4 top-4 text-gray-400" />
@@ -149,7 +166,10 @@ function LoginPage() {
               <div className="input-box relative mb-6">
                 <input
                   type="email"
+                  name="email"
                   placeholder="Email"
+                  value={formData.email}
+                  onChange={handleInputChange}
                   className="w-full p-4 pl-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
                 />
                 <MdEmail className="absolute left-4 top-4 text-gray-400" />
@@ -160,8 +180,11 @@ function LoginPage() {
               <div className="input-box relative mb-6">
                 <input
                   type="tel"
+                  name="phone"
                   placeholder="Phone Number"
                   pattern="[0-9]{10}"
+                  value={formData.phone}
+                  onChange={handleInputChange}
                   className="w-full p-4 pl-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
                 />
                 <IoMdPhonePortrait className="absolute left-4 top-4 text-gray-400" />
@@ -171,20 +194,30 @@ function LoginPage() {
               </div>
               <div className="input-box mb-6">
                 <select
+                  name="role"
+                  value={formData.role}
+                  onChange={handleInputChange}
                   className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
-                  required
                 >
-                  <option value="">-- Select Your Role --</option>
-                  <option value="User">User</option>
-                  <option value="Admin">Admin</option>
+                  <option value="">Select Role</option>
+                  <option value="student">UserSelect</option>
+                  <option value="teacher">Admin</option>
                 </select>
+                {errors.role && (
+                  <p className="text-red-500 text-sm mt-1">{errors.role}</p>
+                )}
               </div>
               <div className="input-box mb-6">
                 <select
+                  name="institute"
+                  value={formData.institute}
+                  onChange={handleInputChange}
                   className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
-                  required
                 >
-                  <option value="">-- Select Your Institute --</option>
+                  <option value="">
+                    {" "}
+                    -- Select Your University or Institute --
+                  </option>
                   <optgroup label="State Universities">
                     <option value="Colombo">University of Colombo</option>
                     <option value="Peradeniya">University of Peradeniya</option>
@@ -228,7 +261,13 @@ function LoginPage() {
                     </option>
                   </optgroup>
                 </select>
+                {errors.institute && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.institute}
+                  </p>
+                )}
               </div>
+
               <button
                 type="submit"
                 className="w-full py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition-all"

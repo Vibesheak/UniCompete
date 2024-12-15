@@ -1,9 +1,18 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import profile from "./profile.jpg"; // Ensure your profile image is here
 
-function HomePage() {
+function ProfilePage() {
   const navigate = useNavigate();
   const [sortBy, setSortBy] = useState("name");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState({
+    name: "John Doe",
+    profilePic: profile, // Updated to use profilePic instead of profile
+    email: "john.doe@example.com",
+    location: "New York, USA",
+  });
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const competitions = [
     {
@@ -59,8 +68,35 @@ function HomePage() {
     return 0;
   });
 
-  const handleViewDetailsClick = () => {
-    navigate("/login");
+  const handleViewDetailsClick = (id) => {
+    navigate(`/competition/${id}`);
+  };
+
+  const handleLogin = () => {
+    // Simulate login (this would normally be handled by an API)
+    setIsLoggedIn(true);
+    setUser({
+      name: "Nilojitha Mariyathas",
+      profilePic: profile, // Ensure this is set to a profile picture
+      email: "n123.doe@example.com",
+      location: "New York, USA",
+    });
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setUser({});
+    navigate("/login"); // Navigate to the login page
+  };
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
+  const getInitials = (name) => {
+    const nameParts = name.split(" ");
+    const initials = nameParts.map((part) => part.charAt(0)).join("");
+    return initials.toUpperCase();
   };
 
   return (
@@ -90,6 +126,10 @@ function HomePage() {
             <h1 className="text-4xl font-bold text-gray-900">
               Explore Competitions
             </h1>
+          </header>
+
+          {/* Sort Competitions */}
+          <div className="flex justify-between items-center mb-8">
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
@@ -99,7 +139,7 @@ function HomePage() {
               <option value="location">Sort by Location</option>
               <option value="date">Sort by Date</option>
             </select>
-          </header>
+          </div>
 
           {/* Competitions Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -121,7 +161,7 @@ function HomePage() {
                 </h2>
                 <p className="text-gray-600 mb-4">{competition.description}</p>
                 <button
-                  onClick={handleViewDetailsClick}
+                  onClick={() => handleViewDetailsClick(competition.id)}
                   className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-all duration-300"
                 >
                   View Details
@@ -131,8 +171,41 @@ function HomePage() {
           </div>
         </main>
       </div>
+
+      {/* Profile Circle in Top-Right Corner */}
+      <div
+        className="absolute top-4 right-4 w-14 h-14 bg-blue-600 text-white rounded-full flex items-center justify-center cursor-pointer"
+        onClick={toggleDropdown}
+      >
+        {user.profilePic ? (
+          <img
+            src={user.profilePic}
+            alt="Profile"
+            className="w-full h-full rounded-full object-cover"
+          />
+        ) : (
+          <span className="text-lg font-semibold">
+            {getInitials(user.name)}
+          </span>
+        )}
+      </div>
+
+      {/* Dropdown Menu */}
+      {dropdownOpen && (
+        <div className="absolute top-16 right-4 w-48 bg-white shadow-lg rounded-lg p-4">
+          <p className="text-sm font-semibold text-gray-900">{user.name}</p>
+          <p className="text-sm text-gray-600">{user.email}</p>
+          <p className="text-sm text-gray-600">{user.location}</p>
+          <button
+            onClick={handleLogout}
+            className="bg-red-600 text-white w-full mt-2 px-4 py-2 rounded-lg"
+          >
+            Logout
+          </button>
+        </div>
+      )}
     </div>
   );
 }
 
-export default HomePage;
+export default ProfilePage;
