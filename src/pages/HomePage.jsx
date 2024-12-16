@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { FaTrophy, FaRegClock, FaCogs, FaListAlt } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 function HomePage() {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("popular");
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -22,6 +24,10 @@ function HomePage() {
 
   const handleSortChange = (e) => {
     setSortCriterion(e.target.value);
+  };
+
+  const handleViewDetails = () => {
+    navigate("/login"); // Navigate to the login page
   };
 
   const competitions = [
@@ -90,6 +96,8 @@ function HomePage() {
         return new Date(a.date) - new Date(b.date);
       case "Location":
         return a.location.localeCompare(b.location);
+      case "Rating":
+        return b.rating - a.rating; // Sort by rating descending
       default:
         return 0;
     }
@@ -150,7 +158,6 @@ function HomePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 text-gray-900">
-      {/* Sidebar */}
       <div className="flex">
         <aside className="w-64 bg-blue-50 p-6 shadow-lg rounded-lg sm:block transition-all duration-300 hover:shadow-xl">
           <ul className="space-y-4 text-gray-800">
@@ -216,15 +223,12 @@ function HomePage() {
           </ul>
         </aside>
 
-        {/* Main Content */}
         <main className="flex-1 p-6">
-          {/* Header */}
           <header className="flex justify-between items-center mb-8">
             <h1 className="text-4xl font-bold text-gray-900">
               Explore Competitions
             </h1>
             <div className="flex items-center space-x-4">
-              {/* Sort By Dropdown */}
               <select
                 value={sortCriterion}
                 onChange={handleSortChange}
@@ -234,11 +238,11 @@ function HomePage() {
                 <option value="Name">Sort By: Name</option>
                 <option value="Date">Sort By: Date</option>
                 <option value="Location">Sort By: Location</option>
+                <option value="Rating">Sort By: Rating</option>
               </select>
             </div>
           </header>
 
-          {/* Competitions Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {sortedCompetitions.map((competition) => (
               <div
@@ -246,7 +250,6 @@ function HomePage() {
                 className="bg-white p-6 rounded-lg shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
               >
                 <div className="flex justify-between items-center mb-4">
-                  {/* Date Styled Like a Button */}
                   <span className="text-sm bg-blue-600 text-white px-4 py-2 rounded-lg cursor-pointer">
                     {competition.date}
                   </span>
@@ -259,7 +262,10 @@ function HomePage() {
                 </h2>
                 <p className="text-gray-600 mb-4">{competition.description}</p>
                 <div className="mb-4">{renderStars(competition.rating)}</div>
-                <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-all duration-300">
+                <button
+                  onClick={handleViewDetails}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-all duration-300"
+                >
                   View Details
                 </button>
               </div>
