@@ -69,8 +69,8 @@ function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white">
-      <div className="relative w-full max-w-lg p-8 rounded-xl shadow-2xl bg-white bg-opacity-90">
+    <div className="flex items-center justify-center bg-white h-full">
+      <div className="relative w-full max-w-lg p-8 rounded-xl shadow-2xl bg-blue-200">
         <div className="p-8 rounded-lg shadow-xl bg-white">
           {isLogin ? (
             <form
@@ -216,7 +216,7 @@ function LoginPage() {
                 >
                   <option value="">
                     {" "}
-                    -- Select Your University or Institute --
+                    -- Select Your University or Institute --{" "}
                   </option>
                   <optgroup label="State Universities">
                     <option value="Colombo">University of Colombo</option>

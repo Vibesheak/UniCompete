@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaListAlt, FaInfoCircle } from "react-icons/fa"; // Add this import
-import profile from "./profile.jpg"; // Ensure your profile image is here
+import { FaListAlt } from "react-icons/fa"; // Removed FaInfoCircle import
+import profile from "./profile.jpg";
+import homeImage from "./home.jpeg"; // Ensure your profile image is here
 
 // Function to get initials from the user's name
 const getInitials = (fullName) => {
@@ -25,26 +26,39 @@ function ProfilePage() {
     university: "University A",
     profile: profile, // Placeholder image, can be changed to a URL if available
   };
+  // Ref for the dropdown container to detect clicks outside
+  const dropdownRef = useRef(null);
 
-  const handleCategoryClick = () => {
+  // Handle click outside to close dropdown
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownVisible(false); // Close dropdown if clicked outside
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+  const handleDropdownToggle = () => {
     setDropdownVisible(!dropdownVisible);
   };
 
   const handleSelectCategory = (category) => {
     setSelectedCategory(category);
-    setDropdownVisible(false);
+    setDropdownVisible(false); // Close dropdown after selecting category
   };
 
   const handleSortChange = (e) => {
     setSortCriterion(e.target.value);
+    setDropdownVisible(false); // Close dropdown after selecting sort option
   };
 
   const handleViewDetails = (id) => {
     navigate(`/competition/${id}`);
-  };
-
-  const handleAboutUsClick = () => {
-    navigate("/about"); // Navigate to the About Us page
   };
 
   const handleProfileClick = () => {
@@ -65,6 +79,7 @@ function ProfilePage() {
       description:
         "A contest for tech enthusiasts to showcase innovative solutions in AI, robotics, and software development.",
       rating: 4.5,
+      image: homeImage,
     },
     {
       id: 2,
@@ -74,6 +89,7 @@ function ProfilePage() {
       description:
         "A creative exhibition showcasing the best in arts, design, and creativity from students around the country.",
       rating: 3.0,
+      image: homeImage,
     },
     {
       id: 3,
@@ -83,6 +99,7 @@ function ProfilePage() {
       description:
         "A quiz competition to test your knowledge in various scientific fields. Are you ready for the challenge?",
       rating: 5.0,
+      image: homeImage,
     },
     {
       id: 4,
@@ -92,6 +109,7 @@ function ProfilePage() {
       description:
         "Showcase your innovative ideas and compete with the best minds.",
       rating: 4.0,
+      image: homeImage,
     },
     {
       id: 5,
@@ -101,6 +119,27 @@ function ProfilePage() {
       description:
         "A marathon event for tech enthusiasts to solve real-world problems.",
       rating: 4.2,
+      image: homeImage,
+    },
+    {
+      id: 6,
+      name: "Science Quiz Challenge",
+      date: "2025-12-20",
+      location: "University E",
+      description:
+        "A quiz competition to test your knowledge in various scientific fields. Are you ready for the challenge?",
+      rating: 5.0,
+      image: homeImage,
+    },
+    {
+      id: 7,
+      name: "Tech Marathon",
+      date: "2025-06-10",
+      location: "University E",
+      description:
+        "A marathon event for tech enthusiasts to solve real-world problems.",
+      rating: 4.2,
+      image: homeImage,
     },
   ];
 
@@ -185,68 +224,65 @@ function ProfilePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 text-gray-900">
       <div className="flex">
-        <aside className="w-64 bg-blue-50 p-6 shadow-lg rounded-lg sm:block transition-all duration-300 hover:shadow-xl flex flex-col">
-          <ul className="space-y-4 text-gray-800 flex-grow">
-            <li
-              onClick={handleCategoryClick}
-              className={`${
-                dropdownVisible
-                  ? "bg-blue-300 text-blue-900 rounded-lg px-4 py-2"
-                  : "hover:bg-blue-200 hover:bg-opacity-60 rounded-lg px-4 py-2"
-              } relative cursor-pointer transition-all duration-300`}
-            >
-              <FaListAlt className="inline-block mr-2" />
-              Categories
-              {dropdownVisible && (
-                <div className="absolute top-12 left-0 w-full bg-blue-100 text-gray-800 shadow-lg rounded-lg p-4 z-10">
-                  <ul className="space-y-2">
-                    {uniqueCompetitionNames.map((competitionName) => (
-                      <li
-                        key={competitionName}
-                        onClick={() => handleSelectCategory(competitionName)}
-                        className="cursor-pointer hover:bg-gray-100 p-2 rounded-lg"
-                      >
-                        {competitionName}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </li>
-          </ul>
-
-          <div className="mt-auto">
-            <li
-              onClick={handleAboutUsClick}
-              className="hover:bg-blue-200 hover:bg-opacity-60 rounded-lg px-4 py-2 cursor-pointer transition-all duration-300"
-            >
-              <FaInfoCircle className="inline-block mr-2" />
-              About Us
-            </li>
-          </div>
-        </aside>
-
         <main className="flex-1 p-6">
           <header className="flex justify-between items-center mb-8">
-            <h1 className="text-4xl font-bold text-gray-900">
+            <h1 className="text-4xl font-bold text-gray-900 text-center flex-grow">
               Explore Competitions
             </h1>
-            <div className="flex items-center space-x-4">
-              <select
-                value={sortCriterion}
-                onChange={handleSortChange}
-                className="bg-blue-100 text-gray-800 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+
+            {/* Sort/Filter Dropdown */}
+            <div ref={dropdownRef} className="relative">
+              <button
+                onClick={handleDropdownToggle}
+                className="bg-blue-100 text-gray-800 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ml-4"
               >
-                <option value="All">Sort By: All</option>
-                <option value="Name">Sort By: Name</option>
-                <option value="Date">Sort By: Date</option>
-                <option value="Location">Sort By: Location</option>
-                <option value="Rating">Sort By: Rating</option>
-              </select>
+                Sort / Filter
+              </button>
+              {dropdownVisible && (
+                <div className="absolute top-12 right-0 w-56 bg-white shadow-lg rounded-lg p-4 z-10">
+                  <div className="space-y-4">
+                    {/* Category Dropdown */}
+                    <div>
+                      <label className="block text-sm text-gray-700 mb-2">
+                        Select Category
+                      </label>
+                      <select
+                        value={selectedCategory}
+                        onChange={(e) => handleSelectCategory(e.target.value)}
+                        className="bg-blue-100 text-gray-800 px-4 py-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        {uniqueCompetitionNames.map((competitionName) => (
+                          <option key={competitionName} value={competitionName}>
+                            {competitionName}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Sort By Dropdown */}
+                    <div>
+                      <label className="block text-sm text-gray-700 mb-2">
+                        Sort By
+                      </label>
+                      <select
+                        value={sortCriterion}
+                        onChange={handleSortChange}
+                        className="bg-blue-100 text-gray-800 px-4 py-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="All">All</option>
+                        <option value="Name">Name</option>
+                        <option value="Date">Date</option>
+                        <option value="Location">Location</option>
+                        <option value="Rating">Rating</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </header>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
             {sortedCompetitions.length === 0 ? (
               <p className="text-center text-gray-600">
                 No competitions found.
@@ -268,6 +304,11 @@ function ProfilePage() {
                   <h2 className="text-xl font-semibold text-gray-900 mb-2">
                     {competition.name}
                   </h2>
+                  <img
+                    src={competition.image} // This is the imported image
+                    alt={competition.name}
+                    className="w-full h-32 object-cover rounded-lg mb-4 shadow-lg transition-transform transform hover:scale-105"
+                  />
                   <p className="text-gray-600 mb-4">
                     {competition.description}
                   </p>
