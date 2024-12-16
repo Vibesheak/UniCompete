@@ -76,6 +76,33 @@ function HomePage() {
         "A marathon event for tech enthusiasts to solve real-world problems.",
       rating: 4.2,
     },
+    {
+      id: 6,
+      name: "Tech Marathon",
+      date: "2025-03-10",
+      location: "University E",
+      description:
+        "A marathon event for tech enthusiasts to solve real-world problems.",
+      rating: 4.2,
+    },
+    {
+      id: 7,
+      name: "Tech Marathon",
+      date: "2025-03-25",
+      location: "University A",
+      description:
+        "A marathon event for tech enthusiasts to solve real-world problems.",
+      rating: 4.2,
+    },
+    {
+      id: 8,
+      name: "Tech Marathon",
+      date: "2025-04-10",
+      location: "University B",
+      description:
+        "A marathon event for tech enthusiasts to solve real-world problems.",
+      rating: 3.2,
+    },
   ];
 
   const uniqueCompetitionNames = [
@@ -88,20 +115,28 @@ function HomePage() {
       ? competitions
       : competitions.filter((comp) => comp.name === selectedCategory);
 
-  const sortedCompetitions = filteredCompetitions.sort((a, b) => {
-    switch (sortCriterion) {
-      case "Name":
-        return a.name.localeCompare(b.name);
-      case "Date":
-        return new Date(a.date) - new Date(b.date);
-      case "Location":
-        return a.location.localeCompare(b.location);
-      case "Rating":
+  const sortedCompetitions = filteredCompetitions
+    .sort((a, b) => {
+      switch (sortCriterion) {
+        case "Name":
+          return a.name.localeCompare(b.name);
+        case "Date":
+          return new Date(a.date) - new Date(b.date);
+        case "Location":
+          return a.location.localeCompare(b.location);
+        case "Rating":
+          return b.rating - a.rating; // Sort by rating descending
+        default:
+          return 0;
+      }
+    })
+    .sort((a, b) => {
+      // Sort "Popular Competitions" by rating when the "Popular" tab is active
+      if (activeTab === "popular") {
         return b.rating - a.rating; // Sort by rating descending
-      default:
-        return 0;
-    }
-  });
+      }
+      return 0; // Keep the original sorting for other tabs
+    });
 
   const renderStars = (rating) => {
     const fullStars = Math.floor(rating);

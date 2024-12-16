@@ -17,7 +17,6 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/profile" element={<ProfilePage />} />
             <Route path="/competition/:id" element={<CompetitionDetails />} /> {/* Add the route for CompetitionDetails */}
           </Routes>
         </main>

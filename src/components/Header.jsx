@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import backgroundImage from "./background.jpg";
 
 function Header() {
   const [isHovered, setIsHovered] = useState(false);
@@ -14,12 +13,7 @@ function Header() {
   };
 
   return (
-    <header
-      className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white p-6 shadow-xl relative bg-cover bg-center"
-      style={{
-        backgroundImage: `url(${backgroundImage})`,
-      }}
-    >
+    <header className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white p-6 shadow-xl relative bg-cover bg-center">
       <div className="absolute inset-0 bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 opacity-40 animate-pulse"></div>
 
       <nav className="container mx-auto flex justify-between items-center relative z-10">
