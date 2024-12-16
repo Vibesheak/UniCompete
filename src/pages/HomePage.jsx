@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { FaTrophy, FaRegClock, FaCogs, FaListAlt } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { FaListAlt, FaInfoCircle } from "react-icons/fa";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 function HomePage() {
-  const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("popular");
+  const navigate = useNavigate(); // Initialize useNavigate hook
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortCriterion, setSortCriterion] = useState("All");
@@ -18,16 +17,16 @@ function HomePage() {
     setDropdownVisible(false);
   };
 
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
-  };
-
   const handleSortChange = (e) => {
     setSortCriterion(e.target.value);
   };
 
   const handleViewDetails = () => {
     navigate("/login"); // Navigate to the login page
+  };
+
+  const handleAboutUsClick = () => {
+    navigate("/about"); // Navigate to the About Us page
   };
 
   const competitions = [
@@ -76,33 +75,6 @@ function HomePage() {
         "A marathon event for tech enthusiasts to solve real-world problems.",
       rating: 4.2,
     },
-    {
-      id: 6,
-      name: "Tech Marathon",
-      date: "2025-03-10",
-      location: "University E",
-      description:
-        "A marathon event for tech enthusiasts to solve real-world problems.",
-      rating: 4.2,
-    },
-    {
-      id: 7,
-      name: "Tech Marathon",
-      date: "2025-03-25",
-      location: "University A",
-      description:
-        "A marathon event for tech enthusiasts to solve real-world problems.",
-      rating: 4.2,
-    },
-    {
-      id: 8,
-      name: "Tech Marathon",
-      date: "2025-04-10",
-      location: "University B",
-      description:
-        "A marathon event for tech enthusiasts to solve real-world problems.",
-      rating: 3.2,
-    },
   ];
 
   const uniqueCompetitionNames = [
@@ -115,28 +87,20 @@ function HomePage() {
       ? competitions
       : competitions.filter((comp) => comp.name === selectedCategory);
 
-  const sortedCompetitions = filteredCompetitions
-    .sort((a, b) => {
-      switch (sortCriterion) {
-        case "Name":
-          return a.name.localeCompare(b.name);
-        case "Date":
-          return new Date(a.date) - new Date(b.date);
-        case "Location":
-          return a.location.localeCompare(b.location);
-        case "Rating":
-          return b.rating - a.rating; // Sort by rating descending
-        default:
-          return 0;
-      }
-    })
-    .sort((a, b) => {
-      // Sort "Popular Competitions" by rating when the "Popular" tab is active
-      if (activeTab === "popular") {
+  const sortedCompetitions = filteredCompetitions.sort((a, b) => {
+    switch (sortCriterion) {
+      case "Name":
+        return a.name.localeCompare(b.name);
+      case "Date":
+        return new Date(a.date) - new Date(b.date);
+      case "Location":
+        return a.location.localeCompare(b.location);
+      case "Rating":
         return b.rating - a.rating; // Sort by rating descending
-      }
-      return 0; // Keep the original sorting for other tabs
-    });
+      default:
+        return 0;
+    }
+  });
 
   const renderStars = (rating) => {
     const fullStars = Math.floor(rating);
@@ -194,30 +158,8 @@ function HomePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 text-gray-900">
       <div className="flex">
-        <aside className="w-64 bg-blue-50 p-6 shadow-lg rounded-lg sm:block transition-all duration-300 hover:shadow-xl">
-          <ul className="space-y-4 text-gray-800">
-            <li
-              onClick={() => handleTabClick("popular")}
-              className={`${
-                activeTab === "popular"
-                  ? "bg-blue-300 text-blue-900 rounded-lg px-4 py-2"
-                  : "hover:bg-blue-200 hover:bg-opacity-60 rounded-lg px-4 py-2"
-              } cursor-pointer transition-all duration-300`}
-            >
-              <FaTrophy className="inline-block mr-2" />
-              Popular Competitions
-            </li>
-            <li
-              onClick={() => handleTabClick("recent")}
-              className={`${
-                activeTab === "recent"
-                  ? "bg-blue-300 text-blue-900 rounded-lg px-4 py-2"
-                  : "hover:bg-blue-200 hover:bg-opacity-60 rounded-lg px-4 py-2"
-              } cursor-pointer transition-all duration-300`}
-            >
-              <FaRegClock className="inline-block mr-2" />
-              Recent Competitions
-            </li>
+        <aside className="w-64 bg-blue-50 p-6 shadow-lg rounded-lg sm:block transition-all duration-300 hover:shadow-xl flex flex-col">
+          <ul className="space-y-4 text-gray-800 flex-grow">
             <li
               onClick={handleCategoryClick}
               className={`${
@@ -244,18 +186,18 @@ function HomePage() {
                 </div>
               )}
             </li>
-            <li
-              onClick={() => handleTabClick("settings")}
-              className={`${
-                activeTab === "settings"
-                  ? "bg-blue-300 text-blue-900 rounded-lg px-4 py-2"
-                  : "hover:bg-blue-200 hover:bg-opacity-60 rounded-lg px-4 py-2"
-              } cursor-pointer transition-all duration-300`}
-            >
-              <FaCogs className="inline-block mr-2" />
-              Settings
-            </li>
           </ul>
+
+          {/* About Us Section (Always visible at the bottom) */}
+          <div className="mt-auto">
+            <li
+              onClick={handleAboutUsClick} // Added click handler
+              className="hover:bg-blue-200 hover:bg-opacity-60 rounded-lg px-4 py-2 cursor-pointer transition-all duration-300"
+            >
+              <FaInfoCircle className="inline-block mr-2" />
+              About Us
+            </li>
+          </div>
         </aside>
 
         <main className="flex-1 p-6">
@@ -282,7 +224,7 @@ function HomePage() {
             {sortedCompetitions.map((competition) => (
               <div
                 key={competition.id}
-                className="bg-white p-6 rounded-lg shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
+                className="bg-white p-6 rounded-lg shadow-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-[0_10px_20px_rgba(0,0,0,0.3),0_6px_6px_rgba(0,0,0,0.2)]"
               >
                 <div className="flex justify-between items-center mb-4">
                   <span className="text-sm bg-blue-600 text-white px-4 py-2 rounded-lg cursor-pointer">
