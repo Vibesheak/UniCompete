@@ -40,7 +40,7 @@ function HomePage() {
       date: "2024-12-20",
       location: "University A",
       description: "Showcase innovative AI solutions.",
-      rating: 4.5,
+      rating: 5.0,
       image: homeImage,
     },
     {
@@ -58,7 +58,7 @@ function HomePage() {
       date: "2025-01-10",
       location: "University C",
       description: "Test scientific knowledge.",
-      rating: 5.0,
+      rating: 2.0,
       image: homeImage,
     },
     {
@@ -67,7 +67,7 @@ function HomePage() {
       date: "2025-02-15",
       location: "University D",
       description: "Display your ideas and innovations.",
-      rating: 4.0,
+      rating: 4.5,
       image: homeImage,
     },
     {
@@ -76,7 +76,25 @@ function HomePage() {
       date: "2025-03-10",
       location: "University E",
       description: "Solve real-world tech problems.",
-      rating: 4.2,
+      rating: 2.5,
+      image: homeImage,
+    },
+    {
+      id: 6,
+      name: "Tech Marathon",
+      date: "2025-05-10",
+      location: "University C",
+      description: "Solve real-world tech problems.",
+      rating: 1.5,
+      image: homeImage,
+    },
+    {
+      id: 7,
+      name: "Tech Innovation Contest",
+      date: "2024-12-18",
+      location: "University E",
+      description: "Showcase innovative AI solutions.",
+      rating: 4.5,
       image: homeImage,
     },
   ];
@@ -105,7 +123,6 @@ function HomePage() {
         return 0;
     }
   });
-
   const renderStars = (rating) => {
     const fullStars = Math.floor(rating);
     const halfStar = rating % 1 !== 0;
@@ -113,21 +130,51 @@ function HomePage() {
 
     return (
       <div className="flex items-center">
-        {[...Array(fullStars)].map((_, i) => (
-          <span key={i} className="text-yellow-500">
-            ★
-          </span>
+        {[...Array(fullStars)].map((_, index) => (
+          <svg
+            key={`full-${index}`}
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            className="w-5 h-5 text-yellow-500"
+            viewBox="0 0 20 20"
+          >
+            <path d="M10 15l-3.09 1.63.59-3.45L4 8.27l3.46-.28L10 5l1.54 2.99 3.46.28-2.5 4.91.59 3.45L10 15z" />
+          </svg>
         ))}
-        {halfStar && <span className="text-yellow-500">★</span>}
-        {[...Array(emptyStars)].map((_, i) => (
-          <span key={i} className="text-gray-400">
-            ☆
-          </span>
+        {halfStar && (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            className="w-5 h-5 text-yellow-500"
+            viewBox="0 0 20 20"
+          >
+            <defs>
+              <linearGradient id="half-star" x1="0" x2="1" y1="0" y2="0">
+                <stop offset="50%" stopColor="currentColor" />
+                <stop offset="50%" stopColor="transparent" />
+              </linearGradient>
+            </defs>
+            <path
+              d="M10 15l-3.09 1.63.59-3.45L4 8.27l3.46-.28L10 5l1.54 2.99 3.46.28-2.5 4.91.59 3.45L10 15z"
+              fill="url(#half-star)"
+            />
+          </svg>
+        )}
+        {[...Array(emptyStars)].map((_, index) => (
+          <svg
+            key={`empty-${index}`}
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            stroke="currentColor"
+            className="w-5 h-5 text-gray-400"
+            viewBox="0 0 20 20"
+          >
+            <path d="M10 15l-3.09 1.63.59-3.45L4 8.27l3.46-.28L10 5l1.54 2.99 3.46.28-2.5 4.91.59 3.45L10 15z" />
+          </svg>
         ))}
       </div>
     );
   };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 text-gray-900 p-4 sm:p-6">
       <header className="flex flex-col sm:flex-row justify-between items-center mb-6">

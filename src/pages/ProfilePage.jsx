@@ -60,7 +60,6 @@ function ProfilePage() {
   const handleViewDetails = (id) => {
     navigate(`/competition/${id}`);
   };
-
   const handleProfileClick = () => {
     setProfileDropdownVisible(!profileDropdownVisible);
   };
@@ -76,9 +75,8 @@ function ProfilePage() {
       name: "Tech Innovation Contest",
       date: "2024-12-20",
       location: "University A",
-      description:
-        "A contest for tech enthusiasts to showcase innovative solutions in AI, robotics, and software development.",
-      rating: 4.5,
+      description: "Showcase innovative AI solutions.",
+      rating: 5.0,
       image: homeImage,
     },
     {
@@ -86,8 +84,7 @@ function ProfilePage() {
       name: "Art and Design Exhibition",
       date: "2024-12-25",
       location: "University B",
-      description:
-        "A creative exhibition showcasing the best in arts, design, and creativity from students around the country.",
+      description: "A creative arts exhibition.",
       rating: 3.0,
       image: homeImage,
     },
@@ -96,9 +93,8 @@ function ProfilePage() {
       name: "Science Quiz Challenge",
       date: "2025-01-10",
       location: "University C",
-      description:
-        "A quiz competition to test your knowledge in various scientific fields. Are you ready for the challenge?",
-      rating: 5.0,
+      description: "Test scientific knowledge.",
+      rating: 2.0,
       image: homeImage,
     },
     {
@@ -106,9 +102,8 @@ function ProfilePage() {
       name: "Innovation Showcase",
       date: "2025-02-15",
       location: "University D",
-      description:
-        "Showcase your innovative ideas and compete with the best minds.",
-      rating: 4.0,
+      description: "Display your ideas and innovations.",
+      rating: 4.5,
       image: homeImage,
     },
     {
@@ -116,29 +111,26 @@ function ProfilePage() {
       name: "Tech Marathon",
       date: "2025-03-10",
       location: "University E",
-      description:
-        "A marathon event for tech enthusiasts to solve real-world problems.",
-      rating: 4.2,
+      description: "Solve real-world tech problems.",
+      rating: 2.5,
       image: homeImage,
     },
     {
       id: 6,
-      name: "Science Quiz Challenge",
-      date: "2025-12-20",
-      location: "University A",
-      description:
-        "A quiz competition to test your knowledge in various scientific fields. Are you ready for the challenge?",
-      rating: 5.0,
+      name: "Tech Marathon",
+      date: "2025-05-10",
+      location: "University C",
+      description: "Solve real-world tech problems.",
+      rating: 1.5,
       image: homeImage,
     },
     {
       id: 7,
-      name: "Tech Marathon",
-      date: "2025-06-10",
+      name: "Tech Innovation Contest",
+      date: "2024-12-18",
       location: "University E",
-      description:
-        "A marathon event for tech enthusiasts to solve real-world problems.",
-      rating: 4.2,
+      description: "Showcase innovative AI solutions.",
+      rating: 4.5,
       image: homeImage,
     },
   ];
@@ -293,29 +285,30 @@ function ProfilePage() {
                   key={competition.id}
                   className="bg-white p-6 rounded-lg shadow-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-[0_10px_20px_rgba(0,0,0,0.3),0_6px_6px_rgba(0,0,0,0.2)]"
                 >
-                  <div className="flex justify-between items-center mb-4">
-                    <span className="text-sm bg-blue-600 text-white px-4 py-2 rounded-lg cursor-pointer">
-                      {competition.date}
-                    </span>
-                    <span className="text-sm text-gray-600">
-                      {competition.location}
-                    </span>
-                  </div>
-                  <h2 className="text-xl font-semibold text-gray-900 mb-2">
-                    {competition.name}
-                  </h2>
                   <img
                     src={competition.image} // This is the imported image
                     alt={competition.name}
                     className="w-full h-32 object-cover rounded-lg mb-4 shadow-lg transition-transform transform hover:scale-105"
                   />
-                  <p className="text-gray-600 mb-4">
+                  <h2 className="text-xl font-semibold text-gray-800 mb-2">
+                    {competition.name}
+                  </h2>
+                  <p className="text-gray-600 mb-2 text-sm">
                     {competition.description}
                   </p>
+                  <div className="flex justify-between items-center mb-4">
+                    <span className="text-sm text-gray-500">
+                      {competition.date}
+                    </span>
+                    <span className="text-sm text-gray-500">
+                      {competition.location}
+                    </span>
+                  </div>
                   <div className="mb-4">{renderStars(competition.rating)}</div>
+
                   <button
                     onClick={() => handleViewDetails(competition.id)}
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-all duration-300"
+                    className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-300"
                   >
                     View Details
                   </button>
