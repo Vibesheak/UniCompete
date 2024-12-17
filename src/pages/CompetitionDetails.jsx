@@ -42,71 +42,7 @@ function CompetitionDetails() {
         rules: "Open to all students, Original art only, etc.",
         image: bannerImage,
       },
-      {
-        id: 3,
-        name: "Art and Design Exhibition",
-        date: "2024-12-25",
-        registrationDeadline: "2024-12-10",
-        location: "University B",
-        description:
-          "An exhibition showcasing the best in arts, design, and creativity from students around the country.",
-        prizes: "First place: $800, Second place: $400, Third place: $200",
-        schedule: "Registration Deadline: 2024-12-10, Event Date: 2024-12-25",
-        rules: "Open to all students, Original art only, etc.",
-        image: bannerImage,
-      },
-      {
-        id: 4,
-        name: "Art and Design Exhibition",
-        date: "2024-12-25",
-        registrationDeadline: "2024-12-10",
-        location: "University B",
-        description:
-          "An exhibition showcasing the best in arts, design, and creativity from students around the country.",
-        prizes: "First place: $800, Second place: $400, Third place: $200",
-        schedule: "Registration Deadline: 2024-12-10, Event Date: 2024-12-25",
-        rules: "Open to all students, Original art only, etc.",
-        image: bannerImage,
-      },
-      {
-        id: 5,
-        name: "Art and Design Exhibition",
-        date: "2024-12-25",
-        registrationDeadline: "2024-12-10",
-        location: "University B",
-        description:
-          "An exhibition showcasing the best in arts, design, and creativity from students around the country.",
-        prizes: "First place: $800, Second place: $400, Third place: $200",
-        schedule: "Registration Deadline: 2024-12-10, Event Date: 2024-12-25",
-        rules: "Open to all students, Original art only, etc.",
-        image: bannerImage,
-      },
-      {
-        id: 6,
-        name: "Art and Design Exhibition",
-        date: "2024-12-25",
-        registrationDeadline: "2024-12-10",
-        location: "University B",
-        description:
-          "An exhibition showcasing the best in arts, design, and creativity from students around the country.",
-        prizes: "First place: $800, Second place: $400, Third place: $200",
-        schedule: "Registration Deadline: 2024-12-10, Event Date: 2024-12-25",
-        rules: "Open to all students, Original art only, etc.",
-        image: bannerImage,
-      },
-      {
-        id: 7,
-        name: "Art and Design Exhibition",
-        date: "2024-12-25",
-        registrationDeadline: "2024-12-10",
-        location: "University B",
-        description:
-          "An exhibition showcasing the best in arts, design, and creativity from students around the country.",
-        prizes: "First place: $800, Second place: $400, Third place: $200",
-        schedule: "Registration Deadline: 2024-12-10, Event Date: 2024-12-25",
-        rules: "Open to all students, Original art only, etc.",
-        image: bannerImage,
-      },
+      // Add other competitions...
     ];
 
     const competitionData = competitions.find(

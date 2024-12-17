@@ -70,17 +70,17 @@ function LoginPage() {
 
   return (
     <div className="flex items-center justify-center bg-white h-full">
-      <div className="relative w-full max-w-lg p-8 rounded-xl shadow-2xl bg-blue-200">
-        <div className="p-8 rounded-lg shadow-xl bg-white">
+      <div className="relative w-full max-w-lg p-4 rounded-xl shadow-2xl bg-blue-200">
+        <div className="p-4 rounded-lg shadow-xl bg-white">
           {isLogin ? (
             <form
               onSubmit={handleSubmit}
               className="form-box transition-all transform hover:scale-105 duration-500 ease-in-out"
             >
-              <h1 className="text-4xl font-semibold text-center text-indigo-600 mb-6">
+              <h1 className="text-4xl font-semibold text-center text-indigo-600 mb-4">
                 Login
               </h1>
-              <div className="input-box relative mb-6">
+              <div className="input-box relative mb-4">
                 <input
                   type="text"
                   name="username"
@@ -94,7 +94,7 @@ function LoginPage() {
                   <p className="text-red-500 text-sm mt-1">{errors.username}</p>
                 )}
               </div>
-              <div className="input-box relative mb-6">
+              <div className="input-box relative mb-4">
                 <input
                   type="password"
                   name="password"
@@ -132,10 +132,10 @@ function LoginPage() {
               onSubmit={handleSubmit}
               className="form-box transition-all transform hover:scale-105 duration-500 ease-in-out"
             >
-              <h1 className="text-4xl font-semibold text-center text-indigo-600 mb-6">
+              <h1 className="text-4xl font-semibold text-center text-indigo-600 mb-4">
                 Register
               </h1>
-              <div className="input-box relative mb-6">
+              <div className="input-box relative mb-4">
                 <input
                   type="text"
                   name="username"
@@ -149,7 +149,7 @@ function LoginPage() {
                   <p className="text-red-500 text-sm mt-1">{errors.username}</p>
                 )}
               </div>
-              <div className="input-box relative mb-6">
+              <div className="input-box relative mb-4">
                 <input
                   type="password"
                   name="password"
@@ -163,7 +163,7 @@ function LoginPage() {
                   <p className="text-red-500 text-sm mt-1">{errors.password}</p>
                 )}
               </div>
-              <div className="input-box relative mb-6">
+              <div className="input-box relative mb-4">
                 <input
                   type="email"
                   name="email"
@@ -177,7 +177,7 @@ function LoginPage() {
                   <p className="text-red-500 text-sm mt-1">{errors.email}</p>
                 )}
               </div>
-              <div className="input-box relative mb-6">
+              <div className="input-box relative mb-4">
                 <input
                   type="tel"
                   name="phone"
@@ -192,7 +192,7 @@ function LoginPage() {
                   <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
                 )}
               </div>
-              <div className="input-box mb-6">
+              <div className="input-box mb-4">
                 <select
                   name="role"
                   value={formData.role}
@@ -207,7 +207,7 @@ function LoginPage() {
                   <p className="text-red-500 text-sm mt-1">{errors.role}</p>
                 )}
               </div>
-              <div className="input-box mb-6">
+              <div className="input-box mb-4">
                 <select
                   name="institute"
                   value={formData.institute}
@@ -215,8 +215,7 @@ function LoginPage() {
                   className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
                 >
                   <option value="">
-                    {" "}
-                    -- Select Your University or Institute --{" "}
+                    -- Select Your University or Institute --
                   </option>
                   <optgroup label="State Universities">
                     <option value="Colombo">University of Colombo</option>

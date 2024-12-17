@@ -1,49 +1,37 @@
 import React, { useState, useEffect, useRef } from "react";
-import { FaListAlt } from "react-icons/fa";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
 import homeImage from "./home.jpeg";
 
 function HomePage() {
-  const navigate = useNavigate(); // Initialize useNavigate hook
+  const navigate = useNavigate();
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortCriterion, setSortCriterion] = useState("All");
 
-  // Ref for the dropdown container to detect clicks outside
+  // Ref for dropdown to detect outside clicks
   const dropdownRef = useRef(null);
 
-  // Handle click outside to close dropdown
+  // Handle clicks outside the dropdown
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setDropdownVisible(false); // Close dropdown if clicked outside
+        setDropdownVisible(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleDropdownToggle = () => {
-    setDropdownVisible(!dropdownVisible);
-  };
+  const handleDropdownToggle = () => setDropdownVisible(!dropdownVisible);
 
   const handleSelectCategory = (category) => {
     setSelectedCategory(category);
-    setDropdownVisible(false); // Close dropdown after selecting category
+    setDropdownVisible(false);
   };
 
-  const handleSortChange = (e) => {
-    setSortCriterion(e.target.value);
-    setDropdownVisible(false); // Close dropdown after selecting sort option
-  };
+  const handleSortChange = (e) => setSortCriterion(e.target.value);
 
-  const handleViewDetails = () => {
-    navigate("/login"); // Navigate to the login page
-  };
+  const handleViewDetails = () => navigate("/login");
 
   const competitions = [
     {
@@ -51,8 +39,7 @@ function HomePage() {
       name: "Tech Innovation Contest",
       date: "2024-12-20",
       location: "University A",
-      description:
-        "A contest for tech enthusiasts to showcase innovative solutions in AI, robotics, and software development.",
+      description: "Showcase innovative AI solutions.",
       rating: 4.5,
       image: homeImage,
     },
@@ -61,8 +48,7 @@ function HomePage() {
       name: "Art and Design Exhibition",
       date: "2024-12-25",
       location: "University B",
-      description:
-        "A creative exhibition showcasing the best in arts, design, and creativity from students around the country.",
+      description: "A creative arts exhibition.",
       rating: 3.0,
       image: homeImage,
     },
@@ -71,8 +57,7 @@ function HomePage() {
       name: "Science Quiz Challenge",
       date: "2025-01-10",
       location: "University C",
-      description:
-        "A quiz competition to test your knowledge in various scientific fields. Are you ready for the challenge?",
+      description: "Test scientific knowledge.",
       rating: 5.0,
       image: homeImage,
     },
@@ -81,8 +66,7 @@ function HomePage() {
       name: "Innovation Showcase",
       date: "2025-02-15",
       location: "University D",
-      description:
-        "Showcase your innovative ideas and compete with the best minds.",
+      description: "Display your ideas and innovations.",
       rating: 4.0,
       image: homeImage,
     },
@@ -91,28 +75,7 @@ function HomePage() {
       name: "Tech Marathon",
       date: "2025-03-10",
       location: "University E",
-      description:
-        "A marathon event for tech enthusiasts to solve real-world problems.",
-      rating: 4.2,
-      image: homeImage,
-    },
-    {
-      id: 6,
-      name: "Science Quiz Challenge",
-      date: "2025-12-20",
-      location: "University E",
-      description:
-        "A quiz competition to test your knowledge in various scientific fields. Are you ready for the challenge?",
-      rating: 5.0,
-      image: homeImage,
-    },
-    {
-      id: 7,
-      name: "Tech Marathon",
-      date: "2025-06-10",
-      location: "University E",
-      description:
-        "A marathon event for tech enthusiasts to solve real-world problems.",
+      description: "Solve real-world tech problems.",
       rating: 4.2,
       image: homeImage,
     },
@@ -120,7 +83,7 @@ function HomePage() {
 
   const uniqueCompetitionNames = [
     "All",
-    ...Array.from(new Set(competitions.map((comp) => comp.name))),
+    ...new Set(competitions.map((comp) => comp.name)),
   ];
 
   const filteredCompetitions =
@@ -137,7 +100,7 @@ function HomePage() {
       case "Location":
         return a.location.localeCompare(b.location);
       case "Rating":
-        return b.rating - a.rating; // Sort by rating descending
+        return b.rating - a.rating;
       default:
         return 0;
     }
@@ -150,149 +113,101 @@ function HomePage() {
 
     return (
       <div className="flex items-center">
-        {[...Array(fullStars)].map((_, index) => (
-          <svg
-            key={`full-${index}`}
-            xmlns="http://www.w3.org/2000/svg"
-            fill="currentColor"
-            className="w-5 h-5 text-yellow-500"
-            viewBox="0 0 20 20"
-          >
-            <path d="M10 15l-3.09 1.63.59-3.45L4 8.27l3.46-.28L10 5l1.54 2.99 3.46.28-2.5 4.91.59 3.45L10 15z" />
-          </svg>
+        {[...Array(fullStars)].map((_, i) => (
+          <span key={i} className="text-yellow-500">
+            ★
+          </span>
         ))}
-        {halfStar && (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="currentColor"
-            className="w-5 h-5 text-yellow-500"
-            viewBox="0 0 20 20"
-          >
-            <defs>
-              <linearGradient id="half-star" x1="0" x2="1" y1="0" y2="0">
-                <stop offset="50%" stopColor="currentColor" />
-                <stop offset="50%" stopColor="transparent" />
-              </linearGradient>
-            </defs>
-            <path
-              d="M10 15l-3.09 1.63.59-3.45L4 8.27l3.46-.28L10 5l1.54 2.99 3.46.28-2.5 4.91.59 3.45L10 15z"
-              fill="url(#half-star)"
-            />
-          </svg>
-        )}
-        {[...Array(emptyStars)].map((_, index) => (
-          <svg
-            key={`empty-${index}`}
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            stroke="currentColor"
-            className="w-5 h-5 text-gray-400"
-            viewBox="0 0 20 20"
-          >
-            <path d="M10 15l-3.09 1.63.59-3.45L4 8.27l3.46-.28L10 5l1.54 2.99 3.46.28-2.5 4.91.59 3.45L10 15z" />
-          </svg>
+        {halfStar && <span className="text-yellow-500">★</span>}
+        {[...Array(emptyStars)].map((_, i) => (
+          <span key={i} className="text-gray-400">
+            ☆
+          </span>
         ))}
       </div>
     );
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 text-gray-900">
-      <div className="flex">
-        <main className="flex-1 p-6">
-          <header className="flex justify-between items-center mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 text-center flex-grow">
-              Explore Competitions
-            </h1>
-
-            {/* Sort/Filter Dropdown */}
-            <div ref={dropdownRef} className="relative">
-              <button
-                onClick={handleDropdownToggle}
-                className="bg-blue-100 text-gray-800 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ml-4"
-              >
-                Sort / Filter
-              </button>
-
-              {dropdownVisible && (
-                <div className="absolute top-12 right-0 w-56 bg-white shadow-lg rounded-lg p-4 z-10">
-                  <div className="space-y-4">
-                    {/* Category Dropdown */}
-                    <div>
-                      <label className="block text-sm text-gray-700 mb-2">
-                        Select Category
-                      </label>
-                      <select
-                        value={selectedCategory}
-                        onChange={(e) => handleSelectCategory(e.target.value)}
-                        className="bg-blue-100 text-gray-800 px-4 py-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      >
-                        {uniqueCompetitionNames.map((competitionName) => (
-                          <option key={competitionName} value={competitionName}>
-                            {competitionName}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    {/* Sort By Dropdown */}
-                    <div>
-                      <label className="block text-sm text-gray-700 mb-2">
-                        Sort By
-                      </label>
-                      <select
-                        value={sortCriterion}
-                        onChange={handleSortChange}
-                        className="bg-blue-100 text-gray-800 px-4 py-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      >
-                        <option value="All">All</option>
-                        <option value="Name">Name</option>
-                        <option value="Date">Date</option>
-                        <option value="Location">Location</option>
-                        <option value="Rating">Rating</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </header>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            {sortedCompetitions.map((competition) => (
-              <div
-                key={competition.id}
-                className="bg-white p-6 rounded-lg shadow-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-[0_10px_20px_rgba(0,0,0,0.3),0_6px_6px_rgba(0,0,0,0.2)]"
-              >
-                <div className="flex justify-between items-center mb-4">
-                  <span className="text-sm bg-blue-600 text-white px-4 py-2 rounded-lg cursor-pointer">
-                    {competition.date}
-                  </span>
-                  <span className="text-sm text-gray-600">
-                    {competition.location}
-                  </span>
-                </div>
-                <h2 className="text-xl font-semibold text-gray-900 mb-2">
-                  {competition.name}
-                </h2>
-                <img
-                  src={competition.image} // This is the imported image
-                  alt={competition.name}
-                  className="w-full h-32 object-cover rounded-lg mb-4 shadow-lg transition-transform transform hover:scale-105"
-                />
-
-                <p className="text-gray-600 mb-4">{competition.description}</p>
-                <div className="mb-4">{renderStars(competition.rating)}</div>
-                <button
-                  onClick={handleViewDetails}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-all duration-300"
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 text-gray-900 p-4 sm:p-6">
+      <header className="flex flex-col sm:flex-row justify-between items-center mb-6">
+        <h1 className="text-3xl sm:text-4xl font-bold text-center mb-4 sm:mb-0">
+          Explore Competitions
+        </h1>
+        {/* Filter Dropdown */}
+        <div ref={dropdownRef} className="relative">
+          <button
+            onClick={handleDropdownToggle}
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition duration-300"
+          >
+            Filter Competitions
+          </button>
+          {dropdownVisible && (
+            <div className="absolute top-12 right-0 bg-white rounded-lg shadow-lg p-4 w-64 z-10">
+              {/* Category Filter */}
+              <div className="mb-4">
+                <label className="block text-gray-700 mb-2">Category</label>
+                <select
+                  value={selectedCategory}
+                  onChange={(e) => handleSelectCategory(e.target.value)}
+                  className="w-full p-2 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                  View Details
-                </button>
+                  {uniqueCompetitionNames.map((name) => (
+                    <option key={name} value={name}>
+                      {name}
+                    </option>
+                  ))}
+                </select>
               </div>
-            ))}
+              {/* Sort By */}
+              <div>
+                <label className="block text-gray-700 mb-2">Sort By</label>
+                <select
+                  value={sortCriterion}
+                  onChange={handleSortChange}
+                  className="w-full p-2 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="All">All</option>
+                  <option value="Name">Name</option>
+                  <option value="Date">Date</option>
+                  <option value="Location">Location</option>
+                  <option value="Rating">Rating</option>
+                </select>
+              </div>
+            </div>
+          )}
+        </div>
+      </header>
+
+      {/* Competitions Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {sortedCompetitions.map((comp) => (
+          <div
+            key={comp.id}
+            className="bg-white rounded-lg shadow-md p-4 hover:shadow-xl transform hover:scale-105 transition duration-300"
+          >
+            <img
+              src={comp.image}
+              alt={comp.name}
+              className="w-full h-32 object-cover rounded-lg mb-4"
+            />
+            <h2 className="text-xl font-semibold text-gray-800 mb-2">
+              {comp.name}
+            </h2>
+            <p className="text-gray-600 mb-2 text-sm">{comp.description}</p>
+            <div className="flex justify-between items-center mb-4">
+              <span className="text-sm text-gray-500">{comp.date}</span>
+              <span className="text-sm text-gray-500">{comp.location}</span>
+            </div>
+            <div className="mb-4">{renderStars(comp.rating)}</div>
+            <button
+              onClick={handleViewDetails}
+              className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-300"
+            >
+              View Details
+            </button>
           </div>
-        </main>
+        ))}
       </div>
     </div>
   );

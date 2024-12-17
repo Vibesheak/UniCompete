@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaListAlt } from "react-icons/fa"; // Removed FaInfoCircle import
+import { FaListAlt } from "react-icons/fa";
 import profile from "./profile.jpg";
 import homeImage from "./home.jpeg"; // Ensure your profile image is here
 
@@ -125,7 +125,7 @@ function ProfilePage() {
       id: 6,
       name: "Science Quiz Challenge",
       date: "2025-12-20",
-      location: "University E",
+      location: "University A",
       description:
         "A quiz competition to test your knowledge in various scientific fields. Are you ready for the challenge?",
       rating: 5.0,
@@ -158,11 +158,11 @@ function ProfilePage() {
       case "Name":
         return a.name.localeCompare(b.name);
       case "Date":
-        return new Date(a.date) - new Date(b.date);
+        return new Date(a.date) - new Date(b.date); // Sort by Date (recent first)
       case "Location":
         return a.location.localeCompare(b.location);
       case "Rating":
-        return b.rating - a.rating; // Sort by rating descending
+        return b.rating - a.rating; // Sort by Rating (descending)
       default:
         return 0;
     }
@@ -226,7 +226,7 @@ function ProfilePage() {
       <div className="flex">
         <main className="flex-1 p-6">
           <header className="flex justify-between items-center mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 text-center flex-grow">
+            <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 text-center flex-grow">
               Explore Competitions
             </h1>
 
@@ -234,9 +234,9 @@ function ProfilePage() {
             <div ref={dropdownRef} className="relative">
               <button
                 onClick={handleDropdownToggle}
-                className="bg-blue-100 text-gray-800 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ml-4"
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition duration-300"
               >
-                Sort / Filter
+                Filter Competitions
               </button>
               {dropdownVisible && (
                 <div className="absolute top-12 right-0 w-56 bg-white shadow-lg rounded-lg p-4 z-10">
@@ -351,23 +351,22 @@ function ProfilePage() {
             )}
           </div>
 
-          {/* Profile Dropdown */}
           {profileDropdownVisible && (
-            <div className="absolute top-14 right-0 bg-blue-200 shadow-lg rounded-lg p-4 w-72 z-10 transition-transform transform scale-100 opacity-100">
-              <h3 className="font-semibold text-lg text-blue-900">
+            <div className="absolute top-14 right-0 bg-blue-50 shadow-xl rounded-lg p-6 w-72 z-10 transition-all transform scale-100 opacity-100">
+              <h3 className="font-semibold text-xl text-blue-900">
                 {user.fullName}
               </h3>
-              <p className="text-sm text-blue-800 mt-1">Email: {user.email}</p>
-              <p className="text-sm text-blue-800 mt-1">
+              <p className="text-sm text-blue-700 mt-2">Email: {user.email}</p>
+              <p className="text-sm text-blue-700 mt-1">
                 Contact: {user.contactNumber}
               </p>
-              <p className="text-sm text-blue-800 mt-1">
+              <p className="text-sm text-blue-700 mt-1">
                 Address: {user.address}
               </p>
-              <p className="text-sm text-blue-800 mt-1">
+              <p className="text-sm text-blue-700 mt-1">
                 University: {user.university}
               </p>
-              <p className="text-sm text-blue-800 mt-1">
+              <p className="text-sm text-blue-700 mt-1">
                 Role: {user.userType}
               </p>
               <button
