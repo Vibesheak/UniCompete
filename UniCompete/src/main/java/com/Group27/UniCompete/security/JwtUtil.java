@@ -21,7 +21,7 @@ public class JwtUtil {
     private static final SecretKey secretKey = Keys.hmacShaKeyFor(
             "my-super-secret-key-my-super-secret-key-my-super-secret-key-my-key-123".getBytes());
 
-    // Expiration time (1 day)
+    // Expiration - 1 day
     private final int jwtExpirationMs = 86400000;
     private final UserRepository userRepository;
 
@@ -79,5 +79,9 @@ public class JwtUtil {
         } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
+    }
+
+    public Object jwtExpirationMs() {
+        return jwtExpirationMs;
     }
 }

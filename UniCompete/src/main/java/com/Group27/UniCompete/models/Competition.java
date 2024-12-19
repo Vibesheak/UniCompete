@@ -12,7 +12,7 @@ public class Competition {
     private String description;
     private String category;
     private String university;
-    private String date; // ISO-8601 format
+    private String date; // Stored in ISO-8601 format
 
     public Long getId() {
         return id;

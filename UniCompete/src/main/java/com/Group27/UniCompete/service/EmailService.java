@@ -1,32 +1,33 @@
 package com.Group27.UniCompete.service;
 
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
+
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
+import com.Group27.UniCompete.config.EmailConfiguration;
 
 @Service
 public class EmailService {
 
-    private final JavaMailSender emailSender;
+    @Autowired
+    private  JavaMailSender mailSender;
 
-    public EmailService(JavaMailSender emailSender) {
-        this.emailSender = emailSender;
-    }
 
-    public void sendVerificationEmail(String to, String subject, String text) throws MessagingException {
-        // Validate the "to" address
-        Assert.hasText(to, "To address must not be null or empty");
+    public void sendVerificationEmail(String to, String code) {
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-        MimeMessage message = emailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setTo(to);
+            helper.setSubject("Email Verification");
+            helper.setText("<h3>Your verification code is: " + code + "</h3>", true);
 
-        helper.setTo(to);
-        helper.setSubject(subject);
-        helper.setText(text, true);
-
-        emailSender.send(message);
+            mailSender.send(message);
+        } catch (MessagingException e) {
+            throw new RuntimeException("Failed to send email", e);
+        }
     }
 }
