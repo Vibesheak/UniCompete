@@ -45,6 +45,10 @@ public class AuthController {
             return ResponseEntity.badRequest().body("Username is already taken");
         }
 
+        if (userRepository.findByEmail(registerRequest.getEmail()).isPresent()) {
+            return ResponseEntity.badRequest().body("Email is already taken");
+        }
+
         User newUser = new User();
         newUser.setUsername(registerRequest.getUsername());
         newUser.setEmail(registerRequest.getEmail());
