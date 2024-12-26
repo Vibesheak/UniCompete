@@ -68,6 +68,12 @@ function Header() {
           >
             About Us
           </Link>
+          <Link
+            to="/favorites"
+            className="block text-white hover:text-blue-300 transition-all duration-300 transform hover:scale-105 px-3 py-2 rounded-md hover:bg-blue-600 hover:bg-opacity-20"
+          >
+            Favorites
+          </Link>
         </div>
       </nav>
     </header>

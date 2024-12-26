@@ -4,8 +4,8 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-// Disable concurrent mode by passing the option in createRoot
-const root = ReactDOM.createRoot(document.getElementById('root'), { concurrent: false });
+// Create the root element without Concurrent Mode
+const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <App />
