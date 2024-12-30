@@ -24,6 +24,9 @@ function RegisterPage() {
       [name]: value,
     }));
   };
+  const handleLoginLink = () => {
+    navigate("/login"); // Navigate to the Register page
+  };
 
   const validateRegistration = () => {
     const errors = {};
@@ -171,6 +174,18 @@ function RegisterPage() {
             >
               Register
             </button>
+            <div className="register-link text-center mt-4">
+              <p className="text-indigo-600">
+                Already have an account?{" "}
+                <a
+                  href="#"
+                  onClick={handleLoginLink}
+                  className="text-indigo-400 hover:underline"
+                >
+                  Login
+                </a>
+              </p>
+            </div>
           </form>
         </div>
       </div>

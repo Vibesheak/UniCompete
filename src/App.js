@@ -9,6 +9,9 @@ import Header from "./components/Header"; // Optional header for navigation
 import Footer from "./components/Footer"; 
 import RegisterPage from "./pages/RegisterPage";
 import VerifyPage from "./pages/VerifyPage";
+import UserPage from "./pages/UserPage";
+import AdminPage from "./pages/AdminPage";
+import AdminCompetitionDetails from "./pages/AdminCompetitionDetails";
 
 
 function App() {
@@ -25,6 +28,9 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/verify" element={<VerifyPage />} />
+            <Route path="/userpage" element={<UserPage />} />
+            <Route path="/adminpage" element={<AdminPage/>}/>
+            <Route path="/admincompetition/:id" element={<AdminCompetitionDetails/>}/>
   {/* Add the route for CompetitionDetails */}
           </Routes>
         </main>

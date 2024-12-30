@@ -242,7 +242,7 @@ function ProfilePage() {
             {/* Button to show only favorites */}
             <button
               onClick={handleShowFavorites}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition duration-300"
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition duration-300 mr-4"
             >
               {showFavorites ? "Show All" : "Show Favorites"}
             </button>
@@ -390,18 +390,18 @@ function ProfilePage() {
           {/* Profile Dropdown */}
           {profileDropdownVisible && (
             <div className="absolute top-16 right-0 w-48 bg-white shadow-lg rounded-lg p-4 z-10">
-              <p className="text-sm font-semibold text-gray-700 mb-2">
-                {user.fullName}
-              </p>
-              <p className="text-xs text-gray-500">{user.email}</p>
-              <div className="mt-4">
-                <button
-                  onClick={handleLogout}
-                  className="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition duration-300"
-                >
-                  Logout
-                </button>
-              </div>
+              <button
+                onClick={() => navigate("/userpage")}
+                className="w-full text-left text-blue-900 font-semibold text-lg py-2 rounded-lg hover:bg-blue-100 transition duration-300"
+              >
+                Profile
+              </button>
+              <button
+                onClick={handleLogout}
+                className="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition duration-300 mt-2"
+              >
+                Logout
+              </button>
             </div>
           )}
         </div>

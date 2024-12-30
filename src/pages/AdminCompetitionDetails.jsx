@@ -4,7 +4,7 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import bannerImage from "./bannerimage.jpg";
 
-function CompetitionDetails() {
+function AdminCompetitionDetails() {
   const { id } = useParams();
   const [competition, setCompetition] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -13,12 +13,28 @@ function CompetitionDetails() {
   const calendarRef = useRef(null); // Reference to the calendar to handle clicks outside
   const [likes, setLikes] = useState(0);
   const [expandedSection, setExpandedSection] = useState("");
-  const [showForm, setShowForm] = useState(false); // State to control the form visibility
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    location: "",
-  }); // State to store form data
+  const [registrations, setRegistrations] = useState([
+    {
+      username: "Nilo",
+      email: "n@example.com",
+      status: "Pending",
+    },
+    {
+      username: "vibe_123",
+      email: "v234@example.com",
+      status: "Accepted",
+    },
+    {
+      username: "roman_CC",
+      email: "roman@gmail.com",
+      status: "Rejected",
+    },
+    {
+      username: "jana_thana",
+      email: "jana@123example.com",
+      status: "Pending",
+    },
+  ]); // Sample registrations
 
   const fetchCompetitionDetails = (id) => {
     const competitions = [
@@ -48,7 +64,71 @@ function CompetitionDetails() {
         rules: "Open to all students, Original art only, etc.",
         image: bannerImage,
       },
-      // Add other competitions...
+      {
+        id: 3,
+        name: "Art and Design Exhibition",
+        date: "2024-12-25",
+        registrationDeadline: "2024-12-10",
+        location: "University B",
+        description:
+          "An exhibition showcasing the best in arts, design, and creativity from students around the country.",
+        prizes: "First place: $800, Second place: $400, Third place: $200",
+        schedule: "Registration Deadline: 2024-12-10, Event Date: 2024-12-25",
+        rules: "Open to all students, Original art only, etc.",
+        image: bannerImage,
+      },
+      {
+        id: 4,
+        name: "Art and Design Exhibition",
+        date: "2024-12-25",
+        registrationDeadline: "2024-12-10",
+        location: "University B",
+        description:
+          "An exhibition showcasing the best in arts, design, and creativity from students around the country.",
+        prizes: "First place: $800, Second place: $400, Third place: $200",
+        schedule: "Registration Deadline: 2024-12-10, Event Date: 2024-12-25",
+        rules: "Open to all students, Original art only, etc.",
+        image: bannerImage,
+      },
+      {
+        id: 5,
+        name: "Art and Design Exhibition",
+        date: "2024-12-25",
+        registrationDeadline: "2024-12-10",
+        location: "University B",
+        description:
+          "An exhibition showcasing the best in arts, design, and creativity from students around the country.",
+        prizes: "First place: $800, Second place: $400, Third place: $200",
+        schedule: "Registration Deadline: 2024-12-10, Event Date: 2024-12-25",
+        rules: "Open to all students, Original art only, etc.",
+        image: bannerImage,
+      },
+      {
+        id: 6,
+        name: "Art and Design Exhibition",
+        date: "2024-12-25",
+        registrationDeadline: "2024-12-10",
+        location: "University B",
+        description:
+          "An exhibition showcasing the best in arts, design, and creativity from students around the country.",
+        prizes: "First place: $800, Second place: $400, Third place: $200",
+        schedule: "Registration Deadline: 2024-12-10, Event Date: 2024-12-25",
+        rules: "Open to all students, Original art only, etc.",
+        image: bannerImage,
+      },
+      {
+        id: 7,
+        name: "Art and Design Exhibition",
+        date: "2024-12-25",
+        registrationDeadline: "2024-12-10",
+        location: "University B",
+        description:
+          "An exhibition showcasing the best in arts, design, and creativity from students around the country.",
+        prizes: "First place: $800, Second place: $400, Third place: $200",
+        schedule: "Registration Deadline: 2024-12-10, Event Date: 2024-12-25",
+        rules: "Open to all students, Original art only, etc.",
+        image: bannerImage,
+      },
     ];
 
     const competitionData = competitions.find(
@@ -97,16 +177,11 @@ function CompetitionDetails() {
     setShowCalendar(false); // Close the calendar after selecting a date
   };
 
-  const handleFormToggle = () => {
-    setShowForm(!showForm); // Toggle form visibility
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+  // Handle registration status change
+  const handleStatusChange = (index, status) => {
+    const updatedRegistrations = [...registrations];
+    updatedRegistrations[index].status = status;
+    setRegistrations(updatedRegistrations);
   };
 
   if (loading) {
@@ -299,75 +374,75 @@ function CompetitionDetails() {
           </span>
         </div>
 
-        {/* Show Form Button */}
-        <div className="mt-6">
-          <button
-            onClick={handleFormToggle}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-transform duration-300 hover:scale-305"
-          >
-            Show Form
-          </button>
-        </div>
-
-        {/* Form Section */}
-        {showForm && (
-          <div className="card p-6 bg-white shadow-lg rounded-lg transition-transform duration-300 hover:scale-105">
-            <h2 className="text-xl font-semibold mb-4">Registration Form</h2>
-            <form>
-              <div className="mb-4">
-                <label htmlFor="name" className="block text-gray-700">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  className="w-full p-2 border rounded-lg"
-                  placeholder="Enter your name"
-                />
-              </div>
-              <div className="mb-4">
-                <label htmlFor="email" className="block text-gray-700">
+        {/* Registrations Table */}
+        <div className="mt-6 overflow-x-auto">
+          <table className="min-w-full bg-white rounded-lg shadow-lg">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="py-3 px-6 text-left text-sm font-semibold text-gray-700">
+                  Username
+                </th>
+                <th className="py-3 px-6 text-left text-sm font-semibold text-gray-700">
                   Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  className="w-full p-2 border rounded-lg"
-                  placeholder="Enter your email"
-                />
-              </div>
-              <div className="mb-4">
-                <label htmlFor="location" className="block text-gray-700">
-                  Location
-                </label>
-                <input
-                  type="text"
-                  id="location"
-                  name="location"
-                  value={formData.location}
-                  onChange={handleInputChange}
-                  className="w-full p-2 border rounded-lg"
-                  placeholder="Enter your location"
-                />
-              </div>
-              <button
-                type="submit"
-                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-transform duration-300 hover:scale-105"
-              >
-                Submit
-              </button>
-            </form>
-          </div>
-        )}
+                </th>
+                <th className="py-3 px-6 text-left text-sm font-semibold text-gray-700">
+                  Status
+                </th>
+                <th className="py-3 px-6 text-left text-sm font-semibold text-gray-700">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {registrations.map((registration, index) => (
+                <tr
+                  key={index}
+                  className="border-b hover:bg-gray-50 transition-colors duration-300"
+                >
+                  <td className="py-3 px-6 text-sm text-gray-700">
+                    {registration.username}
+                  </td>
+                  <td className="py-3 px-6 text-sm text-gray-700">
+                    {registration.email}
+                  </td>
+                  <td className="py-3 px-6 text-sm text-gray-700">
+                    {competition.name}
+                  </td>
+                  <td className="py-3 px-6 text-sm text-gray-700">
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                        registration.status === "Accepted"
+                          ? "bg-green-100 text-green-600"
+                          : registration.status === "Rejected"
+                          ? "bg-red-100 text-red-600"
+                          : "bg-yellow-100 text-yellow-600"
+                      }`}
+                    >
+                      {registration.status}
+                    </span>
+                  </td>
+                  <td className="py-3 px-6 text-sm">
+                    <button
+                      onClick={() => handleStatusChange(index, "Accepted")}
+                      className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-transform duration-300"
+                    >
+                      Accept
+                    </button>
+                    <button
+                      onClick={() => handleStatusChange(index, "Rejected")}
+                      className="ml-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-transform duration-300"
+                    >
+                      Reject
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
 }
 
-export default CompetitionDetails;
+export default AdminCompetitionDetails;
