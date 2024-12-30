@@ -7,7 +7,10 @@ import About from "./pages/about";
 import CompetitionDetails from "./pages/CompetitionDetails"; // Import the CompetitionDetails component
 import Header from "./components/Header"; // Optional header for navigation
 import Footer from "./components/Footer"; 
-import Favourite from "./pages/Favourite";// Optional footer for consistency
+import Favourite from "./pages/Favourite";
+import RegisterPage from "./pages/RegisterPage";
+import VerifyPage from "./pages/VerifyPage";
+
 
 function App() {
   return (
@@ -22,6 +25,8 @@ function App() {
             <Route path="/competition/:id" element={<CompetitionDetails />} />
             <Route path="/about" element={<About />} />
             <Route path="/favourite" element={<Favourite />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/verify" element={<VerifyPage />} />
   {/* Add the route for CompetitionDetails */}
           </Routes>
         </main>
