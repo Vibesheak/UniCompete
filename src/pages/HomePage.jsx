@@ -6,7 +6,6 @@ function HomePage() {
   const navigate = useNavigate();
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [filters, setFilters] = useState({ category: "All", sort: "All" });
-  const [favorites, setFavorites] = useState(new Set()); // Using Set for efficient lookup
 
   // Ref for dropdown to detect outside clicks
   const dropdownRef = useRef(null);
@@ -34,18 +33,6 @@ function HomePage() {
   };
 
   const handleViewDetails = () => navigate("/login");
-
-  const handleToggleFavorite = (id) => {
-    setFavorites((prevFavorites) => {
-      const updatedFavorites = new Set(prevFavorites);
-      if (updatedFavorites.has(id)) {
-        updatedFavorites.delete(id);
-      } else {
-        updatedFavorites.add(id);
-      }
-      return updatedFavorites;
-    });
-  };
 
   const competitions = [
     {
@@ -243,28 +230,13 @@ function HomePage() {
         {sortedCompetitions.map((comp) => (
           <div
             key={comp.id}
-            className="bg-white rounded-lg shadow-md p-4 hover:shadow-xl transform hover:scale-105 transition duration-300 relative"
+            className="bg-white rounded-lg shadow-md p-4 hover:shadow-xl transform hover:scale-105 transition duration-300"
           >
             <img
               src={comp.image}
               alt={comp.name}
               className="w-full h-32 object-cover rounded-lg mb-4"
             />
-            <button
-              onClick={() => handleToggleFavorite(comp.id)}
-              className={`absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center ${
-                favorites.has(comp.id)
-                  ? "bg-red-500 text-white"
-                  : "bg-gray-200 text-gray-500"
-              } hover:scale-110 transition duration-300`}
-              aria-label={
-                favorites.has(comp.id)
-                  ? "Remove from favorites"
-                  : "Add to favorites"
-              }
-            >
-              {favorites.has(comp.id) ? "♥" : "♡"}
-            </button>
             <h2 className="text-xl font-semibold text-gray-800 mb-2">
               {comp.name}
             </h2>

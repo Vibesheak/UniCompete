@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaListAlt } from "react-icons/fa";
+import { FaListAlt, FaHeart, FaRegHeart } from "react-icons/fa"; // Importing the necessary icons
 import profile from "./profile.jpg";
 import homeImage from "./home.jpeg"; // Ensure your profile image is here
 
@@ -16,6 +16,8 @@ function ProfilePage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortCriterion, setSortCriterion] = useState("All");
   const [profileDropdownVisible, setProfileDropdownVisible] = useState(false);
+  const [favorites, setFavorites] = useState([]); // Initialize favorites state
+  const [showFavorites, setShowFavorites] = useState(false); // Initialize showFavorites state
 
   const user = {
     fullName: "Nilojitha Mariyathas",
@@ -26,6 +28,7 @@ function ProfilePage() {
     university: "University A",
     profile: profile, // Placeholder image, can be changed to a URL if available
   };
+
   // Ref for the dropdown container to detect clicks outside
   const dropdownRef = useRef(null);
 
@@ -43,6 +46,7 @@ function ProfilePage() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
   const handleDropdownToggle = () => {
     setDropdownVisible(!dropdownVisible);
   };
@@ -60,6 +64,7 @@ function ProfilePage() {
   const handleViewDetails = (id) => {
     navigate(`/competition/${id}`);
   };
+
   const handleProfileClick = () => {
     setProfileDropdownVisible(!profileDropdownVisible);
   };
@@ -67,6 +72,18 @@ function ProfilePage() {
   const handleLogout = () => {
     // Add logout logic here (e.g., clear session, redirect to login)
     navigate("/login");
+  };
+
+  const handleFavoriteToggle = (competitionId) => {
+    setFavorites((prevFavorites) =>
+      prevFavorites.includes(competitionId)
+        ? prevFavorites.filter((id) => id !== competitionId)
+        : [...prevFavorites, competitionId]
+    );
+  };
+
+  const handleShowFavorites = () => {
+    setShowFavorites(!showFavorites);
   };
 
   const competitions = [
@@ -82,7 +99,7 @@ function ProfilePage() {
     {
       id: 2,
       name: "Art and Design Exhibition",
-      date: "2024-12-25",
+      date: "2024-12-05",
       location: "University B",
       description: "A creative arts exhibition.",
       rating: 3.0,
@@ -222,6 +239,14 @@ function ProfilePage() {
               Explore Competitions
             </h1>
 
+            {/* Button to show only favorites */}
+            <button
+              onClick={handleShowFavorites}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition duration-300"
+            >
+              {showFavorites ? "Show All" : "Show Favorites"}
+            </button>
+
             {/* Sort/Filter Dropdown */}
             <div ref={dropdownRef} className="relative">
               <button
@@ -230,6 +255,7 @@ function ProfilePage() {
               >
                 Filter Competitions
               </button>
+
               {dropdownVisible && (
                 <div className="absolute top-12 right-0 w-56 bg-white shadow-lg rounded-lg p-4 z-10">
                   <div className="space-y-4">
@@ -275,12 +301,18 @@ function ProfilePage() {
           </header>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            {sortedCompetitions.length === 0 ? (
+            {(showFavorites
+              ? competitions.filter((comp) => favorites.includes(comp.id))
+              : sortedCompetitions
+            ).length === 0 ? (
               <p className="text-center text-gray-600">
                 No competitions found.
               </p>
             ) : (
-              sortedCompetitions.map((competition) => (
+              (showFavorites
+                ? competitions.filter((comp) => favorites.includes(comp.id))
+                : sortedCompetitions
+              ).map((competition) => (
                 <div
                   key={competition.id}
                   className="bg-white p-6 rounded-lg shadow-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-[0_10px_20px_rgba(0,0,0,0.3),0_6px_6px_rgba(0,0,0,0.2)]"
@@ -305,6 +337,18 @@ function ProfilePage() {
                     </span>
                   </div>
                   <div className="mb-4">{renderStars(competition.rating)}</div>
+
+                  {/* Favorite Button */}
+                  <button
+                    onClick={() => handleFavoriteToggle(competition.id)}
+                    className="absolute top-4 right-4 text-2xl text-red-500"
+                  >
+                    {favorites.includes(competition.id) ? (
+                      <FaHeart />
+                    ) : (
+                      <FaRegHeart />
+                    )}
+                  </button>
 
                   <button
                     onClick={() => handleViewDetails(competition.id)}
@@ -335,39 +379,29 @@ function ProfilePage() {
             {user.profile ? (
               <img
                 src={user.profile}
-                alt={`Profile of ${user.fullName}`}
-                className="w-full h-full rounded-full object-cover"
-                onError={(e) => (e.target.src = "path/to/default/profile.jpg")}
+                alt="Profile"
+                className="w-full h-full object-cover rounded-full"
               />
             ) : (
-              <span>{getInitials(user.fullName)}</span> // Show initials if no picture
+              getInitials(user.fullName)
             )}
           </div>
 
+          {/* Profile Dropdown */}
           {profileDropdownVisible && (
-            <div className="absolute top-14 right-0 bg-blue-50 shadow-xl rounded-lg p-6 w-72 z-10 transition-all transform scale-100 opacity-100">
-              <h3 className="font-semibold text-xl text-blue-900">
+            <div className="absolute top-16 right-0 w-48 bg-white shadow-lg rounded-lg p-4 z-10">
+              <p className="text-sm font-semibold text-gray-700 mb-2">
                 {user.fullName}
-              </h3>
-              <p className="text-sm text-blue-700 mt-2">Email: {user.email}</p>
-              <p className="text-sm text-blue-700 mt-1">
-                Contact: {user.contactNumber}
               </p>
-              <p className="text-sm text-blue-700 mt-1">
-                Address: {user.address}
-              </p>
-              <p className="text-sm text-blue-700 mt-1">
-                University: {user.university}
-              </p>
-              <p className="text-sm text-blue-700 mt-1">
-                Role: {user.userType}
-              </p>
-              <button
-                onClick={handleLogout}
-                className="mt-4 w-full bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-all duration-300 transform hover:scale-105"
-              >
-                Logout
-              </button>
+              <p className="text-xs text-gray-500">{user.email}</p>
+              <div className="mt-4">
+                <button
+                  onClick={handleLogout}
+                  className="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition duration-300"
+                >
+                  Logout
+                </button>
+              </div>
             </div>
           )}
         </div>
