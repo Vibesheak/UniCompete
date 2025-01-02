@@ -6,7 +6,7 @@ function HomePage() {
   const navigate = useNavigate();
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [filters, setFilters] = useState({ category: "All", sort: "All" });
-
+  const [universities, setUniversities] = useState([]);
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -17,6 +17,14 @@ function HomePage() {
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    // Dynamically fetch the list of universities based on competition locations
+    const universitiesList = [
+      ...new Set(competitions.map((comp) => comp.location)),
+    ].sort((a, b) => a.localeCompare(b));
+    setUniversities(universitiesList);
   }, []);
 
   const handleDropdownToggle = () => setDropdownVisible(!dropdownVisible);
@@ -103,10 +111,6 @@ function HomePage() {
 
     // Other competitions...
   ];
-
-  const universities = [
-    ...new Set(competitions.map((comp) => comp.location)),
-  ].sort((a, b) => a.localeCompare(b));
 
   const uniqueCompetitionNames = [
     "All",

@@ -16,6 +16,7 @@ function ProfilePage() {
   const [sortCriterion, setSortCriterion] = useState("All");
   const [profileDropdownVisible, setProfileDropdownVisible] = useState(false);
   const [favorites, setFavorites] = useState([]);
+  const [University, setUniversity] = useState([]);
   const [showFavorites, setShowFavorites] = useState(false);
 
   const user = {
@@ -40,6 +41,13 @@ function ProfilePage() {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
+  }, []);
+  useEffect(() => {
+    // Dynamically fetch the list of universities based on competition locations
+    const universitiesList = [
+      ...new Set(competitions.map((comp) => comp.location)),
+    ].sort((a, b) => a.localeCompare(b));
+    setUniversity(universitiesList);
   }, []);
 
   const handleDropdownToggle = () => setDropdownVisible(!dropdownVisible);
@@ -115,7 +123,7 @@ function ProfilePage() {
       id: 5,
       name: "Tech Marathon",
       date: "2025-03-10",
-      location: "University E",
+      location: "University F",
       description: "Solve real-world tech problems.",
       rating: 2.5,
       image: homeImage,
@@ -224,7 +232,8 @@ function ProfilePage() {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 text-gray-900">
-      <aside className="w-full md:w-64 bg-white shadow-md p-4 fixed md:static h-auto md:h-full overflow-y-auto">
+      {/* Sidebar */}
+      <aside className="w-64 bg-white shadow-md p-4">
         <h2 className="text-xl font-semibold mb-4">Universities</h2>
         <ul>
           {universities.map((university) => (

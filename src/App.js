@@ -12,6 +12,7 @@ import VerifyPage from "./pages/VerifyPage";
 import UserPage from "./pages/UserPage";
 import AdminPage from "./pages/AdminPage";
 import AdminCompetitionDetails from "./pages/AdminCompetitionDetails";
+import UniversitiyPage from "./pages/UniversitiyPage";
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
             <Route path="/userpage" element={<UserPage />} />
             <Route path="/adminpage" element={<AdminPage/>}/>
             <Route path="/admincompetition/:id" element={<AdminCompetitionDetails/>}/>
+            <Route path="university/:university" element={<UniversitiyPage/>}/>
            
   {/* Add the route for CompetitionDetails */}
           </Routes>

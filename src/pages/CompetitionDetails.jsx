@@ -8,17 +8,27 @@ function CompetitionDetails() {
   const { id } = useParams();
   const [competition, setCompetition] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [showCalendar, setShowCalendar] = useState(false); // State for showing calendar
-  const [calendarDate, setCalendarDate] = useState(null); // State for selected date
-  const calendarRef = useRef(null); // Reference to the calendar to handle clicks outside
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [calendarDate, setCalendarDate] = useState(null);
+  const calendarRef = useRef(null);
   const [likes, setLikes] = useState(0);
   const [expandedSection, setExpandedSection] = useState("");
-  const [showForm, setShowForm] = useState(false); // State to control the form visibility
+  const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     location: "",
-  }); // State to store form data
+  });
+  const [status, setStatus] = useState("Pending");
+
+  const [showReviewForm, setShowReviewForm] = useState(false);
+  const [reviewData, setReviewData] = useState({
+    name: "",
+    email: "",
+    rating: 0,
+    reviewText: "",
+  });
+  const [reviews, setReviews] = useState([]); // State to store reviews
 
   const fetchCompetitionDetails = (id) => {
     const competitions = [
@@ -48,7 +58,6 @@ function CompetitionDetails() {
         rules: "Open to all students, Original art only, etc.",
         image: bannerImage,
       },
-      // Add other competitions...
     ];
 
     const competitionData = competitions.find(
@@ -59,7 +68,7 @@ function CompetitionDetails() {
       setLoading(false);
     } else {
       setLoading(false);
-      setCompetition(null); // Handle case where competition is not found
+      setCompetition(null);
     }
   };
 
@@ -89,24 +98,42 @@ function CompetitionDetails() {
   }, []);
 
   const handleDateClick = () => {
-    setShowCalendar(!showCalendar); // Toggle calendar visibility
+    setShowCalendar(!showCalendar);
   };
 
   const handleDateSelect = (date) => {
-    setCalendarDate(date); // Set the selected date
-    setShowCalendar(false); // Close the calendar after selecting a date
+    setCalendarDate(date);
+    setShowCalendar(false);
   };
 
-  const handleFormToggle = () => {
-    setShowForm(!showForm); // Toggle form visibility
-  };
-
-  const handleInputChange = (e) => {
+  const handleReviewInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
+    setReviewData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
+  };
+
+  const handleReviewSubmit = (e) => {
+    e.preventDefault();
+    // Add the review to the reviews list
+    setReviews((prevReviews) => [
+      ...prevReviews,
+      { ...reviewData, id: prevReviews.length + 1 },
+    ]);
+    // Reset the form
+    setReviewData({
+      name: "",
+      email: "",
+      rating: 0,
+      reviewText: "",
+    });
+    setShowReviewForm(false);
+  };
+
+  // Format date for display
+  const formatDate = (date) => {
+    return date ? date.toLocaleDateString() : competition.date;
   };
 
   if (loading) {
@@ -148,9 +175,7 @@ function CompetitionDetails() {
                 aria-expanded={showCalendar}
                 aria-controls="calendar-popup"
               >
-                {calendarDate
-                  ? calendarDate.toLocaleDateString()
-                  : competition.date}
+                {formatDate(calendarDate)}
               </span>{" "}
               - {competition.location}
             </p>
@@ -167,12 +192,17 @@ function CompetitionDetails() {
                 />
               </div>
             )}
-            <button
-              className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-transform duration-300 hover:scale-105"
-              onClick={handleLike}
-            >
-              Join Now
-            </button>
+            <div className="flex items-center mt-4">
+              <button
+                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-transform duration-300 hover:scale-105"
+                onClick={handleLike}
+              >
+                Join Now
+              </button>
+              <span className="ml-4 text-gray-700">
+                {likes} {likes === 1 ? "Like" : "Likes"}
+              </span>
+            </div>
           </div>
         </div>
 
@@ -286,73 +316,88 @@ function CompetitionDetails() {
           </div>
         </div>
 
-        {/* Like Section */}
-        <div className="mt-6 flex items-center space-x-4">
-          <button
-            onClick={handleLike}
-            className="bg-red-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-red-700 transition-transform duration-300 hover:scale-105"
-          >
-            ❤️ Like
-          </button>
-          <span className="text-lg font-semibold text-gray-800">
-            {likes} Likes
-          </span>
-        </div>
-
-        {/* Show Form Button */}
-        <div className="mt-6 flex justify-center">
-          <button
-            onClick={handleFormToggle}
-            className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-green-700 transition-transform duration-300 hover:scale-105 w-full max-w-xs"
-          >
-            Status Review Form
-          </button>
-        </div>
-
-        {/* Form Section */}
-        {showForm && (
-          <div className="card p-6 bg-white shadow-lg rounded-lg transition-transform duration-300 hover:scale-105">
-            <h2 className="text-xl font-semibold mb-4">Registration Form</h2>
-            <form>
-              <div className="mb-4">
-                <label htmlFor="name" className="block text-gray-700">
-                  Username
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  className="w-full p-2 border rounded-lg"
-                  placeholder="Enter your name"
-                  required
-                />
+        {/* Review Section */}
+        <div className="bg-white p-6 rounded-lg shadow-lg mt-6">
+          <h2 className="text-2xl font-semibold text-blue-600">📝 Reviews</h2>
+          {reviews.length === 0 && (
+            <p className="text-gray-700 mt-4">
+              No reviews yet. Be the first to review!
+            </p>
+          )}
+          <div className="mt-4 space-y-4">
+            {reviews.map((review) => (
+              <div key={review.id} className="border p-4 rounded-lg shadow-md">
+                <h3 className="font-semibold">
+                  {review.name} ({review.rating}/5)
+                </h3>
+                <p className="text-gray-700">{review.reviewText}</p>
               </div>
-              <div className="mb-4">
-                <label htmlFor="email" className="block text-gray-700">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  className="w-full p-2 border rounded-lg"
-                  placeholder="Enter your email"
-                  required
-                />
-              </div>
+            ))}
+          </div>
+
+          <button
+            onClick={() => setShowReviewForm(!showReviewForm)}
+            className="text-blue-500 mt-4 hover:underline"
+          >
+            {showReviewForm ? "Cancel Review" : "Write a Review"}
+          </button>
+
+          {showReviewForm && (
+            <form onSubmit={handleReviewSubmit} className="mt-4">
+              <input
+                type="text"
+                name="name"
+                placeholder="Your Name"
+                value={reviewData.name}
+                onChange={handleReviewInputChange}
+                className="w-full p-2 mb-2 border border-gray-300 rounded-md"
+              />
+              <input
+                type="email"
+                name="email"
+                placeholder="Your Email"
+                value={reviewData.email}
+                onChange={handleReviewInputChange}
+                className="w-full p-2 mb-2 border border-gray-300 rounded-md"
+              />
+              <input
+                type="number"
+                name="rating"
+                placeholder="Rating (1-5)"
+                value={reviewData.rating}
+                onChange={handleReviewInputChange}
+                className="w-full p-2 mb-2 border border-gray-300 rounded-md"
+                min="1"
+                max="5"
+              />
+              <textarea
+                name="reviewText"
+                placeholder="Your Review"
+                value={reviewData.reviewText}
+                onChange={handleReviewInputChange}
+                className="w-full p-2 mb-2 border border-gray-300 rounded-md"
+              />
               <button
                 type="submit"
-                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-transform duration-300 hover:scale-105"
+                className="bg-blue-600 text-white px-6 py-2 rounded-md mt-4 hover:bg-blue-700"
               >
-                Submit
+                Submit Review
               </button>
             </form>
+          )}
+          {/* Like Section */}
+          <div className="mt-6 flex items-center space-x-4">
+            <button
+              onClick={handleLike}
+              className="bg-red-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-red-700 transition-transform duration-300 hover:scale-105"
+            >
+              ❤️ Like
+            </button>
+            <span className="text-lg font-semibold text-gray-800">
+              {likes} Likes
+            </span>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
