@@ -13,15 +13,11 @@ function CompetitionDetails() {
   const calendarRef = useRef(null);
   const [likes, setLikes] = useState(0);
   const [expandedSection, setExpandedSection] = useState("");
-  const [showForm, setShowForm] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    location: "",
-  });
+  const [showStatusForm, setShowStatusForm] = useState(false);
   const [status, setStatus] = useState("Pending");
-
   const [showReviewForm, setShowReviewForm] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
   const [reviewData, setReviewData] = useState({
     name: "",
     email: "",
@@ -29,6 +25,28 @@ function CompetitionDetails() {
     reviewText: "",
   });
   const [reviews, setReviews] = useState([]); // State to store reviews
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    location: "",
+  });
+  const [submittedData, setSubmittedData] = useState(null); // To store the submitted form data
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    // Store the submitted data
+    setSubmittedData(formData);
+    setShowStatusForm(false); // Hide form after submission
+    setFormData({ username: "", email: "", location: "" }); // Reset form data
+  };
 
   const fetchCompetitionDetails = (id) => {
     const competitions = [
@@ -316,6 +334,214 @@ function CompetitionDetails() {
           </div>
         </div>
 
+        {/* ... other sections remain unchanged */}
+
+        <div className="bg-white p-6 rounded-lg shadow-lg mt-6 text-center">
+          {/* Description */}
+          <p className="text-gray-700 text-lg mb-4">
+            Please provide your details to view your status.
+          </p>
+
+          {/* Button to toggle the form */}
+          <button
+            onClick={() => setShowStatusForm(!showStatusForm)}
+            className="bg-green-600 text-white px-6 py-2 rounded-lg mb-4 hover:bg-green-700"
+          >
+            Show Status Form
+          </button>
+
+          {/* Status Form */}
+          {showStatusForm && (
+            <form
+              onSubmit={handleFormSubmit}
+              className="mt-6 space-y-4 max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg"
+            >
+              <h2 className="text-2xl font-semibold text-gray-800 text-center mb-6">
+                Submit Your Status
+              </h2>
+
+              <input
+                type="text"
+                name="username"
+                placeholder="Username"
+                value={formData.username}
+                onChange={handleInputChange}
+                className="w-full p-3 mb-4 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              />
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                value={formData.email}
+                onChange={handleInputChange}
+                className="w-full p-3 mb-4 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              />
+              <input
+                type="text"
+                name="location"
+                placeholder="Location"
+                value={formData.location}
+                onChange={handleInputChange}
+                className="w-full p-3 mb-6 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              />
+              <button
+                type="submit"
+                className="w-full py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                Submit Status
+              </button>
+            </form>
+          )}
+
+          {/* Show submitted details */}
+          {/* Status Form */}
+          {showStatusForm && (
+            <form
+              onSubmit={handleFormSubmit}
+              className="mt-6 space-y-4 max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg"
+            >
+              <h2 className="text-2xl font-semibold text-gray-800 text-center mb-6">
+                Submit Your Status
+              </h2>
+
+              <input
+                type="text"
+                name="username"
+                placeholder="Username"
+                value={formData.username}
+                onChange={handleInputChange}
+                className="w-full p-3 mb-4 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              />
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                value={formData.email}
+                onChange={handleInputChange}
+                className="w-full p-3 mb-4 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              />
+              <input
+                type="text"
+                name="location"
+                placeholder="Location"
+                value={formData.location}
+                onChange={handleInputChange}
+                className="w-full p-3 mb-6 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              />
+              <button
+                type="submit"
+                className="w-full py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                Submit Status
+              </button>
+            </form>
+          )}
+        </div>
+
+        {/* Status Form */}
+        {showStatusForm && (
+          <form
+            onSubmit={handleFormSubmit}
+            className="mt-6 space-y-6 max-w-lg mx-auto bg-white p-8 rounded-xl shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105"
+          >
+            <h2 className="text-2xl font-semibold text-gray-800 text-center mb-6">
+              Submit Your Status
+            </h2>
+
+            <div>
+              <label
+                htmlFor="username"
+                className="text-sm font-medium text-gray-700"
+              >
+                Username
+              </label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Enter your username"
+                value={formData.username}
+                onChange={handleInputChange}
+                className="w-full p-4 mb-4 border-2 border-gray-300 rounded-lg focus:ring-4 focus:ring-blue-500 focus:outline-none transition duration-200 ease-in-out"
+                required
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="email"
+                className="text-sm font-medium text-gray-700"
+              >
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Enter your email"
+                value={formData.email}
+                onChange={handleInputChange}
+                className="w-full p-4 mb-4 border-2 border-gray-300 rounded-lg focus:ring-4 focus:ring-blue-500 focus:outline-none transition duration-200 ease-in-out"
+                required
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="location"
+                className="text-sm font-medium text-gray-700"
+              >
+                Location
+              </label>
+              <input
+                type="text"
+                id="location"
+                name="location"
+                placeholder="Enter your location"
+                value={formData.location}
+                onChange={handleInputChange}
+                className="w-full p-4 mb-6 border-2 border-gray-300 rounded-lg focus:ring-4 focus:ring-blue-500 focus:outline-none transition duration-200 ease-in-out"
+                required
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={isSubmitted}
+              className={`w-full py-3 font-semibold text-white rounded-lg transition duration-300 ease-in-out ${
+                isSubmitted
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-500"
+              }`}
+            >
+              {isSubmitted ? "Status Submitted" : "Submit Status"}
+            </button>
+          </form>
+        )}
+
+        {/* Show submitted details */}
+        {submittedData && (
+          <div className="mt-6 bg-blue p-6 rounded-xl shadow-lg max-w-lg mx-auto">
+            <h3 className="text-xl font-semibold text-blue-600 mb-4">
+              Submitted Details
+            </h3>
+            <div className="space-y-3 text-gray-700">
+              <p>
+                <span className="font-medium">Username:</span>{" "}
+                {submittedData.username}
+              </p>
+              <p>
+                <span className="font-medium">Email:</span>{" "}
+                {submittedData.email}
+              </p>
+              <p>
+                <span className="font-medium">Location:</span>{" "}
+                {submittedData.location}
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* Review Section */}
         <div className="bg-white p-6 rounded-lg shadow-lg mt-6">
           <h2 className="text-2xl font-semibold text-blue-600">📝 Reviews</h2>
@@ -385,18 +611,19 @@ function CompetitionDetails() {
               </button>
             </form>
           )}
-          {/* Like Section */}
-          <div className="mt-6 flex items-center space-x-4">
-            <button
-              onClick={handleLike}
-              className="bg-red-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-red-700 transition-transform duration-300 hover:scale-105"
-            >
-              ❤️ Like
-            </button>
-            <span className="text-lg font-semibold text-gray-800">
-              {likes} Likes
-            </span>
-          </div>
+        </div>
+
+        {/* Like Section */}
+        <div className="mt-6 flex items-center space-x-4">
+          <button
+            onClick={handleLike}
+            className="bg-red-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-red-700 transition-transform duration-300 hover:scale-105"
+          >
+            ❤️ Like
+          </button>
+          <span className="text-lg font-semibold text-gray-800">
+            {likes} Likes
+          </span>
         </div>
       </div>
     </div>
