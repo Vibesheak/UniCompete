@@ -11,10 +11,12 @@ function RegisterPage() {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
+    confirmPassword: "",
     email: "",
     phone: "",
     role: "",
     institute: "",
+    profilePicture: null,
   });
 
   const handleInputChange = (e) => {
@@ -24,18 +26,52 @@ function RegisterPage() {
       [name]: value,
     }));
   };
-  const handleLoginLink = () => {
-    navigate("/login"); // Navigate to the Register page
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file && (file.type === "image/jpeg" || file.type === "image/png")) {
+      setFormData((prevData) => ({ ...prevData, profilePicture: file }));
+    } else {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        profilePicture: "Only JPEG or PNG files are allowed.",
+      }));
+    }
   };
 
   const validateRegistration = () => {
     const errors = {};
-    if (!formData.username) errors.username = "Username is required.";
-    if (!formData.password) errors.password = "Password is required.";
+    if (!formData.username) {
+      errors.username = "Username is required.";
+    } else if (!/^(?=.*\d).{1,25}$/.test(formData.username)) {
+      errors.username =
+        "Username must include at least one number and be up to 25 characters.";
+    }
+
+    if (!formData.password) {
+      errors.password = "Password is required.";
+    } else if (
+      !/(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}/.test(
+        formData.password
+      )
+    ) {
+      errors.password =
+        "Password must include at least 8 characters, one uppercase, one lowercase, one number, and one special character.";
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      errors.confirmPassword = "Passwords do not match.";
+    }
+
     if (!formData.email) errors.email = "Email is required.";
     if (!formData.phone) errors.phone = "Phone number is required.";
     if (!formData.role) errors.role = "Role is required.";
     if (!formData.institute) errors.institute = "Institute is required.";
+
+    if (!formData.profilePicture) {
+      errors.profilePicture = "Profile picture is required.";
+    }
+
     return errors;
   };
 
@@ -63,6 +99,7 @@ function RegisterPage() {
             <h1 className="text-4xl font-semibold text-center text-indigo-600 mb-4">
               Register
             </h1>
+
             <div className="input-box relative mb-4">
               <input
                 type="text"
@@ -77,6 +114,30 @@ function RegisterPage() {
                 <p className="text-red-500 text-sm mt-1">{errors.username}</p>
               )}
             </div>
+
+            <div className="mb-2 text-gray-500 text-sm">
+              <div className="flex items-start">
+                <span className="mr-2 text-gray-500">●</span>
+                <span>Password must include at least 8 characters</span>
+              </div>
+              <div className="flex items-start">
+                <span className="mr-2 text-gray-500">●</span>
+                <span>One uppercase letter</span>
+              </div>
+              <div className="flex items-start">
+                <span className="mr-2 text-gray-500">●</span>
+                <span>One lowercase letter</span>
+              </div>
+              <div className="flex items-start">
+                <span className="mr-2 text-gray-500">●</span>
+                <span>One number</span>
+              </div>
+              <div className="flex items-start">
+                <span className="mr-2 text-gray-500">●</span>
+                <span>One special character</span>
+              </div>
+            </div>
+
             <div className="input-box relative mb-4">
               <input
                 type="password"
@@ -91,6 +152,24 @@ function RegisterPage() {
                 <p className="text-red-500 text-sm mt-1">{errors.password}</p>
               )}
             </div>
+
+            <div className="input-box relative mb-4">
+              <input
+                type="password"
+                name="confirmPassword"
+                placeholder="Confirm Password"
+                value={formData.confirmPassword}
+                onChange={handleInputChange}
+                className="w-full p-4 pl-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+              />
+              <RiLockPasswordFill className="absolute left-4 top-4 text-gray-400" />
+              {errors.confirmPassword && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.confirmPassword}
+                </p>
+              )}
+            </div>
+
             <div className="input-box relative mb-4">
               <input
                 type="email"
@@ -105,6 +184,7 @@ function RegisterPage() {
                 <p className="text-red-500 text-sm mt-1">{errors.email}</p>
               )}
             </div>
+
             <div className="input-box relative mb-4">
               <input
                 type="tel"
@@ -120,6 +200,7 @@ function RegisterPage() {
                 <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
               )}
             </div>
+
             <div className="input-box mb-4">
               <select
                 name="role"
@@ -135,6 +216,7 @@ function RegisterPage() {
                 <p className="text-red-500 text-sm mt-1">{errors.role}</p>
               )}
             </div>
+
             <div className="input-box mb-4">
               <select
                 name="institute"
@@ -168,18 +250,35 @@ function RegisterPage() {
                 <p className="text-red-500 text-sm mt-1">{errors.institute}</p>
               )}
             </div>
+
+            <div className="input-box relative mb-4">
+              <input
+                type="file"
+                name="profilePicture"
+                accept="image/jpeg, image/png"
+                onChange={handleFileChange}
+                className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+              />
+              {errors.profilePicture && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.profilePicture}
+                </p>
+              )}
+            </div>
+
             <button
               type="submit"
               className="w-full py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition-all"
             >
               Register
             </button>
+
             <div className="register-link text-center mt-4">
               <p className="text-indigo-600">
                 Already have an account?{" "}
                 <a
                   href="#"
-                  onClick={handleLoginLink}
+                  onClick={() => navigate("/login")}
                   className="text-indigo-400 hover:underline"
                 >
                   Login

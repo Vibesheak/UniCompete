@@ -1,10 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import bannerImage from "./bannerimage.jpg";
+import profile from "./profile.jpg";
 
 function CompetitionDetails() {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [competition, setCompetition] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -17,36 +20,53 @@ function CompetitionDetails() {
   const [status, setStatus] = useState("Pending");
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [profileDropdownVisible, setProfileDropdownVisible] = useState(false);
+  const [submittedData, setSubmittedData] = useState(null);
+  console.log("Competition Object:", competition);
+  const [hasSubmitted, setHasSubmitted] = useState(false); // Track if form has been submitted
+  const [viewStatus, setViewStatus] = useState(false); // Track if user clicked "View Status"
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    // Prevent multiple submissions
+    if (hasSubmitted) return;
+
+    setSubmittedData({
+      ...formData,
+      status: "Pending", // Add status as Pending
+    });
+    setHasSubmitted(true); // Set the flag to true to prevent further submissions
+    setShowStatusForm(false); // Optionally hide the form after submission
+  };
+
+  const handleViewStatus = () => {
+    setViewStatus(!viewStatus); // Show the status details when clicked
+  };
+  // To store the submitted form data
   const [reviewData, setReviewData] = useState({
     name: "",
     email: "",
     rating: 0,
     reviewText: "",
   });
+  const user = {
+    fullName: "Nilojitha Mariyathas",
+    profile: profile,
+  };
   const [reviews, setReviews] = useState([]); // State to store reviews
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     location: "",
   });
-  const [submittedData, setSubmittedData] = useState(null); // To store the submitted form data
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    // Store the submitted data
-    setSubmittedData(formData);
-    setShowStatusForm(false); // Hide form after submission
-    setFormData({ username: "", email: "", location: "" }); // Reset form data
-  };
 
   const fetchCompetitionDetails = (id) => {
     const competitions = [
@@ -62,6 +82,7 @@ function CompetitionDetails() {
         schedule: "Registration Deadline: 2024-12-15, Event Date: 2024-12-20",
         rules: "Participants must be students, Original work only, etc.",
         image: bannerImage,
+        registerLink: "https://example.com/register", // Replace with the actual registration link
       },
       {
         id: 2,
@@ -75,6 +96,7 @@ function CompetitionDetails() {
         schedule: "Registration Deadline: 2024-12-10, Event Date: 2024-12-25",
         rules: "Open to all students, Original art only, etc.",
         image: bannerImage,
+        registerLink: "https://example.com/register",
       },
     ];
 
@@ -148,6 +170,13 @@ function CompetitionDetails() {
     });
     setShowReviewForm(false);
   };
+  const handleProfileClick = () =>
+    setProfileDropdownVisible(!profileDropdownVisible);
+  const getInitials = (fullName) => {
+    const nameParts = fullName.split(" ");
+    return nameParts.map((part) => part.charAt(0).toUpperCase()).join("");
+  };
+  const handleLogout = () => navigate("/login");
 
   // Format date for display
   const formatDate = (date) => {
@@ -210,23 +239,27 @@ function CompetitionDetails() {
                 />
               </div>
             )}
-            <div className="flex items-center mt-4">
+            <div key={competition.id} className="competition-card">
               <button
                 className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-transform duration-300 hover:scale-105"
-                onClick={handleLike}
+                onClick={() => {
+                  console.log("Register Link:", competition.registerLink); // Log the link
+                  if (competition.registerLink) {
+                    window.open(competition.registerLink, "_blank");
+                  } else {
+                    console.error("Register link is missing or invalid.");
+                  }
+                }}
               >
                 Join Now
               </button>
-              <span className="ml-4 text-gray-700">
-                {likes} {likes === 1 ? "Like" : "Likes"}
-              </span>
             </div>
           </div>
         </div>
 
         {/* Competition Details Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="card p-6 bg-white shadow-lg rounded-lg transition-transform duration-300 hover:scale-105">
+          <div className="card p-6 bg-blue-50 shadow-lg rounded-lg transition-transform duration-300 hover:scale-105">
             <h2
               className="text-xl font-semibold text-blue-600 cursor-pointer"
               onClick={() => toggleSection("overview")}
@@ -250,7 +283,7 @@ function CompetitionDetails() {
             </button>
           </div>
 
-          <div className="card p-6 bg-white shadow-lg rounded-lg transition-transform duration-300 hover:scale-105">
+          <div className="card p-6 bg-blue-50 shadow-lg rounded-lg transition-transform duration-300 hover:scale-105">
             <h2
               className="text-xl font-semibold text-blue-600 cursor-pointer"
               onClick={() => toggleSection("prizes")}
@@ -280,7 +313,7 @@ function CompetitionDetails() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="card p-6 bg-white shadow-lg rounded-lg transition-transform duration-300 hover:scale-105">
+          <div className="card p-6 bg-blue-50 shadow-lg rounded-lg transition-transform duration-300 hover:scale-105">
             <h2
               className="text-xl font-semibold text-blue-600 cursor-pointer"
               onClick={() => toggleSection("schedule")}
@@ -309,7 +342,7 @@ function CompetitionDetails() {
             </button>
           </div>
 
-          <div className="card p-6 bg-white shadow-lg rounded-lg transition-transform duration-300 hover:scale-105">
+          <div className="card p-6 bg-blue-50 shadow-lg rounded-lg transition-transform duration-300 hover:scale-105">
             <h2
               className="text-xl font-semibold text-blue-600 cursor-pointer"
               onClick={() => toggleSection("rules")}
@@ -334,80 +367,65 @@ function CompetitionDetails() {
           </div>
         </div>
 
-        {/* ... other sections remain unchanged */}
-
-        <div className="bg-white p-6 rounded-lg shadow-lg mt-6 text-center">
+        <div className="bg-blue-50 p-8 rounded-lg shadow-lg mt-6 text-center transition-transform duration-300 hover:scale-105">
           {/* Description */}
-          <p className="text-gray-700 text-lg mb-4">
+          <p className="text-gray-700 text-lg mb-4 font-semibold">
             Please provide your details to view your status.
           </p>
 
           {/* Button to toggle the form */}
           <button
             onClick={() => setShowStatusForm(!showStatusForm)}
-            className="bg-green-600 text-white px-6 py-2 rounded-lg mb-4 hover:bg-green-700"
+            className="bg-blue-600 text-white px-6 py-2 rounded-lg mb-4 hover:bg-blue-700 transition duration-300 ease-in-out transform hover:scale-105"
           >
-            Show Status Form
+            Show Status Review Form
           </button>
 
-          {/* Status Form */}
-          {showStatusForm && (
-            <form
-              onSubmit={handleFormSubmit}
-              className="mt-6 space-y-4 max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg"
+          {/* Show the button to view the status after submission */}
+          {hasSubmitted && (
+            <button
+              onClick={handleViewStatus}
+              className="bg-blue-600 text-white px-6 py-2 rounded-lg mx-8 mb-4 mt-4 hover:bg-blue-700 transition duration-300 ease-in-out transform hover:scale-105"
             >
-              <h2 className="text-2xl font-semibold text-gray-800 text-center mb-6">
-                Submit Your Status
-              </h2>
-
-              <input
-                type="text"
-                name="username"
-                placeholder="Username"
-                value={formData.username}
-                onChange={handleInputChange}
-                className="w-full p-3 mb-4 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-              />
-              <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                value={formData.email}
-                onChange={handleInputChange}
-                className="w-full p-3 mb-4 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-              />
-              <input
-                type="text"
-                name="location"
-                placeholder="Location"
-                value={formData.location}
-                onChange={handleInputChange}
-                className="w-full p-3 mb-6 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-              />
-              <button
-                type="submit"
-                className="w-full py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                Submit Status
-              </button>
-            </form>
+              {viewStatus ? "Hide Status" : "View Status"}
+            </button>
+          )}
+          {/* Show submitted details and status */}
+          {viewStatus && submittedData && (
+            <div className="mt-6 p-4 max-w-sm mx-auto bg-blue-200 rounded-lg shadow-lg">
+              <p className="text-lg text-gray-800 mb-2">
+                <strong className="text-blue-600">Username:</strong>{" "}
+                {submittedData.username}
+              </p>
+              <p className="text-lg text-gray-800 mb-2">
+                <strong className="text-blue-600">Email:</strong>{" "}
+                {submittedData.email}
+              </p>
+              <p className="text-lg text-gray-800 mb-2">
+                <strong className="text-blue-600">Location:</strong>{" "}
+                {submittedData.location}
+              </p>
+              <p className="text-lg text-gray-800 mb-4">
+                <strong className="text-blue-600">Status:</strong>{" "}
+                {submittedData.status}
+              </p>
+            </div>
           )}
 
-          {/* Show submitted details */}
-          {/* Status Form */}
-          {showStatusForm && (
+          {showStatusForm && !hasSubmitted && (
             <form
               onSubmit={handleFormSubmit}
-              className="mt-6 space-y-4 max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg"
+              className="mt-6 space-y-6 max-w-md mx-auto bg-blue-200 p-8 rounded-lg shadow-lg"
             >
-              <h2 className="text-2xl font-semibold text-gray-800 text-center mb-6">
-                Submit Your Status
+              <h2 className="text-2xl font-semibold text-blue text-center mb-6">
+                Submit Your Details
               </h2>
 
               <input
                 type="text"
                 name="username"
                 placeholder="Username"
+                required
                 value={formData.username}
                 onChange={handleInputChange}
                 className="w-full p-3 mb-4 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
@@ -416,6 +434,7 @@ function CompetitionDetails() {
                 type="email"
                 name="email"
                 placeholder="Email"
+                required
                 value={formData.email}
                 onChange={handleInputChange}
                 className="w-full p-3 mb-4 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
@@ -424,126 +443,23 @@ function CompetitionDetails() {
                 type="text"
                 name="location"
                 placeholder="Location"
+                required
                 value={formData.location}
                 onChange={handleInputChange}
                 className="w-full p-3 mb-6 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
               />
               <button
                 type="submit"
-                className="w-full py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full py-3 bg-blue-700 text-white font-semibold rounded-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                Submit Status
+                Submit
               </button>
             </form>
           )}
         </div>
 
-        {/* Status Form */}
-        {showStatusForm && (
-          <form
-            onSubmit={handleFormSubmit}
-            className="mt-6 space-y-6 max-w-lg mx-auto bg-white p-8 rounded-xl shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105"
-          >
-            <h2 className="text-2xl font-semibold text-gray-800 text-center mb-6">
-              Submit Your Status
-            </h2>
-
-            <div>
-              <label
-                htmlFor="username"
-                className="text-sm font-medium text-gray-700"
-              >
-                Username
-              </label>
-              <input
-                type="text"
-                id="username"
-                name="username"
-                placeholder="Enter your username"
-                value={formData.username}
-                onChange={handleInputChange}
-                className="w-full p-4 mb-4 border-2 border-gray-300 rounded-lg focus:ring-4 focus:ring-blue-500 focus:outline-none transition duration-200 ease-in-out"
-                required
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="email"
-                className="text-sm font-medium text-gray-700"
-              >
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                placeholder="Enter your email"
-                value={formData.email}
-                onChange={handleInputChange}
-                className="w-full p-4 mb-4 border-2 border-gray-300 rounded-lg focus:ring-4 focus:ring-blue-500 focus:outline-none transition duration-200 ease-in-out"
-                required
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="location"
-                className="text-sm font-medium text-gray-700"
-              >
-                Location
-              </label>
-              <input
-                type="text"
-                id="location"
-                name="location"
-                placeholder="Enter your location"
-                value={formData.location}
-                onChange={handleInputChange}
-                className="w-full p-4 mb-6 border-2 border-gray-300 rounded-lg focus:ring-4 focus:ring-blue-500 focus:outline-none transition duration-200 ease-in-out"
-                required
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={isSubmitted}
-              className={`w-full py-3 font-semibold text-white rounded-lg transition duration-300 ease-in-out ${
-                isSubmitted
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-500"
-              }`}
-            >
-              {isSubmitted ? "Status Submitted" : "Submit Status"}
-            </button>
-          </form>
-        )}
-
-        {/* Show submitted details */}
-        {submittedData && (
-          <div className="mt-6 bg-blue p-6 rounded-xl shadow-lg max-w-lg mx-auto">
-            <h3 className="text-xl font-semibold text-blue-600 mb-4">
-              Submitted Details
-            </h3>
-            <div className="space-y-3 text-gray-700">
-              <p>
-                <span className="font-medium">Username:</span>{" "}
-                {submittedData.username}
-              </p>
-              <p>
-                <span className="font-medium">Email:</span>{" "}
-                {submittedData.email}
-              </p>
-              <p>
-                <span className="font-medium">Location:</span>{" "}
-                {submittedData.location}
-              </p>
-            </div>
-          </div>
-        )}
-
         {/* Review Section */}
-        <div className="bg-white p-6 rounded-lg shadow-lg mt-6">
+        <div className="bg-blue-50 p-6 rounded-lg shadow-lg mt-6 transition-transform duration-300 hover:scale-105">
           <h2 className="text-2xl font-semibold text-blue-600">📝 Reviews</h2>
           {reviews.length === 0 && (
             <p className="text-gray-700 mt-4">
@@ -624,6 +540,50 @@ function CompetitionDetails() {
           <span className="text-lg font-semibold text-gray-800">
             {likes} Likes
           </span>
+        </div>
+      </div>
+
+      <div
+        className="absolute top-4 right-4 cursor-pointer"
+        onClick={handleProfileClick}
+      >
+        <div className="relative">
+          {/* Profile Circle with Initials or Image */}
+          <div
+            className={`w-16 h-16 rounded-full flex items-center justify-center text-xl font-semibold text-white ${
+              user.profile
+                ? "bg-blue-500" // If profile picture exists, show a blue background
+                : "bg-indigo-600" // Default background if no picture
+            }`}
+          >
+            {user.profile ? (
+              <img
+                src={user.profile}
+                alt="Profile"
+                className="w-full h-full object-cover rounded-full"
+              />
+            ) : (
+              getInitials(user.fullName)
+            )}
+          </div>
+
+          {/* Profile Dropdown */}
+          {profileDropdownVisible && (
+            <div className="absolute top-16 right-0 w-48 bg-white shadow-lg rounded-lg p-4 z-10">
+              <button
+                onClick={() => navigate("/userpage")}
+                className="w-full text-left text-blue-900 font-semibold text-lg py-2 rounded-lg hover:bg-blue-100 transition duration-300"
+              >
+                Profile
+              </button>
+              <button
+                onClick={handleLogout}
+                className="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition duration-300 mt-2"
+              >
+                Logout
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

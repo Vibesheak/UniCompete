@@ -113,6 +113,8 @@ function AdminPage() {
   };
 
   const dropdownRef = useRef(null);
+  const handleUniversityClick = (university) =>
+    navigate(`/university/${university}`);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -265,6 +267,16 @@ function AdminPage() {
       </div>
     );
   };
+  const handleFileChange = (e) => {
+    const file = e.target.files[0]; // Get the first selected file
+    if (file) {
+      // You can store the file in state or handle it accordingly
+      setNewCompetition((prevState) => ({
+        ...prevState,
+        picture: file,
+      }));
+    }
+  };
 
   const filterCompetitions = () => {
     let filteredCompetitions = competitions;
@@ -301,268 +313,360 @@ function AdminPage() {
 
     return filteredCompetitions;
   };
+  const universities = [
+    ...new Set(competitions.map((comp) => comp.location)),
+  ].sort((a, b) => a.localeCompare(b));
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 text-gray-900">
-      <div className="flex">
-        <main className="flex-1 p-6">
-          <header className="flex justify-between items-center mb-8">
-            <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 text-center flex-grow">
-              Explore Competitions
-            </h1>
-
-            <button
-              onClick={() => setShowAddCompetitionModal(true)}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition duration-300 mr-4"
-            >
-              Add Competition
-            </button>
-
-            {/* Button to show only favorites */}
-            <button
-              onClick={handleShowFavorites}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition duration-300 mr-4"
-            >
-              {showFavorites ? "Show All" : "Show Favorites"}
-            </button>
-
-            {/* Sort/Filter Dropdown */}
-            <div ref={dropdownRef} className="relative">
+    <div className="min-h-screen flex flex-col md:flex-row bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 text-gray-900">
+      {/* Sidebar */}
+      <aside className="w-64 bg-white shadow-md p-4">
+        <h2 className="text-xl font-semibold mb-4">Universities</h2>
+        <ul>
+          {universities.map((university) => (
+            <li key={university}>
               <button
-                onClick={handleDropdownToggle}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition duration-300"
+                onClick={() => handleUniversityClick(university)}
+                className="block w-full text-left px-4 py-2 mb-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
               >
-                Filter Competitions
+                {university}
               </button>
+            </li>
+          ))}
+        </ul>
+      </aside>
 
-              {dropdownVisible && (
-                <div className="absolute top-12 right-0 w-56 bg-white shadow-lg rounded-lg p-4 z-10">
-                  <div className="space-y-4">
-                    {/* Category Dropdown */}
-                    <div>
-                      <label className="block text-sm text-gray-700 mb-2">
-                        Select Category
-                      </label>
-                      <select
-                        value={selectedCategory}
-                        onChange={(e) => handleSelectCategory(e.target.value)}
-                        className="bg-blue-100 text-gray-800 px-4 py-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      >
-                        {[
-                          "All",
-                          ...Array.from(
-                            new Set(competitions.map((comp) => comp.name))
-                          ),
-                        ].map((competitionName) => (
-                          <option key={competitionName} value={competitionName}>
-                            {competitionName}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    {/* Sort By Dropdown */}
-                    <div>
-                      <label className="block text-sm text-gray-700 mb-2">
-                        Sort By
-                      </label>
-                      <select
-                        value={sortCriterion}
-                        onChange={handleSortChange}
-                        className="bg-blue-100 text-gray-800 px-4 py-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      >
-                        <option value="All">All</option>
-                        <option value="Name">Name</option>
-                        <option value="Date">Date</option>
-                        <option value="Location">Location</option>
-                        <option value="Rating">Rating</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </header>
-
-          {/* Competitions List */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-            {filterCompetitions().map((competition) => (
-              <div
-                key={competition.id}
-                className="bg-white rounded-lg shadow-lg p-6"
-              >
-                <img
-                  src={competition.image}
-                  alt={competition.name}
-                  className="w-full h-40 object-cover rounded-lg mb-4"
-                />
-                <h2 className="text-xl font-semibold mb-2">
-                  {competition.name}
-                </h2>
-                <p className="text-sm text-gray-600 mb-4">
-                  <strong>Date:</strong> {competition.date}
-                </p>
-                <p className="text-sm text-gray-600 mb-4">
-                  <strong>Location:</strong> {competition.location}
-                </p>
-
-                <div className="flex justify-between items-center">
-                  <button
-                    onClick={() => handleViewDetails(competition.id)}
-                    className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition duration-300"
-                  >
-                    View Details
-                  </button>
-                  <div className="flex items-center space-x-2">
-                    <button
-                      onClick={() => handleFavoriteToggle(competition.id)}
-                      className="text-red-600 hover:text-red-800 transition duration-300"
-                    >
-                      {favorites.includes(competition.id) ? (
-                        <FaHeart className="w-6 h-6" />
-                      ) : (
-                        <FaRegHeart className="w-6 h-6" />
-                      )}
-                    </button>
-                    <button
-                      onClick={() => handleEditCompetition(competition.id)}
-                      className="text-yellow-600 hover:text-yellow-800 transition duration-300"
-                    >
-                      <FaEdit />
-                    </button>
-                    <button
-                      onClick={() => handleDeleteCompetition(competition.id)}
-                      className="text-red-600 hover:text-red-800 transition duration-300"
-                    >
-                      <FaTrashAlt />
-                    </button>
-                  </div>
-                </div>
-
-                <div className="mt-2">{renderStars(competition.rating)}</div>
-              </div>
-            ))}
-          </div>
-          <div
-            className="absolute top-4 right-4 cursor-pointer"
-            onClick={handleProfileClick}
+      {/* Main Content */}
+      <div className="flex-1 p-6 md:p-6">
+        <form className="max-w-md mx-auto mt-10px">
+          {" "}
+          {/* Increased bottom margin */}
+          <label
+            htmlFor="default-search"
+            className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
           >
-            <div className="relative">
-              {/* Profile Circle with Initials or Image */}
-              <div
-                className={`w-16 h-16 rounded-full flex items-center justify-center text-xl font-semibold text-white ${
-                  user.profile
-                    ? "bg-blue-500" // If profile picture exists, show a blue background
-                    : "bg-indigo-600" // Default background if no picture
-                }`}
+            Search
+          </label>
+          <div className="relative">
+            <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+              <svg
+                className="w-4 h-4 text-gray-500 dark:text-gray-400"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 20 20"
               >
-                {user.profile ? (
-                  <img
-                    src={user.profile}
-                    alt="Profile"
-                    className="w-full h-full object-cover rounded-full"
-                  />
-                ) : (
-                  getInitials(user.fullName)
-                )}
-              </div>
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                />
+              </svg>
+            </div>
+            <input
+              type="search"
+              id="default-search"
+              className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Search Universities, Competitons..."
+              required
+            />
+            <button
+              type="submit"
+              className="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            >
+              Search
+            </button>
+          </div>
+        </form>
 
-              {/* Profile Dropdown */}
-              {profileDropdownVisible && (
-                <div className="absolute top-16 right-0 w-48 bg-white shadow-lg rounded-lg p-4 z-10">
+        <header className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 text-center flex-grow">
+            Explore Competitions
+          </h1>
+
+          <button
+            onClick={() => setShowAddCompetitionModal(true)}
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition duration-300 mr-4 mt-5"
+          >
+            Add Competition
+          </button>
+
+          {/* Button to show only favorites */}
+          <button
+            onClick={handleShowFavorites}
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition duration-300 mr-4 mt-5"
+          >
+            {showFavorites ? "Show All" : "Show Favorites"}
+          </button>
+
+          {/* Sort/Filter Dropdown */}
+          <div ref={dropdownRef} className="relative">
+            <button
+              onClick={handleDropdownToggle}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition duration-300 mt-5"
+            >
+              Filter Competitions
+            </button>
+
+            {dropdownVisible && (
+              <div className="absolute top-12 right-0 w-56 bg-white shadow-lg rounded-lg p-4 z-10">
+                <div className="space-y-4">
+                  {/* Category Dropdown */}
+                  <div>
+                    <label className="block text-sm text-gray-700 mb-2">
+                      Select Category
+                    </label>
+                    <select
+                      value={selectedCategory}
+                      onChange={(e) => handleSelectCategory(e.target.value)}
+                      className="bg-blue-100 text-gray-800 px-4 py-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      {[
+                        "All",
+                        ...Array.from(
+                          new Set(competitions.map((comp) => comp.name))
+                        ),
+                      ].map((competitionName) => (
+                        <option key={competitionName} value={competitionName}>
+                          {competitionName}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Sort By Dropdown */}
+                  <div>
+                    <label className="block text-sm text-gray-700 mb-2">
+                      Sort By
+                    </label>
+                    <select
+                      value={sortCriterion}
+                      onChange={handleSortChange}
+                      className="bg-blue-100 text-gray-800 px-4 py-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="All">All</option>
+                      <option value="Name">Name</option>
+                      <option value="Date">Date</option>
+                      <option value="Location">Location</option>
+                      <option value="Rating">Rating</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </header>
+
+        {/* Competitions List */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+          {filterCompetitions().map((competition) => (
+            <div
+              key={competition.id}
+              className="bg-white rounded-lg shadow-lg p-6"
+            >
+              <img
+                src={competition.image}
+                alt={competition.name}
+                className="w-full h-40 object-cover rounded-lg mb-4"
+              />
+              <h2 className="text-xl font-semibold mb-2">{competition.name}</h2>
+              <p className="text-sm text-gray-600 mb-4">
+                <strong>Date:</strong> {competition.date}
+              </p>
+              <p className="text-sm text-gray-600 mb-4">
+                <strong>Location:</strong> {competition.location}
+              </p>
+
+              <div className="flex justify-between items-center">
+                <button
+                  onClick={() => handleViewDetails(competition.id)}
+                  className="mt-4 w-full bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition"
+                >
+                  View Details
+                </button>
+                <div className="flex items-center space-x-2">
                   <button
-                    onClick={() => navigate("/userpage")}
-                    className="w-full text-left text-blue-900 font-semibold text-lg py-2 rounded-lg hover:bg-blue-100 transition duration-300"
+                    onClick={() => handleFavoriteToggle(competition.id)}
+                    className="text-red-600 hover:text-red-800 transition duration-300"
                   >
-                    Profile
+                    {favorites.includes(competition.id) ? (
+                      <FaHeart className="w-6 h-6" />
+                    ) : (
+                      <FaRegHeart className="w-6 h-6" />
+                    )}
                   </button>
                   <button
-                    onClick={handleLogout}
-                    className="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition duration-300 mt-2"
+                    onClick={() => handleEditCompetition(competition.id)}
+                    className="text-yellow-600 hover:text-yellow-800 transition duration-300"
                   >
-                    Logout
+                    <FaEdit />
+                  </button>
+                  <button
+                    onClick={() => handleDeleteCompetition(competition.id)}
+                    className="text-red-600 hover:text-red-800 transition duration-300"
+                  >
+                    <FaTrashAlt />
                   </button>
                 </div>
+              </div>
+
+              <div className="mt-2">{renderStars(competition.rating)}</div>
+            </div>
+          ))}
+        </div>
+        <div
+          className="absolute top-4 right-4 cursor-pointer"
+          onClick={handleProfileClick}
+        >
+          <div className="relative">
+            {/* Profile Circle with Initials or Image */}
+            <div
+              className={`w-16 h-16 rounded-full flex items-center justify-center text-xl font-semibold text-white ${
+                user.profile
+                  ? "bg-blue-500" // If profile picture exists, show a blue background
+                  : "bg-indigo-600" // Default background if no picture
+              }`}
+            >
+              {user.profile ? (
+                <img
+                  src={user.profile}
+                  alt="Profile"
+                  className="w-full h-full object-cover rounded-full"
+                />
+              ) : (
+                getInitials(user.fullName)
               )}
             </div>
-          </div>
-          {/* Add/Edit Competition Modal */}
-          {showAddCompetitionModal && (
-            <div className="fixed inset-0 flex justify-center items-center z-20 bg-gray-900 bg-opacity-50">
-              <div className="bg-white p-6 rounded-lg w-full sm:w-96">
-                <h2 className="text-2xl font-semibold mb-4">
-                  {editingCompetition ? "Edit" : "Add"} Competition
-                </h2>
-                <form>
-                  <div className="mb-4">
-                    <label className="block text-sm text-gray-700 mb-2">
-                      Name
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      value={newCompetition.name}
-                      onChange={handleInputChange}
-                      className="bg-gray-100 text-gray-800 px-4 py-2 rounded-lg w-full"
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label className="block text-sm text-gray-700 mb-2">
-                      Date
-                    </label>
-                    <input
-                      type="date"
-                      name="date"
-                      value={newCompetition.date}
-                      onChange={handleInputChange}
-                      className="bg-gray-100 text-gray-800 px-4 py-2 rounded-lg w-full"
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label className="block text-sm text-gray-700 mb-2">
-                      Location
-                    </label>
-                    <input
-                      type="text"
-                      name="location"
-                      value={newCompetition.location}
-                      onChange={handleInputChange}
-                      className="bg-gray-100 text-gray-800 px-4 py-2 rounded-lg w-full"
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label className="block text-sm text-gray-700 mb-2">
-                      Description
-                    </label>
-                    <textarea
-                      name="description"
-                      value={newCompetition.description}
-                      onChange={handleInputChange}
-                      className="bg-gray-100 text-gray-800 px-4 py-2 rounded-lg w-full"
-                    />
-                  </div>
 
-                  <div className="flex justify-between">
-                    <button
-                      type="button"
-                      onClick={() => setShowAddCompetitionModal(false)}
-                      className="bg-gray-500 text-white px-4 py-2 rounded-lg"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="button"
-                      onClick={handleAddCompetition}
-                      className="bg-blue-600 text-white px-4 py-2 rounded-lg"
-                    >
-                      {editingCompetition ? "Save Changes" : "Add Competition"}
-                    </button>
-                  </div>
-                </form>
+            {/* Profile Dropdown */}
+            {profileDropdownVisible && (
+              <div className="absolute top-16 right-0 w-48 bg-white shadow-lg rounded-lg p-4 z-10">
+                <button
+                  onClick={() => navigate("/userpage")}
+                  className="w-full text-left text-blue-900 font-semibold text-lg py-2 rounded-lg hover:bg-blue-100 transition duration-300"
+                >
+                  Profile
+                </button>
+                <button
+                  onClick={handleLogout}
+                  className="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition duration-300 mt-2"
+                >
+                  Logout
+                </button>
               </div>
+            )}
+          </div>
+        </div>
+        {/* Add/Edit Competition Modal */}
+        {showAddCompetitionModal && (
+          <div className="fixed inset-0 flex justify-center items-center z-20 bg-gray-900 bg-opacity-50">
+            <div className="bg-white p-6 rounded-lg w-full sm:w-96">
+              <h2 className="text-2xl font-semibold mb-4">
+                {editingCompetition ? "Edit" : "Add"} Competition
+              </h2>
+              <form>
+                <div className="mb-4">
+                  <label className="block text-sm text-gray-700 mb-2">
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={newCompetition.name}
+                    onChange={handleInputChange}
+                    required
+                    className="bg-gray-100 text-gray-800 px-4 py-2 rounded-lg w-full"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-sm text-gray-700 mb-2">
+                    Date
+                  </label>
+                  <input
+                    type="date"
+                    name="date"
+                    required
+                    value={newCompetition.date}
+                    onChange={handleInputChange}
+                    className="bg-gray-100 text-gray-800 px-4 py-2 rounded-lg w-full"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-sm text-gray-700 mb-2">
+                    Location
+                  </label>
+                  <input
+                    type="text"
+                    name="location"
+                    value={newCompetition.location}
+                    onChange={handleInputChange}
+                    required
+                    className="bg-gray-100 text-gray-800 px-4 py-2 rounded-lg w-full"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-sm text-gray-700 mb-2">
+                    Description
+                  </label>
+                  <textarea
+                    name="description"
+                    value={newCompetition.description}
+                    onChange={handleInputChange}
+                    required
+                    className="bg-gray-100 text-gray-800 px-4 py-2 rounded-lg w-full"
+                  />
+                </div>
+
+                <div className="mb-4">
+                  <label className="block text-sm text-gray-700 mb-2">
+                    Registration Link
+                  </label>
+                  <input
+                    type="url"
+                    name="registrationLink"
+                    value={newCompetition.registrationLink}
+                    onChange={handleInputChange}
+                    required
+                    className="bg-gray-100 text-gray-800 px-4 py-2 rounded-lg w-full"
+                    placeholder="Enter registration URL"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-sm text-gray-700 mb-2">
+                    Upload Picture (JPG or PNG)
+                  </label>
+                  <input
+                    type="file"
+                    name="picture"
+                    accept="image/jpeg, image/png"
+                    onChange={handleFileChange}
+                    required
+                    className="bg-gray-100 text-gray-800 px-4 py-2 rounded-lg w-full"
+                  />
+                </div>
+
+                <div className="flex justify-between">
+                  <button
+                    type="button"
+                    onClick={() => setShowAddCompetitionModal(false)}
+                    className="bg-gray-500 text-white px-4 py-2 rounded-lg"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleAddCompetition}
+                    className="bg-blue-600 text-white px-4 py-2 rounded-lg"
+                  >
+                    {editingCompetition ? "Save Changes" : "Add Competition"}
+                  </button>
+                </div>
+              </form>
             </div>
-          )}
-        </main>
+          </div>
+        )}
       </div>
     </div>
   );

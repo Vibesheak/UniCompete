@@ -178,13 +178,14 @@ function UniversityPage() {
           </p>
           <div className="text-left text-gray-600 mb-4">
             <p>
-              <strong>Address:</strong> 123 University St, City, Country
+              <strong>Address:</strong> University St, Kelaniya, SriLanka
             </p>
             <p>
-              <strong>Email:</strong> contact@{university.toLowerCase()}.edu
+              <strong>Email:</strong> contact@{university.toLowerCase()}
+              .edu.ac.lk
             </p>
             <p>
-              <strong>Phone:</strong> +123 456 7890
+              <strong>Phone:</strong> +9477123456
             </p>
           </div>
 

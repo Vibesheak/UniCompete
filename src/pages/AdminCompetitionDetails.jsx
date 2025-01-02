@@ -18,21 +18,29 @@ function AdminCompetitionDetails() {
       username: "Nilo",
       email: "n@example.com",
       status: "Pending",
+      rating: 1.0,
+      review: "Looking forward to participating, but need more details.",
     },
     {
       username: "vibe_123",
       email: "v234@example.com",
       status: "Accepted",
+      rating: 5,
+      review: "Amazing event! Very well organized, had a great time.",
     },
     {
       username: "roman_CC",
       email: "roman@gmail.com",
       status: "Rejected",
+      rating: 2.0,
+      review: "Disappointed with the event, not what I expected.",
     },
     {
       username: "jana_thana",
       email: "jana@123example.com",
       status: "Pending",
+      rating: 3.0,
+      review: "Excited for the event! Hope it's as good as advertised.",
     },
   ]); // Sample registrations
 
@@ -50,6 +58,7 @@ function AdminCompetitionDetails() {
         schedule: "Registration Deadline: 2024-12-15, Event Date: 2024-12-20",
         rules: "Participants must be students, Original work only, etc.",
         image: bannerImage,
+        registerLink: "https://example.com/register", // Replace with the actual registration link
       },
       {
         id: 2,
@@ -63,6 +72,7 @@ function AdminCompetitionDetails() {
         schedule: "Registration Deadline: 2024-12-10, Event Date: 2024-12-25",
         rules: "Open to all students, Original art only, etc.",
         image: bannerImage,
+        registerLink: "https://example.com/register", // Replace with the actual registration link
       },
       {
         id: 3,
@@ -76,6 +86,7 @@ function AdminCompetitionDetails() {
         schedule: "Registration Deadline: 2024-12-10, Event Date: 2024-12-25",
         rules: "Open to all students, Original art only, etc.",
         image: bannerImage,
+        registerLink: "https://example.com/register", // Replace with the actual registration link
       },
       {
         id: 4,
@@ -89,6 +100,7 @@ function AdminCompetitionDetails() {
         schedule: "Registration Deadline: 2024-12-10, Event Date: 2024-12-25",
         rules: "Open to all students, Original art only, etc.",
         image: bannerImage,
+        registerLink: "https://example.com/register", // Replace with the actual registration link
       },
       {
         id: 5,
@@ -102,6 +114,7 @@ function AdminCompetitionDetails() {
         schedule: "Registration Deadline: 2024-12-10, Event Date: 2024-12-25",
         rules: "Open to all students, Original art only, etc.",
         image: bannerImage,
+        registerLink: "https://example.com/register", // Replace with the actual registration link
       },
       {
         id: 6,
@@ -115,6 +128,7 @@ function AdminCompetitionDetails() {
         schedule: "Registration Deadline: 2024-12-10, Event Date: 2024-12-25",
         rules: "Open to all students, Original art only, etc.",
         image: bannerImage,
+        registerLink: "https://example.com/register", // Replace with the actual registration link
       },
       {
         id: 7,
@@ -127,6 +141,7 @@ function AdminCompetitionDetails() {
         prizes: "First place: $800, Second place: $400, Third place: $200",
         schedule: "Registration Deadline: 2024-12-10, Event Date: 2024-12-25",
         rules: "Open to all students, Original art only, etc.",
+        registerLink: "https://example.com/register", // Replace with the actual registration link
         image: bannerImage,
       },
     ];
@@ -242,12 +257,21 @@ function AdminCompetitionDetails() {
                 />
               </div>
             )}
-            <button
-              className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-transform duration-300 hover:scale-105"
-              onClick={handleLike}
-            >
-              Join Now
-            </button>
+            <div key={competition.id} className="competition-card">
+              <button
+                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-transform duration-300 hover:scale-105"
+                onClick={() => {
+                  console.log("Register Link:", competition.registerLink); // Log the link
+                  if (competition.registerLink) {
+                    window.open(competition.registerLink, "_blank");
+                  } else {
+                    console.error("Register link is missing or invalid.");
+                  }
+                }}
+              >
+                Join Now
+              </button>
+            </div>
           </div>
         </div>
 
@@ -388,9 +412,6 @@ function AdminCompetitionDetails() {
                 <th className="py-3 px-6 text-left text-sm font-semibold text-gray-700">
                   Status
                 </th>
-                <th className="py-3 px-6 text-left text-sm font-semibold text-gray-700">
-                  Actions
-                </th>
               </tr>
             </thead>
             <tbody>
@@ -404,9 +425,6 @@ function AdminCompetitionDetails() {
                   </td>
                   <td className="py-3 px-6 text-sm text-gray-700">
                     {registration.email}
-                  </td>
-                  <td className="py-3 px-6 text-sm text-gray-700">
-                    {competition.name}
                   </td>
                   <td className="py-3 px-6 text-sm text-gray-700">
                     <span
@@ -439,6 +457,114 @@ function AdminCompetitionDetails() {
               ))}
             </tbody>
           </table>
+          {/* Reviews Table */}
+          <div className="mt-6 overflow-x-auto">
+            <table className="min-w-full bg-white rounded-lg shadow-lg">
+              <thead>
+                <tr className="bg-gray-100">
+                  <th className="py-3 px-6 text-left text-sm font-semibold text-gray-700">
+                    Username
+                  </th>
+                  <th className="py-3 px-6 text-left text-sm font-semibold text-gray-700">
+                    Email
+                  </th>
+                  <th className="py-3 px-6 text-left text-sm font-semibold text-gray-700">
+                    Rating
+                  </th>
+                  <th className="py-3 px-6 text-left text-sm font-semibold text-gray-700">
+                    Review
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {registrations.map((registration, index) => (
+                  <tr
+                    key={index}
+                    className="border-b hover:bg-gray-50 transition-colors duration-300"
+                  >
+                    <td className="py-3 px-6 text-sm text-gray-700">
+                      {registration.username}
+                    </td>
+                    <td className="py-3 px-6 text-sm text-gray-700">
+                      {registration.email}
+                    </td>
+                    <td className="py-3 px-6 text-sm text-gray-700">
+                      <div className="flex items-center">
+                        {/* Loop through 5 stars */}
+                        {[1, 2, 3, 4, 5].map((star) => {
+                          if (registration.rating >= star) {
+                            // Full star: if rating >= current star number
+                            return (
+                              <svg
+                                key={star}
+                                className="w-5 h-5 text-yellow-500"
+                                fill="currentColor"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 20 20"
+                                aria-hidden="true"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M10 15.27l5.18 3.09-1.64-6.93L19 6.24l-6.91-.58L10 0 7.91 5.66 1 6.24l4.46 5.19-1.64 6.93L10 15.27z"
+                                  clipRule="evenodd"
+                                />
+                              </svg>
+                            );
+                          } else if (
+                            registration.rating >= star - 0.5 &&
+                            registration.rating < star
+                          ) {
+                            // Half star: if rating is in the range between current star and half of it
+                            return (
+                              <svg
+                                key={star}
+                                className="w-5 h-5 text-yellow-500"
+                                fill="currentColor"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 20 20"
+                                aria-hidden="true"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M10 15.27l5.18 3.09-1.64-6.93L19 6.24l-6.91-.58L10 0 7.91 5.66 1 6.24l4.46 5.19-1.64 6.93L10 15.27z"
+                                  clipRule="evenodd"
+                                />
+                              </svg>
+                            );
+                          } else {
+                            // Empty star: if rating is less than current star
+                            return (
+                              <svg
+                                key={star}
+                                className="w-5 h-5 text-gray-300"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 20 20"
+                                aria-hidden="true"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M10 15.27l5.18 3.09-1.64-6.93L19 6.24l-6.91-.58L10 0 7.91 5.66 1 6.24l4.46 5.19-1.64 6.93L10 15.27z"
+                                  clipRule="evenodd"
+                                />
+                              </svg>
+                            );
+                          }
+                        })}
+                        <span className="ml-2 font-semibold text-gray-700">
+                          {registration.rating}/5
+                        </span>
+                      </div>
+                    </td>
+
+                    <td className="py-3 px-6 text-sm text-gray-700">
+                      {registration.review}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

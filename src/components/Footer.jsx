@@ -9,7 +9,7 @@ function Footer() {
         {/* Copyright Section */}
         <div className="mb-4">
           <p className="text-sm">
-            &copy; 2024 University Competition Management Platform. All rights
+            &copy; 2025 University Competition Management Platform. All rights
             reserved.
           </p>
         </div>
