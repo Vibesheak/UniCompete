@@ -300,12 +300,12 @@ function CompetitionDetails() {
         </div>
 
         {/* Show Form Button */}
-        <div className="mt-6">
+        <div className="mt-6 flex justify-center">
           <button
             onClick={handleFormToggle}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-transform duration-300 hover:scale-305"
+            className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-green-700 transition-transform duration-300 hover:scale-105 w-full max-w-xs"
           >
-            Show Form
+            Status Review Form
           </button>
         </div>
 
@@ -316,7 +316,7 @@ function CompetitionDetails() {
             <form>
               <div className="mb-4">
                 <label htmlFor="name" className="block text-gray-700">
-                  Name
+                  Username
                 </label>
                 <input
                   type="text"
@@ -326,6 +326,7 @@ function CompetitionDetails() {
                   onChange={handleInputChange}
                   className="w-full p-2 border rounded-lg"
                   placeholder="Enter your name"
+                  required
                 />
               </div>
               <div className="mb-4">
@@ -340,20 +341,7 @@ function CompetitionDetails() {
                   onChange={handleInputChange}
                   className="w-full p-2 border rounded-lg"
                   placeholder="Enter your email"
-                />
-              </div>
-              <div className="mb-4">
-                <label htmlFor="location" className="block text-gray-700">
-                  Location
-                </label>
-                <input
-                  type="text"
-                  id="location"
-                  name="location"
-                  value={formData.location}
-                  onChange={handleInputChange}
-                  className="w-full p-2 border rounded-lg"
-                  placeholder="Enter your location"
+                  required
                 />
               </div>
               <button

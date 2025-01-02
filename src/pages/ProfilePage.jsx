@@ -1,78 +1,68 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaListAlt, FaHeart, FaRegHeart } from "react-icons/fa"; // Importing the necessary icons
+import { FaListAlt, FaHeart, FaRegHeart } from "react-icons/fa";
 import profile from "./profile.jpg";
-import homeImage from "./home.jpeg"; // Ensure your profile image is here
+import homeImage from "./home.jpeg";
 
-// Function to get initials from the user's name
 const getInitials = (fullName) => {
   const nameParts = fullName.split(" ");
   return nameParts.map((part) => part.charAt(0).toUpperCase()).join("");
 };
 
 function ProfilePage() {
-  const navigate = useNavigate(); // Initialize useNavigate hook
+  const navigate = useNavigate();
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortCriterion, setSortCriterion] = useState("All");
   const [profileDropdownVisible, setProfileDropdownVisible] = useState(false);
-  const [favorites, setFavorites] = useState([]); // Initialize favorites state
-  const [showFavorites, setShowFavorites] = useState(false); // Initialize showFavorites state
+  const [favorites, setFavorites] = useState([]);
+  const [showFavorites, setShowFavorites] = useState(false);
 
   const user = {
     fullName: "Nilojitha Mariyathas",
     address: "123 Main St, Kelaniya, SriLanka",
     email: "n123@example.com",
     contactNumber: "+1234567890",
-    userType: "User", // Can be "User" or "Admin"
+    userType: "User",
     university: "University A",
-    profile: profile, // Placeholder image, can be changed to a URL if available
+    profile: profile,
   };
 
-  // Ref for the dropdown container to detect clicks outside
   const dropdownRef = useRef(null);
 
-  // Handle click outside to close dropdown
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setDropdownVisible(false); // Close dropdown if clicked outside
+        setDropdownVisible(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
-
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
-  const handleDropdownToggle = () => {
-    setDropdownVisible(!dropdownVisible);
-  };
+  const handleDropdownToggle = () => setDropdownVisible(!dropdownVisible);
 
   const handleSelectCategory = (category) => {
     setSelectedCategory(category);
-    setDropdownVisible(false); // Close dropdown after selecting category
+    setDropdownVisible(false);
   };
 
   const handleSortChange = (e) => {
     setSortCriterion(e.target.value);
-    setDropdownVisible(false); // Close dropdown after selecting sort option
+    setDropdownVisible(false);
   };
 
-  const handleViewDetails = (id) => {
-    navigate(`/competition/${id}`);
-  };
+  const handleViewDetails = (id) => navigate(`/competition/${id}`);
 
-  const handleProfileClick = () => {
+  const handleProfileClick = () =>
     setProfileDropdownVisible(!profileDropdownVisible);
-  };
 
-  const handleLogout = () => {
-    // Add logout logic here (e.g., clear session, redirect to login)
-    navigate("/login");
-  };
+  const handleLogout = () => navigate("/login");
+
+  const handleUniversityClick = (university) =>
+    navigate(`/university/${university}`);
 
   const handleFavoriteToggle = (competitionId) => {
     setFavorites((prevFavorites) =>
@@ -82,9 +72,7 @@ function ProfilePage() {
     );
   };
 
-  const handleShowFavorites = () => {
-    setShowFavorites(!showFavorites);
-  };
+  const handleShowFavorites = () => setShowFavorites(!showFavorites);
 
   const competitions = [
     {
@@ -152,6 +140,10 @@ function ProfilePage() {
     },
   ];
 
+  const universities = [
+    ...new Set(competitions.map((comp) => comp.location)),
+  ].sort((a, b) => a.localeCompare(b));
+
   const uniqueCompetitionNames = [
     "All",
     ...Array.from(new Set(competitions.map((comp) => comp.name))),
@@ -167,11 +159,11 @@ function ProfilePage() {
       case "Name":
         return a.name.localeCompare(b.name);
       case "Date":
-        return new Date(a.date) - new Date(b.date); // Sort by Date (recent first)
+        return new Date(a.date) - new Date(b.date);
       case "Location":
         return a.location.localeCompare(b.location);
       case "Rating":
-        return b.rating - a.rating; // Sort by Rating (descending)
+        return b.rating - a.rating;
       default:
         return 0;
     }
@@ -231,137 +223,146 @@ function ProfilePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 text-gray-900">
-      <div className="flex">
-        <main className="flex-1 p-6">
-          <header className="flex justify-between items-center mb-8">
-            <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 text-center flex-grow">
-              Explore Competitions
-            </h1>
+    <div className="min-h-screen flex flex-col md:flex-row bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 text-gray-900">
+      <aside className="w-full md:w-64 bg-white shadow-md p-4 fixed md:static h-auto md:h-full overflow-y-auto">
+        <h2 className="text-xl font-semibold mb-4">Universities</h2>
+        <ul>
+          {universities.map((university) => (
+            <li key={university}>
+              <button
+                onClick={() => handleUniversityClick(university)}
+                className="block w-full text-left px-4 py-2 mb-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+              >
+                {university}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </aside>
 
-            {/* Button to show only favorites */}
+      <main className="flex-1 p-4 md:p-6">
+        <header className="flex flex-col sm:flex-row justify-between items-center mb-6">
+          <h1 className="text-3xl sm:text-4xl font-bold text-center mb-4 sm:mb-0">
+            Explore Competitions
+          </h1>
+
+          <button
+            onClick={handleShowFavorites}
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition duration-300 mr-4 sm:mb-0"
+          >
+            {showFavorites ? "Show All" : "Show Favorites"}
+          </button>
+
+          <div ref={dropdownRef} className="relative">
             <button
-              onClick={handleShowFavorites}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition duration-300 mr-4"
+              onClick={handleDropdownToggle}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition duration-300"
             >
-              {showFavorites ? "Show All" : "Show Favorites"}
+              Filter Competitions
             </button>
 
-            {/* Sort/Filter Dropdown */}
-            <div ref={dropdownRef} className="relative">
-              <button
-                onClick={handleDropdownToggle}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition duration-300"
-              >
-                Filter Competitions
-              </button>
+            {dropdownVisible && (
+              <div className="absolute top-12 right-0 w-56 bg-white shadow-lg rounded-lg p-4 z-10">
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm text-gray-700 mb-2">
+                      Select Category
+                    </label>
+                    <select
+                      value={selectedCategory}
+                      onChange={(e) => handleSelectCategory(e.target.value)}
+                      className="bg-blue-100 text-gray-800 px-4 py-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      {uniqueCompetitionNames.map((competitionName) => (
+                        <option key={competitionName} value={competitionName}>
+                          {competitionName}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
 
-              {dropdownVisible && (
-                <div className="absolute top-12 right-0 w-56 bg-white shadow-lg rounded-lg p-4 z-10">
-                  <div className="space-y-4">
-                    {/* Category Dropdown */}
-                    <div>
-                      <label className="block text-sm text-gray-700 mb-2">
-                        Select Category
-                      </label>
-                      <select
-                        value={selectedCategory}
-                        onChange={(e) => handleSelectCategory(e.target.value)}
-                        className="bg-blue-100 text-gray-800 px-4 py-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      >
-                        {uniqueCompetitionNames.map((competitionName) => (
-                          <option key={competitionName} value={competitionName}>
-                            {competitionName}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    {/* Sort By Dropdown */}
-                    <div>
-                      <label className="block text-sm text-gray-700 mb-2">
-                        Sort By
-                      </label>
-                      <select
-                        value={sortCriterion}
-                        onChange={handleSortChange}
-                        className="bg-blue-100 text-gray-800 px-4 py-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      >
-                        <option value="All">All</option>
-                        <option value="Name">Name</option>
-                        <option value="Date">Date</option>
-                        <option value="Location">Location</option>
-                        <option value="Rating">Rating</option>
-                      </select>
-                    </div>
+                  <div>
+                    <label className="block text-sm text-gray-700 mb-2">
+                      Sort By
+                    </label>
+                    <select
+                      value={sortCriterion}
+                      onChange={handleSortChange}
+                      className="bg-blue-100 text-gray-800 px-4 py-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="All">All</option>
+                      <option value="Name">Name</option>
+                      <option value="Date">Date</option>
+                      <option value="Location">Location</option>
+                      <option value="Rating">Rating</option>
+                    </select>
                   </div>
                 </div>
-              )}
-            </div>
-          </header>
+              </div>
+            )}
+          </div>
+        </header>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            {(showFavorites
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          {(showFavorites
+            ? competitions.filter((comp) => favorites.includes(comp.id))
+            : sortedCompetitions
+          ).length === 0 ? (
+            <p className="text-center text-gray-600">
+              No competitions available.
+            </p>
+          ) : (
+            (showFavorites
               ? competitions.filter((comp) => favorites.includes(comp.id))
               : sortedCompetitions
-            ).length === 0 ? (
-              <p className="text-center text-gray-600">
-                No competitions found.
-              </p>
-            ) : (
-              (showFavorites
-                ? competitions.filter((comp) => favorites.includes(comp.id))
-                : sortedCompetitions
-              ).map((competition) => (
-                <div
-                  key={competition.id}
-                  className="bg-white p-6 rounded-lg shadow-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-[0_10px_20px_rgba(0,0,0,0.3),0_6px_6px_rgba(0,0,0,0.2)]"
-                >
-                  <img
-                    src={competition.image} // This is the imported image
-                    alt={competition.name}
-                    className="w-full h-32 object-cover rounded-lg mb-4 shadow-lg transition-transform transform hover:scale-105"
-                  />
-                  <h2 className="text-xl font-semibold text-gray-800 mb-2">
+            ).map((competition) => (
+              <div
+                key={competition.id}
+                className="bg-white rounded-lg shadow-md overflow-hidden"
+              >
+                <img
+                  src={competition.image}
+                  alt={competition.name}
+                  className="w-full h-40 object-cover"
+                />
+                <div className="p-4">
+                  <h3 className="text-lg font-semibold mb-2">
                     {competition.name}
-                  </h2>
-                  <p className="text-gray-600 mb-2 text-sm">
+                  </h3>
+                  <p className="text-sm text-gray-600 mb-2">
+                    {competition.date}
+                  </p>
+                  <p className="text-sm text-gray-600 mb-2">
+                    {competition.location}
+                  </p>
+                  <p className="text-sm text-gray-800 mb-4">
                     {competition.description}
                   </p>
-                  <div className="flex justify-between items-center mb-4">
-                    <span className="text-sm text-gray-500">
-                      {competition.date}
-                    </span>
-                    <span className="text-sm text-gray-500">
-                      {competition.location}
-                    </span>
+                  <div className="flex items-center justify-between">
+                    {renderStars(competition.rating)}
+                    <button
+                      onClick={() => handleFavoriteToggle(competition.id)}
+                      className="text-red-500 hover:text-red-600 transition"
+                    >
+                      {favorites.includes(competition.id) ? (
+                        <FaHeart />
+                      ) : (
+                        <FaRegHeart />
+                      )}
+                    </button>
                   </div>
-                  <div className="mb-4">{renderStars(competition.rating)}</div>
-
-                  {/* Favorite Button */}
-                  <button
-                    onClick={() => handleFavoriteToggle(competition.id)}
-                    className="absolute top-4 right-4 text-2xl text-red-500"
-                  >
-                    {favorites.includes(competition.id) ? (
-                      <FaHeart />
-                    ) : (
-                      <FaRegHeart />
-                    )}
-                  </button>
-
                   <button
                     onClick={() => handleViewDetails(competition.id)}
-                    className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-300"
+                    className="mt-4 w-full bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition"
                   >
                     View Details
                   </button>
                 </div>
-              ))
-            )}
-          </div>
-        </main>
-      </div>
+              </div>
+            ))
+          )}
+        </div>
+      </main>
 
       <div
         className="absolute top-4 right-4 cursor-pointer"

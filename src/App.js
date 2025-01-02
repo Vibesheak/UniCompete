@@ -31,6 +31,7 @@ function App() {
             <Route path="/userpage" element={<UserPage />} />
             <Route path="/adminpage" element={<AdminPage/>}/>
             <Route path="/admincompetition/:id" element={<AdminCompetitionDetails/>}/>
+           
   {/* Add the route for CompetitionDetails */}
           </Routes>
         </main>
