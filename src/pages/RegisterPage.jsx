@@ -38,6 +38,10 @@ function RegisterPage() {
       }));
     }
   };
+  const handleRegisterClick = () => {
+    // Navigate to the login page
+    navigate("/login");
+  };
 
   const validateRegistration = () => {
     const errors = {};
@@ -267,7 +271,8 @@ function RegisterPage() {
             </div>
 
             <button
-              type="submit"
+              type="button"
+              onClick={handleRegisterClick}
               className="w-full py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition-all"
             >
               Register

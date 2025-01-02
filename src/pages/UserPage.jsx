@@ -21,6 +21,11 @@ function UserPage() {
     navigate("/login"); // Navigate to the login page
   };
 
+  const handleHome = () => {
+    // Add logout logic here (e.g., clearing tokens, user context, etc.)
+    navigate("/"); // Navigate to the login page
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div
@@ -38,9 +43,19 @@ function UserPage() {
             {user.fullName}
           </h2>
           <p className="text-sm text-gray-500 mb-6">{user.userType}</p>
+
+          {/* New Button */}
+          <button
+            onClick={handleHome}
+            className="mt-6 w-3/4 bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition duration-300"
+          >
+            Go To Home
+          </button>
+
+          {/* Logout Button */}
           <button
             onClick={handleLogout}
-            className="mt-6 w-3/4 bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition duration-300"
+            className="mt-4 w-3/4 bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition duration-300"
           >
             Logout
           </button>
