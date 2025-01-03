@@ -27,17 +27,6 @@ function RegisterPage() {
     }));
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file && (file.type === "image/jpeg" || file.type === "image/png")) {
-      setFormData((prevData) => ({ ...prevData, profilePicture: file }));
-    } else {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        profilePicture: "Only JPEG or PNG files are allowed.",
-      }));
-    }
-  };
   const handleRegisterClick = () => {
     // Navigate to the login page
     navigate("/verify");
@@ -252,21 +241,6 @@ function RegisterPage() {
               </select>
               {errors.institute && (
                 <p className="text-red-500 text-sm mt-1">{errors.institute}</p>
-              )}
-            </div>
-
-            <div className="input-box relative mb-4">
-              <input
-                type="file"
-                name="profilePicture"
-                accept="image/jpeg, image/png"
-                onChange={handleFileChange}
-                className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
-              />
-              {errors.profilePicture && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.profilePicture}
-                </p>
               )}
             </div>
 

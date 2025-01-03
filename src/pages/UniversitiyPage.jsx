@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom"; // Import useNavigate
 import homeImage from "./home.jpeg"; // Replace with an actual image if needed
-import universityImage from "./profile.jpg"; // Replace with an actual image if needed
 import { FaFacebook, FaTwitter, FaLinkedin } from "react-icons/fa"; // Import social media icons
 
 function UniversityPage() {
   const { university } = useParams(); // Get the university name from the URL
   const [competitions, setCompetitions] = useState([]);
   const navigate = useNavigate(); // Initialize the useNavigate hook
-
+  const getInitials = (name) => {
+    return name
+      .split(" ")
+      .map((word) => word[0])
+      .join("")
+      .toUpperCase();
+  };
   useEffect(() => {
     // Filter competitions by the selected university
     const allCompetitions = [
@@ -161,11 +166,12 @@ function UniversityPage() {
       <div className="flex flex-col md:flex-row p-6 gap-6">
         {/* Left side: University Profile */}
         <div className="w-full md:w-1/3 bg-white rounded-lg shadow-md p-6 flex flex-col items-center">
-          <img
-            src={universityImage}
-            alt="University Profile"
-            className="w-32 h-32 object-cover rounded-full mb-4"
-          />
+          <div
+            className="w-32 h-32 rounded-full flex items-center justify-center text-white font-bold text-2xl"
+            style={{ backgroundColor: "#4A5568" }} // Default background color
+          >
+            {getInitials(university)}
+          </div>
           <h2 className="text-2xl font-semibold text-gray-800 mb-2">
             {university}
           </h2>
@@ -215,10 +221,10 @@ function UniversityPage() {
           </div>
 
           <button
-            onClick={() => (window.location.href = "/")}
+            onClick={() => navigate(-1)} // Navigate to the previous page
             className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
           >
-            Go to Homepage
+            Go Back
           </button>
         </div>
 

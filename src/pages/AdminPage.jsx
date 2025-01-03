@@ -7,7 +7,7 @@ import {
   FaEdit,
   FaTrashAlt,
 } from "react-icons/fa"; // Importing necessary icons
-import profile from "./profile.jpg";
+
 import homeImage from "./home.jpeg"; // Ensure your profile image is here
 
 // Function to get initials from the user's name
@@ -104,12 +104,6 @@ function AdminPage() {
 
   const user = {
     fullName: "Nilojitha Mariyathas",
-    address: "123 Main St, Kelaniya, SriLanka",
-    email: "n123@example.com",
-    contactNumber: "+1234567890",
-    userType: "Admin",
-    university: "University A",
-    profile: profile,
   };
 
   const dropdownRef = useRef(null);
@@ -521,23 +515,11 @@ function AdminPage() {
           onClick={handleProfileClick}
         >
           <div className="relative">
-            {/* Profile Circle with Initials or Image */}
-            <div
-              className={`w-16 h-16 rounded-full flex items-center justify-center text-xl font-semibold text-white ${
-                user.profile
-                  ? "bg-blue-500" // If profile picture exists, show a blue background
-                  : "bg-indigo-600" // Default background if no picture
-              }`}
-            >
-              {user.profile ? (
-                <img
-                  src={user.profile}
-                  alt="Profile"
-                  className="w-full h-full object-cover rounded-full"
-                />
-              ) : (
-                getInitials(user.fullName)
-              )}
+            <div className="relative">
+              {/* Profile Circle with Initials */}
+              <div className="w-16 h-16 rounded-full flex items-center justify-center text-xl font-semibold text-white bg-indigo-600">
+                {getInitials(user.fullName)}
+              </div>
             </div>
 
             {/* Profile Dropdown */}

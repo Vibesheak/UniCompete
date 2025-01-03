@@ -1,6 +1,5 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import profile from "./profile.jpg";
 
 function UserPage() {
   // Replace this with the actual user data fetched from context, state, or API
@@ -11,7 +10,6 @@ function UserPage() {
     address: "123 Main St, Kelaniya",
     university: "A University",
     userType: "Student",
-    profilePicture: profile, // Placeholder profile picture URL
   };
 
   const navigate = useNavigate();
@@ -22,8 +20,15 @@ function UserPage() {
   };
 
   const handleHome = () => {
-    // Add logout logic here (e.g., clearing tokens, user context, etc.)
-    navigate("/"); // Navigate to the login page
+    navigate(-1); // Go back to the previous page in history
+  };
+
+  const getInitials = (name) => {
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase();
   };
 
   return (
@@ -34,22 +39,23 @@ function UserPage() {
       >
         {/* Left Section */}
         <div className="w-full md:w-1/2 flex flex-col items-center border-b md:border-b-0 md:border-r-4 border-gray-500 pr-0 md:pr-6 pb-6 md:pb-0">
-          <img
-            src={user.profilePicture}
-            alt="Profile"
-            className="w-24 h-24 md:w-32 md:h-32 rounded-full shadow-md mb-4"
-          />
+          <div
+            className="w-24 h-24 md:w-32 md:h-32 rounded-full shadow-md mb-4 flex items-center justify-center text-white font-bold text-2xl"
+            style={{ backgroundColor: "#6B7280" }} // Default background color
+          >
+            {getInitials(user.fullName)}
+          </div>
           <h2 className="text-2xl md:text-3xl font-extrabold text-blue-900 text-center mb-2">
             {user.fullName}
           </h2>
           <p className="text-sm text-gray-500 mb-6">{user.userType}</p>
 
-          {/* New Button */}
+          {/* Home Button */}
           <button
             onClick={handleHome}
             className="mt-6 w-3/4 bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition duration-300"
           >
-            Go To Home
+            Go Back
           </button>
 
           {/* Logout Button */}

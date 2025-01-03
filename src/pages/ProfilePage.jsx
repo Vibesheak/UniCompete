@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaListAlt, FaHeart, FaRegHeart } from "react-icons/fa";
-import profile from "./profile.jpg";
 import homeImage from "./home.jpeg";
 
 const getInitials = (fullName) => {
@@ -21,7 +20,6 @@ function ProfilePage() {
 
   const user = {
     fullName: "Nilojitha Mariyathas",
-    profile: profile,
   };
 
   const dropdownRef = useRef(null);
@@ -416,23 +414,11 @@ function ProfilePage() {
         onClick={handleProfileClick}
       >
         <div className="relative">
-          {/* Profile Circle with Initials or Image */}
-          <div
-            className={`w-16 h-16 rounded-full flex items-center justify-center text-xl font-semibold text-white ${
-              user.profile
-                ? "bg-blue-500" // If profile picture exists, show a blue background
-                : "bg-indigo-600" // Default background if no picture
-            }`}
-          >
-            {user.profile ? (
-              <img
-                src={user.profile}
-                alt="Profile"
-                className="w-full h-full object-cover rounded-full"
-              />
-            ) : (
-              getInitials(user.fullName)
-            )}
+          <div className="relative">
+            {/* Profile Circle with Initials */}
+            <div className="w-16 h-16 rounded-full flex items-center justify-center text-xl font-semibold text-white bg-indigo-600">
+              {getInitials(user.fullName)}
+            </div>
           </div>
 
           {/* Profile Dropdown */}
