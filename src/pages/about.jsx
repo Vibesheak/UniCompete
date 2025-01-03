@@ -2,8 +2,33 @@ import React, { useState } from "react";
 
 function About() {
   const [rating, setRating] = useState(0);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [contact, setContact] = useState("");
+  const [review, setReview] = useState("");
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   const handleStarClick = (star) => setRating(star);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Validate fields
+    if (!name || !email || !contact || !review || rating === 0) {
+      alert("Please fill in all fields and provide a rating.");
+      return;
+    }
+
+    // Show success message
+    setShowSuccessMessage(true);
+
+    // Clear form fields
+    setName("");
+    setEmail("");
+    setContact("");
+    setReview("");
+    setRating(0);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 flex items-center justify-center p-4">
@@ -31,7 +56,10 @@ function About() {
           Leave a Review
         </h2>
 
-        <form className="space-y-6 bg-blue-100 p-4 sm:p-8 rounded-xl shadow-xl transform transition-all duration-500 hover:scale-105">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-6 bg-blue-100 p-4 sm:p-8 rounded-xl shadow-xl transform transition-all duration-500 hover:scale-105"
+        >
           {/* Name Field */}
           <div>
             <label
@@ -43,6 +71,8 @@ function About() {
             <input
               id="name"
               type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-700 focus:ring-2 focus:ring-blue-500"
               placeholder="Enter your name"
             />
@@ -59,6 +89,8 @@ function About() {
             <input
               id="email"
               type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-700 focus:ring-2 focus:ring-blue-500"
               placeholder="Enter your email"
             />
@@ -75,6 +107,8 @@ function About() {
             <input
               id="contact"
               type="tel"
+              value={contact}
+              onChange={(e) => setContact(e.target.value)}
               className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-700 focus:ring-2 focus:ring-blue-500"
               placeholder="Enter your contact number"
             />
@@ -91,6 +125,8 @@ function About() {
             <textarea
               id="review"
               rows="3"
+              value={review}
+              onChange={(e) => setReview(e.target.value)}
               className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-700 focus:ring-2 focus:ring-blue-500"
               placeholder="Write your review here..."
             />
@@ -131,6 +167,13 @@ function About() {
             Submit Review 🚀
           </button>
         </form>
+
+        {/* Success Message */}
+        {showSuccessMessage && (
+          <div className="mt-6 text-center text-green-600 font-semibold">
+            Your review has been successfully submitted! 🎉
+          </div>
+        )}
       </div>
     </div>
   );

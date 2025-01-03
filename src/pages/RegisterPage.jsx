@@ -40,7 +40,7 @@ function RegisterPage() {
   };
   const handleRegisterClick = () => {
     // Navigate to the login page
-    navigate("/login");
+    navigate("/verify");
   };
 
   const validateRegistration = () => {

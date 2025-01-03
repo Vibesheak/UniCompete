@@ -228,7 +228,7 @@ function ProfilePage() {
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 text-gray-900">
       {/* Sidebar */}
-      <aside className="w-64 bg-white shadow-md p-4">
+      <aside className="w-64 bg-blue-100 shadow-md p-4">
         <h2 className="text-xl font-semibold mb-4">Universities</h2>
         <ul>
           {universities.map((university) => (
