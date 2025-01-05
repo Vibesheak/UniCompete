@@ -7,6 +7,7 @@ function HomePage() {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [filters, setFilters] = useState({ category: "All", sort: "All" });
   const [universities, setUniversities] = useState([]);
+
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -40,16 +41,12 @@ function HomePage() {
 
   const handleViewDetails = () => navigate("/login");
 
-  const handleUniversityClick = (university) => {
-    navigate(`/university/${university}`);
-  };
-
   const competitions = [
     {
       id: 1,
       name: "Tech Innovation Contest",
       date: "2024-12-20",
-      location: "University A",
+      location: "University of Peradeniya",
       description: "Showcase innovative AI solutions.",
       rating: 5.0,
       image: homeImage,
@@ -58,7 +55,7 @@ function HomePage() {
       id: 2,
       name: "Art and Design Exhibition",
       date: "2024-12-25",
-      location: "University B",
+      location: "University of Kelaniya",
       description: "A creative arts exhibition.",
       rating: 3.0,
       image: homeImage,
@@ -67,7 +64,7 @@ function HomePage() {
       id: 3,
       name: "Science Quiz Challenge",
       date: "2025-01-10",
-      location: "University C",
+      location: "University of Ruhuna",
       description: "Test scientific knowledge.",
       rating: 2.0,
       image: homeImage,
@@ -76,7 +73,7 @@ function HomePage() {
       id: 4,
       name: "Innovation Showcase",
       date: "2025-02-15",
-      location: "University D",
+      location: "University of Kelaniya",
       description: "Display your ideas and innovations.",
       rating: 4.5,
       image: homeImage,
@@ -85,7 +82,7 @@ function HomePage() {
       id: 5,
       name: "Tech Marathon",
       date: "2025-03-10",
-      location: "University F",
+      location: "University of Kelaniya",
       description: "Solve real-world tech problems.",
       rating: 2.5,
       image: homeImage,
@@ -94,16 +91,16 @@ function HomePage() {
       id: 6,
       name: "Tech Marathon",
       date: "2025-05-10",
-      location: "University C",
+      location: "University Jaffna",
       description: "Solve real-world tech problems.",
-      rating: 1.5,
+      rating: 4.5,
       image: homeImage,
     },
     {
       id: 7,
       name: "Tech Innovation Contest",
       date: "2024-12-18",
-      location: "University E",
+      location: "University Colombo",
       description: "Showcase innovative AI solutions.",
       rating: 4.5,
       image: homeImage,
@@ -128,33 +125,78 @@ function HomePage() {
         return a.name.localeCompare(b.name);
       case "Date":
         return new Date(a.date) - new Date(b.date);
-      case "Location":
-        return a.location.localeCompare(b.location);
       case "Rating":
         return b.rating - a.rating;
       default:
         return 0;
     }
   });
+  const renderStars = (rating) => {
+    const fullStars = Math.floor(rating);
+    const halfStar = rating % 1 !== 0;
+    const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+
+    return (
+      <div className="flex items-center">
+        {[...Array(fullStars)].map((_, index) => (
+          <svg
+            key={`full-${index}`}
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            className="w-5 h-5 text-yellow-500"
+            viewBox="0 0 20 20"
+          >
+            <path d="M10 15l-3.09 1.63.59-3.45L4 8.27l3.46-.28L10 5l1.54 2.99 3.46.28-2.5 4.91.59 3.45L10 15z" />
+          </svg>
+        ))}
+        {halfStar && (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            className="w-5 h-5 text-yellow-500"
+            viewBox="0 0 20 20"
+          >
+            <defs>
+              <linearGradient id="half-star" x1="0" x2="1" y1="0" y2="0">
+                <stop offset="50%" stopColor="currentColor" />
+                <stop offset="50%" stopColor="transparent" />
+              </linearGradient>
+            </defs>
+            <path
+              d="M10 15l-3.09 1.63.59-3.45L4 8.27l3.46-.28L10 5l1.54 2.99 3.46.28-2.5 4.91.59 3.45L10 15z"
+              fill="url(#half-star)"
+            />
+          </svg>
+        )}
+        {[...Array(emptyStars)].map((_, index) => (
+          <svg
+            key={`empty-${index}`}
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            stroke="currentColor"
+            className="w-5 h-5 text-gray-400"
+            viewBox="0 0 20 20"
+          >
+            <path d="M10 15l-3.09 1.63.59-3.45L4 8.27l3.46-.28L10 5l1.54 2.99 3.46.28-2.5 4.91.59 3.45L10 15z" />
+          </svg>
+        ))}
+      </div>
+    );
+  };
 
   return (
-    <div className="min-h-screen flex bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 text-gray-900">
-      {/* Sidebar */}
-      <aside className="w-64 bg-blue-100 shadow-md p-4">
-        <h2 className="text-xl font-semibold mb-4">Universities</h2>
-        <ul>
-          {universities.map((university) => (
-            <li key={university}>
-              <button
-                onClick={() => handleUniversityClick(university)}
-                className="block w-full text-left px-4 py-2 mb-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-              >
-                {university}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </aside>
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 text-gray-900">
+      {/* Home Image */}
+      <div className="relative h-80">
+        <img
+          src={homeImage}
+          alt="Home"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-50 text-white text-3xl font-bold">
+          Welcome to University Competitions
+        </div>
+      </div>
 
       {/* Main Content */}
       <div className="flex-1 p-6 md:p-6">
@@ -238,7 +280,7 @@ function HomePage() {
                     <option value="All">All</option>
                     <option value="Name">Name</option>
                     <option value="Date">Date</option>
-                    <option value="Location">Location</option>
+
                     <option value="Rating">Rating</option>
                   </select>
                 </div>
@@ -265,6 +307,9 @@ function HomePage() {
               <div className="flex justify-between items-center mb-4">
                 <span className="text-sm text-gray-500">{comp.date}</span>
                 <span className="text-sm text-gray-500">{comp.location}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                {renderStars(comp.rating)}
               </div>
               <button
                 onClick={handleViewDetails}

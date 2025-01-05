@@ -32,7 +32,7 @@ function App() {
             <Route path="/userpage" element={<UserPage />} />
             <Route path="/adminpage" element={<AdminPage/>}/>
             <Route path="/admincompetition/:id" element={<AdminCompetitionDetails/>}/>
-            <Route path="university/:university" element={<UniversitiyPage/>}/>
+            <Route path="/university/:university" element={<UniversitiyPage/>}/>
            
   {/* Add the route for CompetitionDetails */}
           </Routes>

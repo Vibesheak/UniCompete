@@ -62,9 +62,6 @@ function ProfilePage() {
 
   const handleLogout = () => navigate("/login");
 
-  const handleUniversityClick = (university) =>
-    navigate(`/university/${university}`);
-
   const handleFavoriteToggle = (competitionId) => {
     setFavorites((prevFavorites) =>
       prevFavorites.includes(competitionId)
@@ -80,7 +77,7 @@ function ProfilePage() {
       id: 1,
       name: "Tech Innovation Contest",
       date: "2024-12-20",
-      location: "University A",
+      location: "University of Peradeniya",
       description: "Showcase innovative AI solutions.",
       rating: 5.0,
       image: homeImage,
@@ -88,8 +85,8 @@ function ProfilePage() {
     {
       id: 2,
       name: "Art and Design Exhibition",
-      date: "2024-12-05",
-      location: "University B",
+      date: "2024-12-25",
+      location: "University of Kelaniya",
       description: "A creative arts exhibition.",
       rating: 3.0,
       image: homeImage,
@@ -98,7 +95,7 @@ function ProfilePage() {
       id: 3,
       name: "Science Quiz Challenge",
       date: "2025-01-10",
-      location: "University C",
+      location: "University of Ruhuna",
       description: "Test scientific knowledge.",
       rating: 2.0,
       image: homeImage,
@@ -107,7 +104,7 @@ function ProfilePage() {
       id: 4,
       name: "Innovation Showcase",
       date: "2025-02-15",
-      location: "University D",
+      location: "University of Kelaniya",
       description: "Display your ideas and innovations.",
       rating: 4.5,
       image: homeImage,
@@ -116,7 +113,7 @@ function ProfilePage() {
       id: 5,
       name: "Tech Marathon",
       date: "2025-03-10",
-      location: "University F",
+      location: "Wayamba University of Sri Lanka",
       description: "Solve real-world tech problems.",
       rating: 2.5,
       image: homeImage,
@@ -125,7 +122,7 @@ function ProfilePage() {
       id: 6,
       name: "Tech Marathon",
       date: "2025-05-10",
-      location: "University C",
+      location: "University of Moratuwa",
       description: "Solve real-world tech problems.",
       rating: 1.5,
       image: homeImage,
@@ -134,16 +131,12 @@ function ProfilePage() {
       id: 7,
       name: "Tech Innovation Contest",
       date: "2024-12-18",
-      location: "University E",
+      location: "University Colombo",
       description: "Showcase innovative AI solutions.",
       rating: 4.5,
       image: homeImage,
     },
   ];
-
-  const universities = [
-    ...new Set(competitions.map((comp) => comp.location)),
-  ].sort((a, b) => a.localeCompare(b));
 
   const uniqueCompetitionNames = [
     "All",
@@ -161,8 +154,6 @@ function ProfilePage() {
         return a.name.localeCompare(b.name);
       case "Date":
         return new Date(a.date) - new Date(b.date);
-      case "Location":
-        return a.location.localeCompare(b.location);
       case "Rating":
         return b.rating - a.rating;
       default:
@@ -225,23 +216,6 @@ function ProfilePage() {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 text-gray-900">
-      {/* Sidebar */}
-      <aside className="w-64 bg-blue-100 shadow-md p-4">
-        <h2 className="text-xl font-semibold mb-4">Universities</h2>
-        <ul>
-          {universities.map((university) => (
-            <li key={university}>
-              <button
-                onClick={() => handleUniversityClick(university)}
-                className="block w-full text-left px-4 py-2 mb-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-              >
-                {university}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </aside>
-
       <main className="flex-1 p-6 md:p-6">
         <form class="max-w-md mx-auto mt-4">
           <label
@@ -338,7 +312,6 @@ function ProfilePage() {
                       <option value="All">All</option>
                       <option value="Name">Name</option>
                       <option value="Date">Date</option>
-                      <option value="Location">Location</option>
                       <option value="Rating">Rating</option>
                     </select>
                   </div>
