@@ -7,3 +7,12 @@ module.exports = {
   },
   plugins: [], // Add Tailwind plugins here
 };
+module.exports = {
+  content: [
+    './src/**/*.{html,js,jsx,ts,tsx}',  // Make sure React files are included here
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}

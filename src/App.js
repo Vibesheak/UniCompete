@@ -20,7 +20,14 @@ function App() {
     <Router>
       <div className="App">
         <Header />
-        <main className="container mx-auto p-4">
+        <main
+  className="w-full"
+  style={{
+    marginTop: "0.5cm",
+    marginBottom: "0.5cm",
+
+  }}
+>
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />

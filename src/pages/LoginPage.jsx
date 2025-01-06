@@ -102,34 +102,25 @@ function LoginPage() {
 
       <div className="relative w-full max-w-8xl p-8 rounded-2xl shadow-2xl bg-blue-100">
         <div className="flex flex-col md:flex-row overflow-hidden rounded-xl">
-          <div className="w-full md:w-1/2 flex flex-col justify-center items-center bg-gradient-to-r from-blue-500 via-blue-300 to-blue-100 text-white p-6 relative">
+          <div className="w-full md:w-1/2 flex flex-col justify-center items-center bg-gradient-to-r from-blue-300 via-blue-100 to-blue-100 text-white p-6 relative">
             <div className="absolute inset-y-0 right-0 w-24 bg-white/10 rounded-full blur-3xl"></div>
 
             <div className="flex flex-col items-center justify-center">
               <h1
-                className="text-3xl font-bold mb-2 animate-pulse"
+                className="text-3xl font-bold mb-2 animate-pulse text-blue-800"
                 style={{ marginTop: "3rem" }}
               >
                 W E L C O M E
               </h1>
 
               <p
-                className="text-lg mb-4 text-center animate-pulse"
+                className="text-lg mb-4 text-center animate-pulse text-blue-800"
                 style={{ marginTop: "1rem" }}
               >
                 Log in now to access the ultimate hub for university
                 competitions. Manage your participation, track progress, and
                 connect with a thriving competitive community!
               </p>
-
-              {/* Video Section */}
-              <div className="w-100 h-100 mb-4" style={{ marginTop: "0rem" }}>
-                <img
-                  src="/videos/img2.png" // Replace this with the actual image path
-                  alt="Description of the image"
-                  className="w-full h-full object-cover"
-                />
-              </div>
             </div>
           </div>
 

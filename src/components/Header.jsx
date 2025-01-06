@@ -54,9 +54,9 @@ function Header() {
           to="/"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          className={`text-3xl md:text-4xl font-medium tracking-tight text-white transition-all duration-300 transform ${
+          className={`text-5xl md:text-6xl font-extrabold tracking-tight transition-all duration-300 transform ${
             isHovered
-              ? "bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 text-transparent bg-clip-text"
+              ? "bg-gradient-to-r from-blue-500 via-blue-600 to-blue-800 text-transparent bg-clip-text"
               : "text-white"
           }`}
         >
@@ -84,19 +84,19 @@ function Header() {
         >
           <Link
             to="/"
-            className="block text-white hover:text-blue-300 transition-all duration-200 transform hover:scale-105 px-3 py-2 rounded-md"
+            className="block text-xl font-semibold text-white hover:text-blue-300 transition-all duration-300 transform hover:scale-110 px-4 py-3 rounded-lg shadow-lg hover:shadow-xl"
           >
             Home
           </Link>
           <Link
             to="/login"
-            className="block text-white hover:text-blue-300 transition-all duration-200 transform hover:scale-105 px-3 py-2 rounded-md"
+            className="block text-xl font-semibold text-white hover:text-blue-300 transition-all duration-300 transform hover:scale-110 px-4 py-3 rounded-lg shadow-lg hover:shadow-xl"
           >
             Login
           </Link>
           <Link
             to="/about"
-            className="block text-white hover:text-blue-300 transition-all duration-200 transform hover:scale-105 px-3 py-2 rounded-md"
+            className="block text-xl font-semibold text-white hover:text-blue-300 transition-all duration-300 transform hover:scale-110 px-4 py-3 rounded-lg shadow-lg hover:shadow-xl"
           >
             About Us
           </Link>
@@ -108,7 +108,7 @@ function Header() {
             onMouseLeave={handleDropdownMouseLeave} // Hide after delay
           >
             <button
-              className="block text-white hover:text-blue-300 transition-all duration-200 transform hover:scale-105 px-3 py-2 rounded-md inline-flex items-center gap-x-1.5"
+              className="block text-xl text-white hover:text-blue-300 transition-all duration-200 transform hover:scale-105 px-3 py-2 rounded-md inline-flex items-center gap-x-1.5"
               aria-expanded={isUniversityDropdownOpen}
               aria-controls="university-dropdown"
             >

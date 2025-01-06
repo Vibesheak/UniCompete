@@ -1,13 +1,26 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import homeImage from "./home.jpeg";
+import homeVideo from "./HomeBack.mp4";
+import { FaFacebook, FaTwitter, FaLinkedin, FaYoutube } from "react-icons/fa";
+import KelaniyaUniversity from "./images/Kelaniya.png";
+import MoratuwaUniversity from "./images/Moratuwa.png";
+import PeradeniyaUniversity from "./images/peradeniya.png";
+import JayepuraUniversity from "./images/jayepura.png";
+import JaffnaUniversity from "./images/jaffna.png";
+import VavuniyaUniversity from "./images/vavuniya.png";
+import SouthUniversity from "./images/south.png";
+import ColomboUniversity from "./images/colombo.png";
+import RuhunaUniversity from "./images/ruhuna.png";
+import EasternUniversity from "./images/eastern.png";
+
+// import other images similarly
 
 function HomePage() {
   const navigate = useNavigate();
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [filters, setFilters] = useState({ category: "All", sort: "All" });
   const [universities, setUniversities] = useState([]);
-
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -29,6 +42,12 @@ function HomePage() {
   }, []);
 
   const handleDropdownToggle = () => setDropdownVisible(!dropdownVisible);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    // Trigger the animation when the component mounts
+    setIsVisible(true);
+  }, []);
 
   const handleSelectCategory = (category) => {
     setFilters((prevFilters) => ({ ...prevFilters, category }));
@@ -131,6 +150,20 @@ function HomePage() {
         return 0;
     }
   });
+
+  const universityImages = [
+    { name: "Kelaniya University", image: KelaniyaUniversity },
+    { name: "Moratuwa University", image: MoratuwaUniversity },
+    { name: "Peradeniya University", image: PeradeniyaUniversity },
+    { name: "Jayepura University", image: JayepuraUniversity },
+    { name: "Jaffna University", image: JaffnaUniversity },
+    { name: "Vavuniya University", image: VavuniyaUniversity },
+    { name: "South University", image: SouthUniversity },
+    { name: "Colombo University", image: ColomboUniversity },
+    { name: "Ruhuna University", image: RuhunaUniversity },
+    { name: "Eastern University", image: EasternUniversity },
+  ];
+
   const renderStars = (rating) => {
     const fullStars = Math.floor(rating);
     const halfStar = rating % 1 !== 0;
@@ -140,7 +173,7 @@ function HomePage() {
       <div className="flex items-center">
         {[...Array(fullStars)].map((_, index) => (
           <svg
-            key={`full-${index}`}
+            key={`empty-${index}`}
             xmlns="http://www.w3.org/2000/svg"
             fill="currentColor"
             className="w-5 h-5 text-yellow-500"
@@ -185,21 +218,189 @@ function HomePage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 text-gray-900">
-      {/* Home Image */}
-      <div className="relative h-80">
-        <img
-          src={homeImage}
-          alt="Home"
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-50 text-white text-3xl font-bold">
-          Welcome to University Competitions
+    <div className="min-h-screen flex flex-col bg-gradient-to-br">
+      <div className="min-h-screen flex">
+        <div className="relative w-full h-[90vh]">
+          <video
+            src={homeVideo} // Ensure this path is correct
+            autoPlay
+            loop
+            muted
+            className="w-full h-full object-cover rounded-lg" // Apply rounded corners here
+          />
+          <div
+            className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 rounded-lg flex items-center justify-center "
+            style={{ height: "10%" }}
+          >
+            <p
+              className="text-white text-3xl font-bold uppercase"
+              style={{ letterSpacing: "0.8em" }}
+            >
+              The challenge is waiting for you!
+            </p>
+          </div>
+          <div className="absolute inset-0 top-[40%] -translate-y-1/2 flex flex-col justify-center items-end text-blue-600 p-4 sm:p-8">
+            <div className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg text-left pr-4 sm:pr-8">
+              <h1
+                className="text-6xl font-extrabold mb-4 font-['Roboto']"
+                style={{ marginTop: "6rem" }}
+              >
+                <span className="text-blue-600 text-8xl">Welcome </span>
+                <span className="text-black text-6xl ml-2">to a world</span>
+                <span className="text-black text-6xl ml-2">of</span>
+                <br></br>
+                <span className="text-purple-600 text-5xl ml-2">
+                  Opportunities!
+                </span>
+              </h1>
+              <p className="mt-4 text-sm sm:text-base md:text-lg lg:text-xl text-black font-['Roboto']">
+                <i>
+                  Eventura makes university events fun and easy to manage!
+                  Discover, organize, and join exciting competitions and
+                  activities from your university and beyond.
+                </i>
+              </p>
+              <br></br>
+              <div className="left-[calc(65%+80px)]">
+                <button
+                  onClick={() => navigate("/about")}
+                  className="px-4 sm:px-6 py-2 text-xs sm:text-sm font-medium text-white bg-blue-600 rounded-full hover:bg-blue-700 hover:shadow-md transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                >
+                  About Us
+                </button>
+              </div>
+
+              <div className="max-w-3xl mx-auto text-center mt-8 l text-center">
+                <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-pink-500">
+                  Follow Us
+                </p>
+                <p className="text-sm sm:text-base md:text-lg font-light mb-8 text-center text-black">
+                  <b>
+                    Stay connected with us on social media and never miss an
+                    update!
+                  </b>
+                </p>
+                <div className="flex justify-center space-x-4 sm:space-x-6 lg:space-x-8">
+                  <a
+                    href="https://facebook.com/yourprofile"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-3xl hover:text-blue-600 transition-colors"
+                    title="Facebook"
+                  >
+                    <FaFacebook />
+                  </a>
+                  <a
+                    href="https://twitter.com/yourprofile"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-3xl text-blue-400 hover:text-blue-600 transition-colors"
+                    title="Twitter"
+                  >
+                    <FaTwitter />
+                  </a>
+                  <a
+                    href="https://linkedin.com/in/yourprofile"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-3xl text-blue-800 hover:text-blue-600 transition-colors"
+                    title="LinkedIn"
+                  >
+                    <FaLinkedin />
+                  </a>
+                  <a
+                    href="https://youtube.com/c/yourchannel"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-3xl text-red-600 hover:text-blue-600 transition-colors"
+                    title="YouTube"
+                  >
+                    <FaYoutube />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="relative w-full h-40 overflow-hidden">
+        {/* Container for the images and names */}
+        <div className="flex animate-move">
+          {/* Loop through the university images array */}
+          {universityImages.map((item, index) => {
+            // Calculate gap based on the length of the name
+            const nameLength = item.name.length;
+            const gap = Math.min(nameLength * 2, 40); // Limit the gap to a max of 40px for larger names
+
+            return (
+              <div
+                key={index}
+                className="flex flex-col items-center"
+                style={{ marginRight: `${gap}px` }} // Apply dynamic margin based on name length
+              >
+                {/* Image with animation */}
+                <img
+                  src={item.image} // Use the image from the universityImages array
+                  alt={item.name} // Use the university name for alt text
+                  className="w-24 h-24" // Set the width and height of each image
+                />
+                {/* University name displayed below the image */}
+                <p className="text-center mt-2">{item.name}</p>
+              </div>
+            );
+          })}
+
+          {/* Clone the images to create the infinite loop effect */}
+          {universityImages.map((item, index) => {
+            const nameLength = item.name.length;
+            const gap = Math.min(nameLength * 2, 40); // Limit the gap to a max of 40px for larger names
+
+            return (
+              <div
+                key={`full-${index}`}
+                className="flex flex-col items-center"
+                style={{ marginRight: `${gap}px` }} // Apply dynamic margin based on name length
+              >
+                {/* Image with animation */}
+                <img
+                  src={item.image} // Use the image from the universityImages array
+                  alt={item.name} // Use the university name for alt text
+                  className="w-24 h-24" // Set the width and height of each image
+                />
+                {/* University name displayed below the image */}
+                <p className="text-center mt-2">{item.name}</p>
+              </div>
+            );
+          })}
         </div>
       </div>
 
+      {/* Add the animation directly in the component */}
+      <style>
+        {`
+    @keyframes move {
+      0% {
+        transform: translateX(0); /* Start at the original position */
+      }
+      100% {
+        transform: translateX(-100%); /* Move to the left side */
+      }
+    }
+
+    .animate-move {
+      display: flex;
+      animation: move 12s linear infinite;
+    }
+
+    .animate-move > div {
+      flex-shrink: 0; /* Prevent images from shrinking */
+    }
+  `}
+      </style>
+
+      <br></br>
       {/* Main Content */}
-      <div className="flex-1 p-6 md:p-6">
+      <div className="flex-1 p-6 md:p-6 bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 text-gray-900">
         <form className="max-w-md mx-auto mt-4">
           {" "}
           {/* Increased bottom margin */}
