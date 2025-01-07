@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import homeImage from "./home.jpeg";
 import homeVideo from "./HomeBack-1.mp4";
 import { FaFacebook, FaTwitter, FaLinkedin, FaYoutube } from "react-icons/fa";
+import { FaHeart, FaRegHeart, FaEdit, FaTrashAlt } from "react-icons/fa";
 import KelaniyaUniversity from "./images/Kelaniya.png";
 import MoratuwaUniversity from "./images/Moratuwa.png";
 import PeradeniyaUniversity from "./images/peradeniya.png";
@@ -21,6 +22,12 @@ function HomePage() {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [filters, setFilters] = useState({ category: "All", sort: "All" });
   const [universities, setUniversities] = useState([]);
+  const [showFavorites, setShowFavorites] = useState(false);
+  const [favorites, setFavorites] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [sortCriterion, setSortCriterion] = useState("All");
+  const [profileDropdownVisible, setProfileDropdownVisible] = useState(false);
+
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -41,7 +48,22 @@ function HomePage() {
     setUniversities(universitiesList);
   }, []);
 
-  const handleDropdownToggle = () => setDropdownVisible(!dropdownVisible);
+  const handleDropdownToggle = () => {
+    setDropdownVisible(!dropdownVisible);
+  };
+  const handleProfileClick = () => {
+    setProfileDropdownVisible(!profileDropdownVisible);
+  };
+  const getInitials = (fullName) => {
+    const nameParts = fullName.split(" ");
+    return nameParts.map((part) => part.charAt(0).toUpperCase()).join("");
+  };
+  const user = {
+    fullName: "Nilojitha Mariyathas",
+  };
+  const handleLogout = () => {
+    navigate("/login");
+  };
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -50,12 +72,13 @@ function HomePage() {
   }, []);
 
   const handleSelectCategory = (category) => {
-    setFilters((prevFilters) => ({ ...prevFilters, category }));
+    setSelectedCategory(category);
     setDropdownVisible(false);
   };
 
   const handleSortChange = (e) => {
-    setFilters((prevFilters) => ({ ...prevFilters, sort: e.target.value }));
+    setSortCriterion(e.target.value);
+    setDropdownVisible(false);
   };
 
   const handleViewDetails = (id) => {
@@ -135,23 +158,56 @@ function HomePage() {
     ...new Set(competitions.map((comp) => comp.name)),
   ];
 
-  const filteredCompetitions =
-    filters.category === "All"
-      ? competitions
-      : competitions.filter((comp) => comp.name === filters.category);
+  const filterCompetitions = () => {
+    let filteredCompetitions = competitions;
 
-  const sortedCompetitions = filteredCompetitions.sort((a, b) => {
-    switch (filters.sort) {
-      case "Name":
-        return a.name.localeCompare(b.name);
-      case "Date":
-        return new Date(a.date) - new Date(b.date);
-      case "Rating":
-        return b.rating - a.rating;
-      default:
-        return 0;
+    // Filter by category
+    if (selectedCategory !== "All") {
+      filteredCompetitions = filteredCompetitions.filter(
+        (comp) => comp.name === selectedCategory
+      );
     }
-  });
+
+    // Sort by criterion
+    if (sortCriterion !== "All") {
+      filteredCompetitions = filteredCompetitions.sort((a, b) => {
+        if (sortCriterion === "Name") {
+          return a.name.localeCompare(b.name);
+        } else if (sortCriterion === "Date") {
+          return new Date(a.date) - new Date(b.date);
+        } else if (sortCriterion === "Location") {
+          return a.location.localeCompare(b.location);
+        } else if (sortCriterion === "Rating") {
+          return b.rating - a.rating;
+        }
+        return 0;
+      });
+    }
+
+    // Show only favorites if showFavorites is true
+    if (showFavorites) {
+      filteredCompetitions = filteredCompetitions.filter((comp) =>
+        favorites.includes(comp.id)
+      );
+    }
+
+    return filteredCompetitions;
+  };
+
+  const sortedCompetitions = filterCompetitions();
+
+  const handleFavoriteToggle = (competitionId) => {
+    setFavorites((prevFavorites) => {
+      if (prevFavorites.includes(competitionId)) {
+        return prevFavorites.filter((id) => id !== competitionId); // Remove from favorites
+      } else {
+        return [...prevFavorites, competitionId]; // Add to favorites
+      }
+    });
+  };
+  const handleShowFavorites = () => {
+    setShowFavorites(!showFavorites);
+  };
 
   const universityImages = [
     { name: "Kelaniya University", image: KelaniyaUniversity },
@@ -457,42 +513,65 @@ function HomePage() {
           <h1 className="text-3xl sm:text-4xl font-bold text-center mb-4 sm:mb-0">
             Explore Competitions
           </h1>
+          {/* Button to show only favorites */}
+          <button
+            onClick={handleShowFavorites}
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition duration-300 ml-[23.5cm] mt-5"
+          >
+            {showFavorites ? "Show All" : "Show Favorites"}
+          </button>
+
+          {/* Sort/Filter Dropdown */}
           <div ref={dropdownRef} className="relative">
             <button
               onClick={handleDropdownToggle}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition"
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition duration-300 mt-5"
             >
               Filter Competitions
             </button>
-            {dropdownVisible && (
-              <div className="absolute top-12 right-0 bg-white rounded-lg shadow-lg p-4 w-64 z-10">
-                <div className="mb-4">
-                  <label className="block text-gray-700 mb-2">Category</label>
-                  <select
-                    value={filters.category}
-                    onChange={(e) => handleSelectCategory(e.target.value)}
-                    className="w-full p-2 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    {uniqueCompetitionNames.map((name) => (
-                      <option key={name} value={name}>
-                        {name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-gray-700 mb-2">Sort By</label>
-                  <select
-                    value={filters.sort}
-                    onChange={handleSortChange}
-                    className="w-full p-2 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="All">All</option>
-                    <option value="Name">Name</option>
-                    <option value="Date">Date</option>
 
-                    <option value="Rating">Rating</option>
-                  </select>
+            {dropdownVisible && (
+              <div className="absolute top-12 right-0 w-56 bg-white shadow-lg rounded-lg p-4 z-10">
+                <div className="space-y-4">
+                  {/* Category Dropdown */}
+                  <div>
+                    <label className="block text-sm text-gray-700 mb-2">
+                      Select Category
+                    </label>
+                    <select
+                      value={selectedCategory}
+                      onChange={(e) => handleSelectCategory(e.target.value)}
+                      className="bg-blue-100 text-gray-800 px-4 py-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      {[
+                        "All",
+                        ...Array.from(
+                          new Set(competitions.map((comp) => comp.name))
+                        ),
+                      ].map((competitionName) => (
+                        <option key={competitionName} value={competitionName}>
+                          {competitionName}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Sort By Dropdown */}
+                  <div>
+                    <label className="block text-sm text-gray-700 mb-2">
+                      Sort By
+                    </label>
+                    <select
+                      value={sortCriterion}
+                      onChange={handleSortChange}
+                      className="bg-blue-100 text-gray-800 px-4 py-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="All">All</option>
+                      <option value="Name">Name</option>
+                      <option value="Date">Date</option>
+                      <option value="Rating">Rating</option>
+                    </select>
+                  </div>
                 </div>
               </div>
             )}
@@ -518,18 +597,66 @@ function HomePage() {
                 <span className="text-sm text-gray-500">{comp.date}</span>
                 <span className="text-sm text-gray-500">{comp.location}</span>
               </div>
-              <div className="flex items-center justify-between">
-                {renderStars(comp.rating)}
+              <div className="flex items-center justify-between space-x-4">
+                <div className="flex items-center">
+                  {renderStars(comp.rating)}
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <button
+                    onClick={() => handleFavoriteToggle(comp.id)}
+                    className="text-red-600 hover:text-red-800 transition duration-300"
+                  >
+                    {favorites.includes(comp.id) ? (
+                      <FaHeart className="w-6 h-6" />
+                    ) : (
+                      <FaRegHeart className="w-6 h-6" />
+                    )}
+                  </button>
+                </div>
               </div>
 
-              <button
-                onClick={() => handleViewDetails(comp.id)}
-                className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
-              >
-                View Details
-              </button>
+              <div className="flex justify-between items-center">
+                <button
+                  onClick={() => handleViewDetails(comp.id)}
+                  className="mt-4 w-full bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition"
+                >
+                  View Details
+                </button>
+              </div>
             </div>
           ))}
+        </div>
+        <div
+          className="absolute top-4 right-4 cursor-pointer"
+          onClick={handleProfileClick}
+        >
+          <div className="relative">
+            <div className="relative">
+              {/* Profile Circle with Initials */}
+              <div className="w-16 h-16 rounded-full flex items-center justify-center text-xl font-semibold text-white bg-indigo-600">
+                {getInitials(user.fullName)}
+              </div>
+            </div>
+
+            {/* Profile Dropdown */}
+            {profileDropdownVisible && (
+              <div className="absolute top-16 right-0 w-48 bg-white shadow-lg rounded-lg p-4 z-10">
+                <button
+                  onClick={() => navigate("/userpage")}
+                  className="w-full text-left text-blue-900 font-semibold text-lg py-2 rounded-lg hover:bg-blue-100 transition duration-300"
+                >
+                  Profile
+                </button>
+                <button
+                  onClick={handleLogout}
+                  className="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition duration-300 mt-2"
+                >
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

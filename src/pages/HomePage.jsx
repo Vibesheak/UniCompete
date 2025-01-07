@@ -233,18 +233,24 @@ function HomePage() {
               The challenge is waiting for you!
             </p>
           </div>
-          <div className="absolute right-[35%] top-[10%] -translate-y-1/2 flex flex-col justify-center items-end text-blue-600 p-4 sm:p-8">
-            <div className="bg-gray-500 bg-opacity-10 backdrop-blur-md absolute inset-0 w-[500px] h-[600px] rounded-xl">
+          <div className="absolute right-[40%] top-[10%]  -translate-y-3/4 flex flex-col justify-center items-end text-blue-600 p-4 sm:p-8">
+            <div className="bg-gray-500 bg-opacity-10 backdrop-blur-md absolute inset-0 max-w-[450px] max-h-[650px] w-full h-full sm:w-[650px] sm:h-[850px] rounded-xl">
+              {/* Content goes here */}
+
               <div className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg text-left pr-4 sm:pr-8">
                 <h1
                   className="text-6xl font-extrabold mb-4 font-['Roboto']"
                   style={{ marginTop: "1rem", marginLeft: "2rem" }}
                 >
                   <span className="text-blue-600 text-6xl">W E L C O M E </span>
-                  <span className="text-black text-6xl ml-2">to a world</span>
-                  <span className="text-black text-6xl ml-2">of</span>
-                  <br></br>
-                  <span className="text-purple-600 text-5xl ml-2">
+                  <span className="text-black text-4xl sm:text-5xl md:text-6xl ml-2">
+                    to a world
+                  </span>
+                  <span className="text-black text-4xl sm:text-5xl md:text-6xl ml-2">
+                    of
+                  </span>
+                  <br />
+                  <span className="text-purple-600 text-2xl sm:text-3xl md:text-4xl ml-2">
                     Opportunities!
                   </span>
                 </h1>

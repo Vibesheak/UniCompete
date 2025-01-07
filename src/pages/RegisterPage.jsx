@@ -7,6 +7,7 @@ import { IoMdPhonePortrait } from "react-icons/io";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { motion } from "framer-motion";
+import img2 from "./img2.jpg";
 
 function RegisterPage() {
   const navigate = useNavigate();
@@ -148,7 +149,7 @@ function RegisterPage() {
               {/* Video Section */}
               <div className="w-100 h-100 mb-4" style={{ marginTop: "0rem" }}>
                 <img
-                  src="/videos/img2.png" // Replace this with the actual image path
+                  src={img2} // Use the imported image
                   alt="Description of the image"
                   className="w-full h-full object-cover"
                 />
