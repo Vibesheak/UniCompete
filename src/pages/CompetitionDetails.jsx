@@ -96,6 +96,76 @@ function CompetitionDetails() {
         image: bannerImage,
         registerLink: "https://example.com/register",
       },
+      {
+        id: 3,
+        name: "Tech Innovation Contest",
+        date: "2024-12-20",
+        registrationDeadline: "2024-12-15",
+        location: "University A",
+        description:
+          "A contest for tech enthusiasts to showcase innovative solutions in AI, robotics, and software development.",
+        prizes: "First place: $1000, Second place: $500, Third place: $250",
+        schedule: "Registration Deadline: 2024-12-15, Event Date: 2024-12-20",
+        rules: "Participants must be students, Original work only, etc.",
+        image: bannerImage,
+        registerLink: "https://example.com/register", // Replace with the actual registration link
+      },
+      {
+        id: 4,
+        name: "Art and Design Exhibition",
+        date: "2024-12-25",
+        registrationDeadline: "2024-12-10",
+        location: "University B",
+        description:
+          "An exhibition showcasing the best in arts, design, and creativity from students around the country.",
+        prizes: "First place: $800, Second place: $400, Third place: $200",
+        schedule: "Registration Deadline: 2024-12-10, Event Date: 2024-12-25",
+        rules: "Open to all students, Original art only, etc.",
+        image: bannerImage,
+        registerLink: "https://example.com/register",
+      },
+      {
+        id: 5,
+        name: "Tech Innovation Contest",
+        date: "2024-12-20",
+        registrationDeadline: "2024-12-15",
+        location: "University A",
+        description:
+          "A contest for tech enthusiasts to showcase innovative solutions in AI, robotics, and software development.",
+        prizes: "First place: $1000, Second place: $500, Third place: $250",
+        schedule: "Registration Deadline: 2024-12-15, Event Date: 2024-12-20",
+        rules: "Participants must be students, Original work only, etc.",
+        image: bannerImage,
+        registerLink: "https://example.com/register", // Replace with the actual registration link
+      },
+      {
+        id: 6,
+        name: "Art and Design Exhibition",
+        date: "2024-12-25",
+        registrationDeadline: "2024-12-10",
+        location: "University B",
+        description:
+          "An exhibition showcasing the best in arts, design, and creativity from students around the country.",
+        prizes: "First place: $800, Second place: $400, Third place: $200",
+        schedule: "Registration Deadline: 2024-12-10, Event Date: 2024-12-25",
+        rules: "Open to all students, Original art only, etc.",
+        image: bannerImage,
+        registerLink: "https://example.com/register",
+      },
+      {
+        id: 7,
+        name: "Tech Innovation Contest",
+        date: "2024-12-20",
+        registrationDeadline: "2024-12-15",
+        location: "University A",
+        description:
+          "A contest for tech enthusiasts to showcase innovative solutions in AI, robotics, and software development.",
+        prizes: "First place: $1000, Second place: $500, Third place: $250",
+        schedule: "Registration Deadline: 2024-12-15, Event Date: 2024-12-20",
+        rules: "Participants must be students, Original work only, etc.",
+        image: bannerImage,
+        registerLink: "https://example.com/register", // Replace with the actual registration link
+      },
     ];
 
     const competitionData = competitions.find(

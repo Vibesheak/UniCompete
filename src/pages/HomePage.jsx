@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import homeImage from "./home.jpeg";
-import homeVideo from "./HomeBack.mp4";
+import homeVideo from "./HomeBack-1.mp4";
 import { FaFacebook, FaTwitter, FaLinkedin, FaYoutube } from "react-icons/fa";
 import KelaniyaUniversity from "./images/Kelaniya.png";
 import MoratuwaUniversity from "./images/Moratuwa.png";
@@ -220,7 +220,7 @@ function HomePage() {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br">
       <div className="min-h-screen flex">
-        <div className="relative w-full h-[90vh]">
+        <div className="relative w-full h-[95vh]">
           <video
             src={homeVideo} // Ensure this path is correct
             autoPlay
@@ -233,85 +233,90 @@ function HomePage() {
               The challenge is waiting for you!
             </p>
           </div>
-
-          <div className="absolute inset-0 top-[40%] -translate-y-1/2 flex flex-col justify-center items-end text-blue-600 p-4 sm:p-8">
-            <div className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg text-left pr-4 sm:pr-8">
-              <h1
-                className="text-6xl font-extrabold mb-4 font-['Roboto']"
-                style={{ marginTop: "6rem" }}
-              >
-                <span className="text-blue-600 text-6xl">Welcome </span>
-                <span className="text-black text-6xl ml-2">to a world</span>
-                <span className="text-black text-6xl ml-2">of</span>
-                <br></br>
-                <span className="text-purple-600 text-5xl ml-2">
-                  Opportunities!
-                </span>
-              </h1>
-              <p className="mt-4 text-sm sm:text-base md:text-lg lg:text-xl text-black font-['Roboto']">
-                <i>
-                  Eventura makes university events fun and easy to manage!
-                  Discover, organize, and join exciting competitions and
-                  activities from your university and beyond.
-                </i>
-              </p>
-              <br></br>
-              <div className="left-[calc(65%+80px)]">
-                <button
-                  onClick={() => navigate("/about")}
-                  className="px-4 sm:px-6 py-2 text-xs sm:text-sm font-medium text-white bg-blue-600 rounded-full hover:bg-blue-700 hover:shadow-md transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+          <div className="absolute right-[35%] top-[10%] -translate-y-1/2 flex flex-col justify-center items-end text-blue-600 p-4 sm:p-8">
+            <div className="bg-gray-500 bg-opacity-10 backdrop-blur-md absolute inset-0 w-[500px] h-[600px] rounded-xl">
+              <div className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg text-left pr-4 sm:pr-8">
+                <h1
+                  className="text-6xl font-extrabold mb-4 font-['Roboto']"
+                  style={{ marginTop: "1rem", marginLeft: "2rem" }}
                 >
-                  About Us
-                </button>
-              </div>
+                  <span className="text-blue-600 text-6xl">W E L C O M E </span>
+                  <span className="text-black text-6xl ml-2">to a world</span>
+                  <span className="text-black text-6xl ml-2">of</span>
+                  <br></br>
+                  <span className="text-purple-600 text-5xl ml-2">
+                    Opportunities!
+                  </span>
+                </h1>
+                <p
+                  className="mt-4 text-sm sm:text-base md:text-lg lg:text-xl text-black font-['Roboto'] "
+                  style={{ marginLeft: "2rem" }}
+                >
+                  <i>
+                    Eventura makes university events fun and easy to manage!
+                    Discover, organize, and join exciting competitions and
+                    activities from your university and beyond.
+                  </i>
+                </p>
+                <br></br>
+                <div className="left-[calc(65%+80px)]">
+                  <button
+                    onClick={() => navigate("/about")}
+                    className="px-4 sm:px-6 py-2 text-xs sm:text-sm font-medium text-white bg-blue-600 rounded-full hover:bg-blue-700 hover:shadow-md transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                    style={{ marginLeft: "2rem" }}
+                  >
+                    About Us
+                  </button>
+                </div>
 
-              <div className="max-w-3xl mx-auto text-center mt-8 l text-center">
-                <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-pink-500">
-                  Follow Us
-                </p>
-                <p className="text-sm sm:text-base md:text-lg font-light mb-8 text-center text-black">
-                  <b>
-                    Stay connected with us on social media and never miss an
-                    update!
-                  </b>
-                </p>
-                <div className="flex justify-center space-x-4 sm:space-x-6 lg:space-x-8">
-                  <a
-                    href="https://facebook.com/yourprofile"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-3xl hover:text-blue-600 transition-colors"
-                    title="Facebook"
-                  >
-                    <FaFacebook />
-                  </a>
-                  <a
-                    href="https://twitter.com/yourprofile"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-3xl text-blue-400 hover:text-blue-600 transition-colors"
-                    title="Twitter"
-                  >
-                    <FaTwitter />
-                  </a>
-                  <a
-                    href="https://linkedin.com/in/yourprofile"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-3xl text-blue-800 hover:text-blue-600 transition-colors"
-                    title="LinkedIn"
-                  >
-                    <FaLinkedin />
-                  </a>
-                  <a
-                    href="https://youtube.com/c/yourchannel"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-3xl text-red-600 hover:text-blue-600 transition-colors"
-                    title="YouTube"
-                  >
-                    <FaYoutube />
-                  </a>
+                <div className="max-w-3xl mx-auto text-center mt-8 l text-center">
+                  <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-pink-500">
+                    Follow Us
+                  </p>
+                  <p className="text-sm sm:text-base md:text-lg font-light mb-8 text-center text-black">
+                    <b>
+                      Stay connected with us on social media and never miss an
+                      update!
+                    </b>
+                  </p>
+                  <div className="flex justify-center space-x-4 sm:space-x-6 lg:space-x-8">
+                    <a
+                      href="https://facebook.com/yourprofile"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-3xl hover:text-blue-600 transition-colors"
+                      title="Facebook"
+                    >
+                      <FaFacebook />
+                    </a>
+                    <a
+                      href="https://twitter.com/yourprofile"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-3xl text-blue-400 hover:text-blue-600 transition-colors"
+                      title="Twitter"
+                    >
+                      <FaTwitter />
+                    </a>
+                    <a
+                      href="https://linkedin.com/in/yourprofile"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-3xl text-blue-800 hover:text-blue-600 transition-colors"
+                      title="LinkedIn"
+                    >
+                      <FaLinkedin />
+                    </a>
+                    <a
+                      href="https://youtube.com/c/yourchannel"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-3xl text-red-600 hover:text-blue-600 transition-colors"
+                      title="YouTube"
+                    >
+                      <FaYoutube />
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
