@@ -228,24 +228,19 @@ function HomePage() {
             muted
             className="w-full h-full object-cover rounded-lg" // Apply rounded corners here
           />
-          <div
-            className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 rounded-lg flex items-center justify-center "
-            style={{ height: "10%" }}
-          >
-            <p
-              className="text-white text-3xl font-bold uppercase"
-              style={{ letterSpacing: "0.8em" }}
-            >
+          <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 rounded-lg flex items-center justify-center h-[15vh] md:h-[8vh] lg:h-[6vh] px-4">
+            <p className="text-white text-lg md:text-xl lg:text-3xl font-bold uppercase tracking-wide md:tracking-widest lg:tracking-[0.8em] text-center">
               The challenge is waiting for you!
             </p>
           </div>
+
           <div className="absolute inset-0 top-[40%] -translate-y-1/2 flex flex-col justify-center items-end text-blue-600 p-4 sm:p-8">
             <div className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg text-left pr-4 sm:pr-8">
               <h1
                 className="text-6xl font-extrabold mb-4 font-['Roboto']"
                 style={{ marginTop: "6rem" }}
               >
-                <span className="text-blue-600 text-8xl">Welcome </span>
+                <span className="text-blue-600 text-6xl">Welcome </span>
                 <span className="text-black text-6xl ml-2">to a world</span>
                 <span className="text-black text-6xl ml-2">of</span>
                 <br></br>
