@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import homeImage from "./home.jpeg";
 import homeVideo from "./HomeBack-1.mp4";
 import { FaFacebook, FaTwitter, FaLinkedin, FaYoutube } from "react-icons/fa";
-import { FaHeart, FaRegHeart, FaEdit, FaTrashAlt } from "react-icons/fa";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 import KelaniyaUniversity from "./images/Kelaniya.png";
 import MoratuwaUniversity from "./images/Moratuwa.png";
 import PeradeniyaUniversity from "./images/peradeniya.png";
