@@ -1,0 +1,52 @@
+package com.Group27.UniCompete.service.impl;
+
+import com.Group27.UniCompete.models.Tracking;
+import com.Group27.UniCompete.repository.TrackingRepository;
+import com.Group27.UniCompete.service.TrackingService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class TrackingServiceImpl implements TrackingService {
+
+    private final TrackingRepository trackingRepository;
+
+    public TrackingServiceImpl(TrackingRepository trackingRepository) {
+        this.trackingRepository = trackingRepository;
+    }
+
+    @Override
+    public Tracking createTracking(Tracking tracking) {
+        return trackingRepository.save(tracking);
+    }
+
+    @Override
+    public List<Tracking> getAllTracking() {
+        return trackingRepository.findAll();
+    }
+
+    @Override
+    public List<Tracking> getTrackingByUserId(Long userId) {
+        return trackingRepository.findByUserId(userId);
+    }
+
+    @Override
+    public List<Tracking> getTrackingByCompetitionId(Long competitionId) {
+        return trackingRepository.findByCompetitionId(competitionId);
+    }
+
+    @Override
+    public Tracking updateTracking(Long trackingId, Tracking tracking) {
+        Tracking existingTracking = trackingRepository.findById(trackingId).orElseThrow(() -> 
+            new ResourceNotFoundException("Tracking not found"));
+        existingTracking.setEventType(tracking.getEventType());
+        existingTracking.setTimestamp(tracking.getTimestamp());
+        return trackingRepository.save(existingTracking);
+    }
+
+    @Override
+    public void deleteTracking(Long trackingId) {
+        trackingRepository.deleteById(trackingId);
+    }
+}
