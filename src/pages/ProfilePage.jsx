@@ -117,7 +117,7 @@ function HomePage() {
       id: 4,
       name: "Innovation Showcase",
       date: "2025-02-15",
-      location: "University of Kelaniya",
+      location: "University of Jaffna",
       description: "Display your ideas and innovations.",
       rating: 4.5,
       image: homeImage,
