@@ -89,7 +89,7 @@ function HomePage() {
     {
       id: 1,
       name: "Tech Innovation Contest",
-      date: "2024-12-20",
+      date: "2024-03-20",
       location: "University of Peradeniya",
       description: "Showcase innovative AI solutions.",
       rating: 5.0,
@@ -98,7 +98,7 @@ function HomePage() {
     {
       id: 2,
       name: "Art and Design Exhibition",
-      date: "2024-12-25",
+      date: "2025-02-21",
       location: "University of Kelaniya",
       description: "A creative arts exhibition.",
       rating: 3.0,
@@ -143,7 +143,7 @@ function HomePage() {
     {
       id: 7,
       name: "Tech Innovation Contest",
-      date: "2024-12-18",
+      date: "2024-2-18",
       location: "University Colombo",
       description: "Showcase innovative AI solutions.",
       rating: 4.5,
