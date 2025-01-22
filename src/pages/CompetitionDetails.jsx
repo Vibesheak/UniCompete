@@ -502,40 +502,20 @@ function CompetitionDetails() {
           )}
 
           {showViewForm && (
-            <form
-              onSubmit={handleViewFormSubmit}
-              className="mt-6 space-y-6 max-w-md mx-auto bg-blue-200 p-8 rounded-lg shadow-lg"
-            >
-              <h2 className="text-2xl font-semibold text-blue text-center mb-6">
-                Submit Your Competition Details
-              </h2>
-
-              <input
-                type="text"
-                name="username"
-                placeholder="Username"
-                required
-                value={formData.username}
-                onChange={handleInputChange}
-                className="w-full p-3 mb-4 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-              />
-              <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                required
-                value={formData.email}
-                onChange={handleInputChange}
-                className="w-full p-3 mb-4 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-              />
-
-              <button
-                type="submit"
-                className="w-full py-3 bg-blue-700 text-white font-semibold rounded-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                Submit
-              </button>
-            </form>
+            <div className="mt-6 p-4 max-w-sm mx-auto bg-blue-200 rounded-lg shadow-lg">
+              <p className="text-lg text-gray-800 mb-2">
+                <strong className="text-blue-600">Username:</strong>{" "}
+              </p>
+              <p className="text-lg text-gray-800 mb-2">
+                <strong className="text-blue-600">Email:</strong>{" "}
+              </p>
+              <p className="text-lg text-gray-800 mb-2">
+                <strong className="text-blue-600">Location:</strong>{" "}
+              </p>
+              <p className="text-lg text-gray-800 mb-4">
+                <strong className="text-blue-600">Status:</strong>{" "}
+              </p>
+            </div>
           )}
         </div>
 
