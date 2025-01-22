@@ -15,15 +15,11 @@ function CompetitionDetails() {
   const calendarRef = useRef(null);
   const [likes, setLikes] = useState(0);
   const [expandedSection, setExpandedSection] = useState("");
-  const [showStatusForm, setShowStatusForm] = useState(false);
-  const [status, setStatus] = useState("Pending");
-  const [showReviewForm, setShowReviewForm] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [profileDropdownVisible, setProfileDropdownVisible] = useState(false);
-  const [submittedData, setSubmittedData] = useState(null);
   console.log("Competition Object:", competition);
-  const [hasSubmitted, setHasSubmitted] = useState(false); // Track if form has been submitted
-  const [viewStatus, setViewStatus] = useState(false); // Track if user clicked "View Status"
+  const [showReviewForm, setShowReviewForm] = useState(false);
+  const [showStatusForm, setShowStatusForm] = useState(false);
+  const [showViewForm, setShowViewForm] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -33,22 +29,20 @@ function CompetitionDetails() {
     });
   };
 
-  const handleFormSubmit = (e) => {
+  const handleStatusFormSubmit = (e) => {
     e.preventDefault();
-    // Prevent multiple submissions
-    if (hasSubmitted) return;
-
-    setSubmittedData({
-      ...formData,
-      status: "Pending", // Add status as Pending
-    });
-    setHasSubmitted(true); // Set the flag to true to prevent further submissions
-    setShowStatusForm(false); // Optionally hide the form after submission
+    console.log("Status Form Data Submitted:", formData);
+    setShowStatusForm(false); // Hide form after submission
+    setFormData({ username: "", email: "", location: "" }); // Reset form data
   };
 
-  const handleViewStatus = () => {
-    setViewStatus(!viewStatus); // Show the status details when clicked
+  const handleViewFormSubmit = (e) => {
+    e.preventDefault();
+    console.log("View Form Data Submitted:", formData);
+    setShowViewForm(false); // Hide form after submission
+    setFormData({ username: "", email: "", location: "" }); // Reset form data
   };
+
   // To store the submitted form data
   const [reviewData, setReviewData] = useState({
     name: "",
@@ -443,46 +437,28 @@ function CompetitionDetails() {
 
           {/* Button to toggle the form */}
           <button
-            onClick={() => setShowStatusForm(!showStatusForm)}
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg mb-4 hover:bg-blue-700 transition duration-300 ease-in-out transform hover:scale-105"
+            onClick={() => {
+              setShowStatusForm(!showStatusForm);
+              setShowViewForm(false); // Hide the other form
+            }}
+            className="bg-blue-600 text-white px-6 py-2 rounded-lg ml-8 mb-4 hover:bg-blue-700 transition duration-300 ease-in-out transform hover:scale-105"
           >
-            Show Status Review Form
+            {showStatusForm ? "Hide Status Form" : "Show Status Form"}
           </button>
 
-          {/* Show the button to view the status after submission */}
-          {hasSubmitted && (
-            <button
-              onClick={handleViewStatus}
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg mx-8 mb-4 mt-4 hover:bg-blue-700 transition duration-300 ease-in-out transform hover:scale-105"
-            >
-              {viewStatus ? "Hide Status" : "View Status"}
-            </button>
-          )}
-          {/* Show submitted details and status */}
-          {viewStatus && submittedData && (
-            <div className="mt-6 p-4 max-w-sm mx-auto bg-blue-200 rounded-lg shadow-lg">
-              <p className="text-lg text-gray-800 mb-2">
-                <strong className="text-blue-600">Username:</strong>{" "}
-                {submittedData.username}
-              </p>
-              <p className="text-lg text-gray-800 mb-2">
-                <strong className="text-blue-600">Email:</strong>{" "}
-                {submittedData.email}
-              </p>
-              <p className="text-lg text-gray-800 mb-2">
-                <strong className="text-blue-600">Location:</strong>{" "}
-                {submittedData.location}
-              </p>
-              <p className="text-lg text-gray-800 mb-4">
-                <strong className="text-blue-600">Status:</strong>{" "}
-                {submittedData.status}
-              </p>
-            </div>
-          )}
+          <button
+            onClick={() => {
+              setShowViewForm(!showViewForm);
+              setShowStatusForm(false); // Hide the other form
+            }}
+            className="bg-blue-600 text-white px-6 py-2 rounded-lg mb-4 ml-8 hover:bg-blue-700 transition duration-300 ease-in-out transform hover:scale-105"
+          >
+            {showViewForm ? "Hide Status View  Form" : "Show  Status View Form"}
+          </button>
 
-          {showStatusForm && !hasSubmitted && (
+          {showStatusForm && (
             <form
-              onSubmit={handleFormSubmit}
+              onSubmit={handleStatusFormSubmit}
               className="mt-6 space-y-6 max-w-md mx-auto bg-blue-200 p-8 rounded-lg shadow-lg"
             >
               <h2 className="text-2xl font-semibold text-blue text-center mb-6">
@@ -516,6 +492,43 @@ function CompetitionDetails() {
                 onChange={handleInputChange}
                 className="w-full p-3 mb-6 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
               />
+              <button
+                type="submit"
+                className="w-full py-3 bg-blue-700 text-white font-semibold rounded-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                Submit
+              </button>
+            </form>
+          )}
+
+          {showViewForm && (
+            <form
+              onSubmit={handleViewFormSubmit}
+              className="mt-6 space-y-6 max-w-md mx-auto bg-blue-200 p-8 rounded-lg shadow-lg"
+            >
+              <h2 className="text-2xl font-semibold text-blue text-center mb-6">
+                Submit Your Competition Details
+              </h2>
+
+              <input
+                type="text"
+                name="username"
+                placeholder="Username"
+                required
+                value={formData.username}
+                onChange={handleInputChange}
+                className="w-full p-3 mb-4 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              />
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                required
+                value={formData.email}
+                onChange={handleInputChange}
+                className="w-full p-3 mb-4 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              />
+
               <button
                 type="submit"
                 className="w-full py-3 bg-blue-700 text-white font-semibold rounded-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
