@@ -49,13 +49,18 @@ public class AuthController {
             return ResponseEntity.badRequest().body("Email is already taken");
         }
 
+        boolean isAdmin = registerRequest.getRoles().contains("ADMIN");
+        if (isAdmin && userRepository.findByuniversityName(registerRequest.getUniversityName()).isPresent()) {
+            return ResponseEntity.badRequest().body("An admin is already registered for this university");
+        }
+
         User newUser = new User();
         newUser.setUsername(registerRequest.getUsername());
+        newUser.setUniversityName(registerRequest.getUniversityName());
         newUser.setEmail(registerRequest.getEmail());
         newUser.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
 
         System.out.println(registerRequest.getEmail());
-
 
         String verificationCode = generateVerificationCode();
         newUser.setVerificationCode(verificationCode);
@@ -75,6 +80,7 @@ public class AuthController {
 
         return ResponseEntity.ok("User registered successfully. Please verify your email.");
     }
+
 
     @PostMapping("/verify")
     public ResponseEntity<String> verifyUser(@RequestBody VerifyRequest verifyRequest) {

@@ -33,6 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if(token!=null && token.startsWith("Bearer")){
             token=token.substring(7);
             String username = jwtUtil.extractUsername(token);
+            String university = jwtUtil.extractUniversity(token);
 
             if(username != null && SecurityContextHolder.getContext().getAuthentication()==null){
                 UserDetails userDetails=customUserDetailService.loadUserByUsername(username);
@@ -42,6 +43,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                             null,userDetails.getAuthorities());
                     authtoken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authtoken);
+
+                    request.setAttribute("universityName", university);
                 }
             }
         }

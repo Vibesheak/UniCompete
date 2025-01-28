@@ -38,14 +38,27 @@ public class User {
     private String verificationCode;
     private LocalDateTime verificationCodeExpiresAt;
 
+    private String universityName;
+
+
+
     public User() {
     }
 
-    public User(String username, String email, String password) {
+    public User(String username, String email, String password,String universityName) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.universityName=universityName;
+    }
 
+
+    public String getUniversityName() {
+        return universityName;
+    }
+
+    public void setUniversityName(String universityName) {
+        this.universityName = universityName;
     }
 
     public boolean isEnabled() {

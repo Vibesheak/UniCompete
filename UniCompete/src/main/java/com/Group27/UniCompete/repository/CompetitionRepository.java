@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface CompetitionRepository extends MongoRepository<Competition, Long> {
     List<Competition> findByCategory(String category);
+
     List<Competition> findByUniversity(String university);
     List<Competition> findByDate(String date);
 }

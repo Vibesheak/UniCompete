@@ -24,14 +24,14 @@ public class FeedbackController {
     }
 
     // User: View feedbacks for a competition
-    @PreAuthorize("hasAuthority('USER')")
-    @GetMapping("/competition/{competitionId}")
+//    @PreAuthorize("hasAuthority('USER')")
+    @GetMapping("/competition/id/{competitionId}")
     public ResponseEntity<List<Feedback>> getFeedbacksByCompetition(@PathVariable Long competitionId) {
         return ResponseEntity.ok(feedbackService.getFeedbacksByCompetition(competitionId));
     }
 
     @PreAuthorize("hasAuthority('USER')")
-    @GetMapping("/competition/{University}")
+    @GetMapping("/competition/university/{University}")
     public ResponseEntity<List<Feedback>> getFeedbacksByUniversity(@PathVariable String University) {
         return ResponseEntity.ok(feedbackService.getFeedbacksByUniversity(University));
     }

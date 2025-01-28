@@ -11,7 +11,15 @@ public class RegisterRequest {
     private String email;
     private int age;
     private int phonenumber;
+    private String universityName;
 
+    public String getUniversityName() {
+        return universityName;
+    }
+
+    public void setUniversityName(String universityName) {
+        this.universityName = universityName;
+    }
 
     public int getAge() {
         return age;

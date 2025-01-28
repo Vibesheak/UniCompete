@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "Feedbacks")
 public class Feedback {
     @Id
-    private Long id;
+    private String id;
     private Long competitionId; // Reference to the competition
     private String userId; // User who provided feedback
     private String userName;
@@ -30,11 +30,11 @@ public class Feedback {
         University = university;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
