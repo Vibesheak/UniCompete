@@ -4,6 +4,13 @@ import { useParams } from "react-router-dom";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import bannerImage from "./bannerimage.jpg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faUser,
+  faEnvelope,
+  faMapMarkerAlt,
+  faArrowRight,
+} from "@fortawesome/free-solid-svg-icons";
 
 function CompetitionDetails() {
   const navigate = useNavigate();
@@ -502,19 +509,95 @@ function CompetitionDetails() {
           )}
 
           {showViewForm && (
-            <div className="mt-6 p-4 max-w-sm mx-auto bg-blue-200 rounded-lg shadow-lg">
-              <p className="text-lg text-gray-800 mb-2">
-                <strong className="text-blue-600">Username:</strong>{" "}
-              </p>
-              <p className="text-lg text-gray-800 mb-2">
-                <strong className="text-blue-600">Email:</strong>{" "}
-              </p>
-              <p className="text-lg text-gray-800 mb-2">
-                <strong className="text-blue-600">Location:</strong>{" "}
-              </p>
-              <p className="text-lg text-gray-800 mb-4">
-                <strong className="text-blue-600">Status:</strong>{" "}
-              </p>
+            <div className="mt-8 p-6 max-w-sm mx-auto bg-gradient-to-r from-purple-300 to-blue-200 rounded-lg shadow-xl hover:shadow-[0_20px_40px_rgba(29,78,216,0.6)] transition-all duration-300 transform hover:scale-105">
+              <div className="space-y-6">
+                {/* Username Section */}
+                <div className="flex justify-between items-center animate__animated animate__fadeInLeft animate__delay-1000">
+                  <div className="flex items-center">
+                    <FontAwesomeIcon
+                      icon={faUser}
+                      className="text-blue-500 mr-2"
+                    />
+                    <p className="text-lg text-gray-900 font-semibold">
+                      Username:
+                    </p>
+                  </div>
+                  <p className="text-lg text-gray-800">JohnDoe</p>
+                </div>
+
+                {/* Email Section */}
+                <div className="flex justify-between items-center animate__animated animate__fadeInRight animate__delay-1200">
+                  <div className="flex items-center">
+                    <FontAwesomeIcon
+                      icon={faEnvelope}
+                      className="text-blue-500 mr-2"
+                    />
+                    <p className="text-lg text-gray-900 font-semibold">
+                      Email:
+                    </p>
+                  </div>
+                  <p className="text-lg text-gray-800">johndoe@example.com</p>
+                </div>
+
+                {/* Location Section */}
+                <div className="flex justify-between items-center animate__animated animate__fadeInUp animate__delay-1400">
+                  <div className="flex items-center">
+                    <FontAwesomeIcon
+                      icon={faMapMarkerAlt}
+                      className="text-blue-500 mr-2"
+                    />
+                    <p className="text-lg text-gray-900 font-semibold">
+                      Location:
+                    </p>
+                  </div>
+                  <p className="text-lg text-gray-800">New York, USA</p>
+                </div>
+
+                {/* Status Progress */}
+                <div className="flex justify-between items-center animate__animated animate__fadeInDown animate__delay-1600">
+                  <div className="flex items-center">
+                    <FontAwesomeIcon
+                      icon={faArrowRight}
+                      className="text-blue-500 mr-2"
+                    />
+                    <p className="text-lg text-gray-900 font-semibold">
+                      Status:
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex justify-between items-center space-x-4">
+                  {/* Step 1 */}
+                  <div className="relative flex flex-col items-center animate__animated animate__fadeInLeft animate__delay-1800">
+                    <div className="w-8 h-8 bg-blue-500 text-white flex justify-center items-center rounded-full">
+                      1
+                    </div>
+                    <span className="text-blue-500 mt-2 text-sm">Pending</span>
+                  </div>
+
+                  <div className="w-12 h-1 bg-blue-500"></div>
+
+                  {/* Step 2 */}
+                  <div className="relative flex flex-col items-center animate__animated animate__fadeInRight animate__delay-2000">
+                    <div className="w-8 h-8 bg-gray-300 text-white flex justify-center items-center rounded-full">
+                      2
+                    </div>
+                    <span className="text-gray-400 mt-2 text-sm">Accepted</span>
+                  </div>
+
+                  <div className="w-12 h-1 bg-gray-300"></div>
+
+                  {/* Step 3 */}
+                  <div className="relative flex flex-col items-center animate__animated animate__fadeInLeft animate__delay-2200">
+                    <div className="w-8 h-8 bg-gray-300 text-white flex justify-center items-center rounded-full">
+                      3
+                    </div>
+                    <span className="text-gray-400 mt-2 text-sm">
+                      Completed
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
         </div>
