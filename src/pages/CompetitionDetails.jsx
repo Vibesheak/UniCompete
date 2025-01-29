@@ -5,12 +5,14 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import bannerImage from "./bannerimage.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import {
   faUser,
   faEnvelope,
   faMapMarkerAlt,
   faArrowRight,
 } from "@fortawesome/free-solid-svg-icons";
+import "animate.css";
 
 function CompetitionDetails() {
   const navigate = useNavigate();
@@ -327,350 +329,414 @@ function CompetitionDetails() {
         </div>
 
         {/* Competition Details Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="card p-6 bg-blue-50 shadow-lg rounded-lg transition-transform duration-300 hover:scale-105">
-            <h2
-              className="text-xl font-semibold text-blue-600 cursor-pointer"
-              onClick={() => toggleSection("overview")}
-              aria-expanded={expandedSection === "overview"}
-              aria-controls="overview-section"
-            >
-              📝 Overview
-            </h2>
-            {expandedSection === "overview" ? (
-              <p className="text-gray-700 mt-2">{competition.description}</p>
-            ) : (
-              <p className="text-gray-700 mt-2">
-                {competition.description.substring(0, 100)}...
-              </p>
-            )}
-            <button
-              onClick={() => toggleSection("overview")}
-              className="text-blue-500 mt-2 hover:underline"
-            >
-              {expandedSection === "overview" ? "Read Less" : "Read More"}
-            </button>
-          </div>
-
-          <div className="card p-6 bg-blue-50 shadow-lg rounded-lg transition-transform duration-300 hover:scale-105">
-            <h2
-              className="text-xl font-semibold text-blue-600 cursor-pointer"
-              onClick={() => toggleSection("prizes")}
-              aria-expanded={expandedSection === "prizes"}
-              aria-controls="prizes-section"
-            >
-              🎁 Prizes
-            </h2>
-            {expandedSection === "prizes" ? (
-              <ul className="text-gray-700 mt-2 space-y-2">
-                <li>🏆 First place: $1000</li>
-                <li>🥈 Second place: $500</li>
-                <li>🥉 Third place: $250</li>
-              </ul>
-            ) : (
-              <p className="text-gray-700 mt-2">
-                {competition.prizes.substring(0, 50)}...
-              </p>
-            )}
-            <button
-              onClick={() => toggleSection("prizes")}
-              className="text-blue-500 mt-2 hover:underline"
-            >
-              {expandedSection === "prizes" ? "Read Less" : "Read More"}
-            </button>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="card p-6 bg-blue-50 shadow-lg rounded-lg transition-transform duration-300 hover:scale-105">
-            <h2
-              className="text-xl font-semibold text-blue-600 cursor-pointer"
-              onClick={() => toggleSection("schedule")}
-              aria-expanded={expandedSection === "schedule"}
-              aria-controls="schedule-section"
-            >
-              🗓️ Schedule
-            </h2>
-            {expandedSection === "schedule" ? (
-              <ul className="text-gray-700 mt-2 space-y-2">
-                <li>
-                  📅 Registration Deadline: {competition.registrationDeadline}
-                </li>
-                <li>📅 Event Date: {competition.date}</li>
-              </ul>
-            ) : (
-              <p className="text-gray-700 mt-2">
-                {competition.schedule.substring(0, 50)}...
-              </p>
-            )}
-            <button
-              onClick={() => toggleSection("schedule")}
-              className="text-blue-500 mt-2 hover:underline"
-            >
-              {expandedSection === "schedule" ? "Read Less" : "Read More"}
-            </button>
-          </div>
-
-          <div className="card p-6 bg-blue-50 shadow-lg rounded-lg transition-transform duration-300 hover:scale-105">
-            <h2
-              className="text-xl font-semibold text-blue-600 cursor-pointer"
-              onClick={() => toggleSection("rules")}
-              aria-expanded={expandedSection === "rules"}
-              aria-controls="rules-section"
-            >
-              📜 Rules & Regulations
-            </h2>
-            {expandedSection === "rules" ? (
-              <p className="text-gray-700 mt-2">{competition.rules}</p>
-            ) : (
-              <p className="text-gray-700 mt-2">
-                {competition.rules.substring(0, 50)}...
-              </p>
-            )}
-            <button
-              onClick={() => toggleSection("rules")}
-              className="text-blue-500 mt-2 hover:underline"
-            >
-              {expandedSection === "rules" ? "Read Less" : "Read More"}
-            </button>
-          </div>
-        </div>
-
-        <div className="bg-blue-50 p-8 rounded-lg shadow-lg mt-6 text-center transition-transform duration-300 hover:scale-105">
-          {/* Description */}
-          <p className="text-gray-700 text-lg mb-4 font-semibold">
-            Please provide your details to view your status.
-          </p>
-
-          {/* Button to toggle the form */}
-          <button
-            onClick={() => {
-              setShowStatusForm(!showStatusForm);
-              setShowViewForm(false); // Hide the other form
-            }}
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg ml-8 mb-4 hover:bg-blue-700 transition duration-300 ease-in-out transform hover:scale-105"
-          >
-            {showStatusForm ? "Hide Status Form" : "Show Status Form"}
-          </button>
-
-          <button
-            onClick={() => {
-              setShowViewForm(!showViewForm);
-              setShowStatusForm(false); // Hide the other form
-            }}
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg mb-4 ml-8 hover:bg-blue-700 transition duration-300 ease-in-out transform hover:scale-105"
-          >
-            {showViewForm ? "Hide Status View  Form" : "Show  Status View Form"}
-          </button>
-
-          {showStatusForm && (
-            <form
-              onSubmit={handleStatusFormSubmit}
-              className="mt-6 space-y-6 max-w-md mx-auto bg-blue-200 p-8 rounded-lg shadow-lg"
-            >
-              <h2 className="text-2xl font-semibold text-blue text-center mb-6">
-                Submit Your Details
-              </h2>
-
-              <input
-                type="text"
-                name="username"
-                placeholder="Username"
-                required
-                value={formData.username}
-                onChange={handleInputChange}
-                className="w-full p-3 mb-4 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-              />
-              <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                required
-                value={formData.email}
-                onChange={handleInputChange}
-                className="w-full p-3 mb-4 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-              />
-              <input
-                type="text"
-                name="location"
-                placeholder="Location"
-                required
-                value={formData.location}
-                onChange={handleInputChange}
-                className="w-full p-3 mb-6 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-              />
-              <button
-                type="submit"
-                className="w-full py-3 bg-blue-700 text-white font-semibold rounded-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                Submit
-              </button>
-            </form>
-          )}
-
-          {showViewForm && (
-            <div className="mt-8 p-6 max-w-sm mx-auto bg-gradient-to-r from-purple-300 to-blue-200 rounded-lg shadow-xl hover:shadow-[0_20px_40px_rgba(29,78,216,0.6)] transition-all duration-300 transform hover:scale-105">
-              <div className="space-y-6">
-                {/* Username Section */}
-                <div className="flex justify-between items-center animate__animated animate__fadeInLeft animate__delay-1000">
-                  <div className="flex items-center">
-                    <FontAwesomeIcon
-                      icon={faUser}
-                      className="text-blue-500 mr-2"
-                    />
-                    <p className="text-lg text-gray-900 font-semibold">
-                      Username:
-                    </p>
-                  </div>
-                  <p className="text-lg text-gray-800">JohnDoe</p>
-                </div>
-
-                {/* Email Section */}
-                <div className="flex justify-between items-center animate__animated animate__fadeInRight animate__delay-1200">
-                  <div className="flex items-center">
-                    <FontAwesomeIcon
-                      icon={faEnvelope}
-                      className="text-blue-500 mr-2"
-                    />
-                    <p className="text-lg text-gray-900 font-semibold">
-                      Email:
-                    </p>
-                  </div>
-                  <p className="text-lg text-gray-800">johndoe@example.com</p>
-                </div>
-
-                {/* Location Section */}
-                <div className="flex justify-between items-center animate__animated animate__fadeInUp animate__delay-1400">
-                  <div className="flex items-center">
-                    <FontAwesomeIcon
-                      icon={faMapMarkerAlt}
-                      className="text-blue-500 mr-2"
-                    />
-                    <p className="text-lg text-gray-900 font-semibold">
-                      Location:
-                    </p>
-                  </div>
-                  <p className="text-lg text-gray-800">New York, USA</p>
-                </div>
-
-                {/* Status Progress */}
-                <div className="flex justify-between items-center animate__animated animate__fadeInDown animate__delay-1600">
-                  <div className="flex items-center">
-                    <FontAwesomeIcon
-                      icon={faArrowRight}
-                      className="text-blue-500 mr-2"
-                    />
-                    <p className="text-lg text-gray-900 font-semibold">
-                      Status:
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex justify-between items-center space-x-4">
-                  {/* Step 1 */}
-                  <div className="relative flex flex-col items-center animate__animated animate__fadeInLeft animate__delay-1800">
-                    <div className="w-8 h-8 bg-blue-500 text-white flex justify-center items-center rounded-full">
-                      1
-                    </div>
-                    <span className="text-blue-500 mt-2 text-sm">Pending</span>
-                  </div>
-
-                  <div className="w-12 h-1 bg-blue-500"></div>
-
-                  {/* Step 2 */}
-                  <div className="relative flex flex-col items-center animate__animated animate__fadeInRight animate__delay-2000">
-                    <div className="w-8 h-8 bg-gray-300 text-white flex justify-center items-center rounded-full">
-                      2
-                    </div>
-                    <span className="text-gray-400 mt-2 text-sm">Accepted</span>
-                  </div>
-
-                  <div className="w-12 h-1 bg-gray-300"></div>
-
-                  {/* Step 3 */}
-                  <div className="relative flex flex-col items-center animate__animated animate__fadeInLeft animate__delay-2200">
-                    <div className="w-8 h-8 bg-gray-300 text-white flex justify-center items-center rounded-full">
-                      3
-                    </div>
-                    <span className="text-gray-400 mt-2 text-sm">
-                      Completed
-                    </span>
-                  </div>
-                </div>
+        <div className="grid grid-cols-3 gap-8 mt-9">
+          {/* Overview */}
+          <div className="relative group row-span-2 lg:col-span-1">
+            <div className="absolute w-full h-full bg-gradient-to-br from-yellow-300 to-yellow-500 opacity-20 rounded-xl transform rotate-3 group-hover:rotate-6 transition duration-300"></div>
+            <div className="relative w-full h-full bg-white p-6 shadow-inner rounded-xl flex flex-col items-center border-2 animate-border-gradient border-yellow-500 hover:border-yellow-700 hover:shadow-2xl transition-all duration-300">
+              <div className="absolute inset-0 bg-gradient-to-br from-yellow-50 to-yellow-100 opacity-50 rounded-xl blur-md pointer-events-none"></div>
+              <div className="relative z-10 w-14 h-14 bg-yellow-500 text-white rounded-full flex items-center justify-center mb-4 shadow-lg animate-bounce">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-8 h-8"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M12 2a10 10 0 0110 10H2A10 10 0 0112 2z"
+                  />
+                </svg>
               </div>
+              <h2 className="relative z-10 text-lg font-semibold text-yellow-600 mb-2">
+                Overview
+              </h2>
+              <p className="relative z-10 text-gray-600 text-center"></p>
+              <button
+                className="relative z-10 text-yellow-500 font-medium mt-4 underline hover:text-yellow-700"
+                onClick={() => toggleSection("overview")}
+              >
+                {expandedSection === "overview" ? "Read Less" : "Read More"}
+              </button>
             </div>
-          )}
+          </div>
+
+          {/* Schedule */}
+          <div className="relative group col-span-4 lg:col-span-1">
+            <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-blue-500 to-blue-500 opacity-20 rounded-xl transform rotate-3 group-hover:rotate-6 transition duration-300"></div>
+            <div className="relative bg-white p-6 shadow-inner rounded-xl flex flex-col items-center border-2 animate-border-gradient border-blue-500 hover:border-blue-700 hover:shadow-2xl transition-all duration-300">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-blue-100 opacity-60 rounded-xl blur-md pointer-events-none"></div>
+              <div className="relative z-10 w-14 h-14 bg-blue-500 text-white rounded-full flex items-center justify-center mb-4 shadow-lg animate-bounce">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-8 h-8"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M12 8v4l3 3M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z"
+                  />
+                </svg>
+              </div>
+              <h2 className="relative z-10 text-lg font-semibold text-blue-600 mb-2">
+                Schedule
+              </h2>
+              <p className="relative z-10 text-gray-600 text-center"></p>
+              <button
+                className="relative z-10 text-blue-500 font-medium mt-4 underline hover:text-blue-700"
+                onClick={() => toggleSection("schedule")}
+              >
+                {expandedSection === "schedule" ? "Read Less" : "Read More"}
+              </button>
+            </div>
+          </div>
+
+          {/* Rules */}
+          <div className="relative group row-span-2 lg:col-span-1">
+            <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-red-200 to-red-500 opacity-20 rounded-xl transform rotate-3 group-hover:rotate-6 transition duration-300"></div>
+            <div className="relative w-full h-full bg-white p-6 shadow-inner rounded-xl flex flex-col items-center border-2 animate-border-gradient border-red-500 hover:border-red-700 hover:shadow-2xl transition-all duration-300">
+              <div className="absolute inset-0 bg-gradient-to-br from-red-50 to-red-100 opacity-60 rounded-xl blur-md pointer-events-none"></div>
+              <div className="relative z-10 w-14 h-14 bg-red-500 text-white rounded-full flex items-center justify-center mb-4 shadow-lg animate-bounce">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-8 h-8"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M4 6h16M4 10h16M4 14h16"
+                  />
+                </svg>
+              </div>
+              <h2 className="relative z-10 text-lg font-semibold text-red-600 mb-2">
+                Rules
+              </h2>
+              <p className="relative z-10 text-gray-600 text-center"></p>
+              <button
+                className="relative z-10 text-red-500 font-medium mt-4 underline hover:text-red-700"
+                onClick={() => toggleSection("rules")}
+              >
+                {expandedSection === "rules" ? "Read Less" : "Read More"}
+              </button>
+            </div>
+          </div>
+
+          {/* Prizes */}
+          <div className="relative group col-span-4 lg:col-span-1">
+            <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-green-200 to-green-500 opacity-20 rounded-xl transform rotate-3 group-hover:rotate-6 transition duration-300"></div>
+            <div className="relative bg-white p-6 shadow-inner rounded-xl flex flex-col items-center border-2 animate-border-gradient border-green-500 hover:border-green-700 hover:shadow-2xl transition-all duration-300">
+              <div className="absolute inset-0 bg-gradient-to-br from-green-50 to-green-100 opacity-60 rounded-xl blur-md pointer-events-none"></div>
+              <div className="relative z-10 w-14 h-14 bg-green-500 text-white rounded-full flex items-center justify-center mb-4 shadow-lg animate-bounce">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-8 h-8"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M16 5V3H8v2m8 0a5 5 0 015 5v2a5 5 0 01-5 5H8a5 5 0 01-5-5V10a5 5 0 015-5m8 0H8m8 10v2a2 2 0 01-2 2H10a2 2 0 01-2-2v-2m10-7H4"
+                  />
+                </svg>
+              </div>
+              <h2 className="relative z-10 text-lg font-semibold text-green-600 mb-2">
+                Prizes
+              </h2>
+              <p className="relative z-10 text-gray-600 text-center"></p>
+              <button
+                className="relative z-10 text-green-500 font-medium mt-4 underline hover:text-green-700"
+                onClick={() => toggleSection("prizes")}
+              >
+                {expandedSection === "prizes" ? "Read Less" : "Read More"}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="relative group row-span-2 lg:col-span-1">
+          <div className="absolute w-full h-full bg-gradient-to-br from-purple-300 to-purple-500 opacity-20 rounded-xl transform rotate-1 group-hover:rotate-3 transition duration-300"></div>
+          <div className="relative w-full h-full bg-white p-6 shadow-inner rounded-xl flex flex-col items-center border-2 animate-border-gradient border-purple-500 hover:border-purple-700 hover:shadow-2xl transition-all duration-300">
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-50 to-purple-100 opacity-50 rounded-xl blur-md pointer-events-none"></div>
+            <div className="relative z-10 w-14 h-14 bg-purple-500 text-white rounded-full flex items-center justify-center mb-4 shadow-lg animate-bounce">
+              <span className="text-2xl">🗂️</span>
+            </div>
+            <p className="text-purple-1000 text-lg font-semibold text-center mb-6">
+              Please provide your details to view your status.
+            </p>
+
+            {/* Buttons inside the purple box */}
+            <div className="space-y-4">
+              <button
+                onClick={() => {
+                  setShowStatusForm(!showStatusForm);
+                  setShowViewForm(false); // Hide the other form
+                }}
+                className="bg-purple-600 text-white px-6 py-2 rounded-lg ml-8 mb-4 hover:bg-purple-400 transition duration-300 ease-in-out transform hover:scale-105"
+              >
+                {showStatusForm ? "Hide Status Form" : "Show Status Form"}
+              </button>
+
+              <button
+                onClick={() => {
+                  setShowViewForm(!showViewForm);
+                  setShowStatusForm(false); // Hide the other form
+                }}
+                className="bg-purple-600 text-white px-6 py-2 rounded-lg ml-8 mb-4 hover:bg-purple-400 transition duration-300 ease-in-out transform hover:scale-105"
+              >
+                {showViewForm
+                  ? "Hide Status View Form"
+                  : "Show Status View Form"}
+              </button>
+
+              {/* Status Form */}
+              {showStatusForm && (
+                <form
+                  onSubmit={handleStatusFormSubmit}
+                  className="mt-6 space-y-6 max-w-md mx-auto bg-purple-200 p-8 rounded-lg shadow-lg"
+                >
+                  <h2 className="text-2xl font-semibold text-center mb-6">
+                    Submit Your Details
+                  </h2>
+
+                  <input
+                    type="text"
+                    name="username"
+                    placeholder="Username"
+                    required
+                    value={formData.username}
+                    onChange={handleInputChange}
+                    className="w-full p-3 mb-4 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                  />
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    required
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    className="w-full p-3 mb-4 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                  />
+                  <input
+                    type="text"
+                    name="location"
+                    placeholder="Location"
+                    required
+                    value={formData.location}
+                    onChange={handleInputChange}
+                    className="w-full p-3 mb-6 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                  />
+                  <button
+                    type="submit"
+                    className="w-full py-3 bg-purple-1000 text-white font-semibold rounded-md hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  >
+                    Submit
+                  </button>
+                </form>
+              )}
+
+              {/* View Form */}
+              {showViewForm && (
+                <div className="mt-8 p-6 max-w-sm mx-auto bg-gradient-to-r from-purple-300 to-blue-200 rounded-lg shadow-xl hover:shadow-[0_20px_40px_rgba(29,78,216,0.6)] transition-all duration-300 transform hover:scale-105">
+                  <div className="space-y-6">
+                    {/* Username Section */}
+                    <div className="flex justify-between items-center animate__animated animate__fadeInLeft animate__delay-1000">
+                      <div className="flex items-center">
+                        <FontAwesomeIcon
+                          icon={faUser}
+                          className="text-purple-500 mr-2"
+                        />
+                        <p className="text-lg text-gray-900 font-semibold">
+                          Username:
+                        </p>
+                      </div>
+                      <p className="text-lg text-gray-800">JohnDoe</p>
+                    </div>
+
+                    {/* Email Section */}
+                    <div className="flex justify-between items-center animate__animated animate__fadeInRight animate__delay-1200">
+                      <div className="flex items-center">
+                        <FontAwesomeIcon
+                          icon={faEnvelope}
+                          className="text-purple-500 mr-2"
+                        />
+                        <p className="text-lg text-gray-900 font-semibold">
+                          Email:
+                        </p>
+                      </div>
+                      <p className="text-lg text-gray-800">
+                        johndoe@example.com
+                      </p>
+                    </div>
+
+                    {/* Location Section */}
+                    <div className="flex justify-between items-center animate__animated animate__fadeInUp animate__delay-1400">
+                      <div className="flex items-center">
+                        <FontAwesomeIcon
+                          icon={faMapMarkerAlt}
+                          className="text-purple-500 mr-2"
+                        />
+                        <p className="text-lg text-gray-900 font-semibold">
+                          Location:
+                        </p>
+                      </div>
+                      <p className="text-lg text-gray-800">New York, USA</p>
+                    </div>
+
+                    {/* Status Progress */}
+                    <div className="flex justify-between items-center animate__animated animate__fadeInDown animate__delay-1600">
+                      <div className="flex items-center">
+                        <FontAwesomeIcon
+                          icon={faArrowRight}
+                          className="text-purple-500 mr-2"
+                        />
+                        <p className="text-lg text-gray-900 font-semibold">
+                          Status:
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex justify-between items-center space-x-4">
+                      {/* Step 1 */}
+                      <div className="relative flex flex-col items-center animate__animated animate__fadeInLeft animate__delay-1800">
+                        <div className="w-8 h-8 bg-purple-500 text-white flex justify-center items-center rounded-full">
+                          1
+                        </div>
+                        <span className="text-purple-500 mt-2 text-sm">
+                          Pending
+                        </span>
+                      </div>
+
+                      <div className="w-12 h-1 bg-purple-500"></div>
+
+                      {/* Step 2 */}
+                      <div className="relative flex flex-col items-center animate__animated animate__fadeInRight animate__delay-2000">
+                        <div className="w-8 h-8 bg-gray-300 text-white flex justify-center items-center rounded-full">
+                          2
+                        </div>
+                        <span className="text-gray-400 mt-2 text-sm">
+                          Accepted
+                        </span>
+                      </div>
+
+                      <div className="w-12 h-1 bg-gray-300"></div>
+
+                      {/* Step 3 */}
+                      <div className="relative flex flex-col items-center animate__animated animate__fadeInLeft animate__delay-2200">
+                        <div className="w-8 h-8 bg-gray-300 text-white flex justify-center items-center rounded-full">
+                          3
+                        </div>
+                        <span className="text-gray-400 mt-2 text-sm">
+                          Completed
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
 
         {/* Review Section */}
-        <div className="bg-blue-50 p-6 rounded-lg shadow-lg mt-6 transition-transform duration-300 hover:scale-105">
-          <h2 className="text-2xl font-semibold text-blue-600">📝 Reviews</h2>
-          {reviews.length === 0 && (
-            <p className="text-gray-700 mt-4">
-              No reviews yet. Be the first to review!
-            </p>
-          )}
-          <div className="mt-4 space-y-4">
-            {reviews.map((review) => (
-              <div key={review.id} className="border p-4 rounded-lg shadow-md">
-                <h3 className="font-semibold">
-                  {review.name} ({review.rating}/5)
-                </h3>
-                <p className="text-gray-700">{review.reviewText}</p>
-              </div>
-            ))}
+        <div className="relative group row-span-2 lg:col-span-1">
+          <div className="absolute w-full h-full bg-gradient-to-br from-teal-300 to-teal-500 opacity-20 rounded-xl transform rotate-1 group-hover:rotate-3 transition duration-300"></div>
+          <div className="relative w-full h-full bg-white p-6 shadow-inner rounded-xl flex flex-col items-center border-2 animate-border-gradient border-teal-500 hover:border-teal-700 hover:shadow-2xl transition-all duration-300">
+            <div className="absolute inset-0 bg-gradient-to-br from-teal-50 to-teal-100 opacity-50 rounded-xl blur-md pointer-events-none"></div>
+            <div className="relative z-10 w-14 h-14 bg-teal-500 text-white rounded-full flex items-center justify-center mb-4 shadow-lg animate-bounce">
+              <span className="text-2xl">📝 </span>
+
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M12 2a10 10 0 0110 10H2A10 10 0 0112 2z"
+              />
+            </div>
+            <h2 className="text-2xl font-semibold text-teal-1000">Reviews</h2>
+            {reviews.length === 0 && (
+              <p className="text-gray-800 mt-4">
+                No reviews yet. Be the first to review!
+              </p>
+            )}
+            <div className="mt-4 space-y-4">
+              {reviews.map((review) => (
+                <div
+                  key={review.id}
+                  className="border p-4 rounded-lg shadow-md"
+                >
+                  <h3 className="font-semibold">
+                    {review.name} ({review.rating}/5)
+                  </h3>
+                  <p className="text-gray-700">{review.reviewText}</p>
+                </div>
+              ))}
+            </div>
+
+            <button
+              onClick={() => setShowReviewForm(!showReviewForm)}
+              className="text-teal-500 mt-4 hover:underline"
+            >
+              {showReviewForm ? "Cancel Review" : "Write a Review"}
+            </button>
+
+            {showReviewForm && (
+              <form onSubmit={handleReviewSubmit} className="mt-4">
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Your Name"
+                  value={reviewData.name}
+                  onChange={handleReviewInputChange}
+                  className="w-full p-2 mb-2 border border-gray-300 rounded-md"
+                />
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Your Email"
+                  value={reviewData.email}
+                  onChange={handleReviewInputChange}
+                  className="w-full p-2 mb-2 border border-gray-300 rounded-md"
+                />
+                <input
+                  type="number"
+                  name="rating"
+                  placeholder="Rating (1-5)"
+                  value={reviewData.rating}
+                  onChange={handleReviewInputChange}
+                  className="w-full p-2 mb-2 border border-gray-300 rounded-md"
+                  min="1"
+                  max="5"
+                />
+                <textarea
+                  name="reviewText"
+                  placeholder="Your Review"
+                  value={reviewData.reviewText}
+                  onChange={handleReviewInputChange}
+                  className="w-full p-2 mb-2 border border-gray-300 rounded-md"
+                />
+                <button
+                  type="submit"
+                  className="bg-teal-1000 text-white px-6 py-2 rounded-md mt-4 hover:bg-teal-600"
+                >
+                  Submit Review
+                </button>
+              </form>
+            )}
           </div>
-
-          <button
-            onClick={() => setShowReviewForm(!showReviewForm)}
-            className="text-blue-500 mt-4 hover:underline"
-          >
-            {showReviewForm ? "Cancel Review" : "Write a Review"}
-          </button>
-
-          {showReviewForm && (
-            <form onSubmit={handleReviewSubmit} className="mt-4">
-              <input
-                type="text"
-                name="name"
-                placeholder="Your Name"
-                value={reviewData.name}
-                onChange={handleReviewInputChange}
-                className="w-full p-2 mb-2 border border-gray-300 rounded-md"
-              />
-              <input
-                type="email"
-                name="email"
-                placeholder="Your Email"
-                value={reviewData.email}
-                onChange={handleReviewInputChange}
-                className="w-full p-2 mb-2 border border-gray-300 rounded-md"
-              />
-              <input
-                type="number"
-                name="rating"
-                placeholder="Rating (1-5)"
-                value={reviewData.rating}
-                onChange={handleReviewInputChange}
-                className="w-full p-2 mb-2 border border-gray-300 rounded-md"
-                min="1"
-                max="5"
-              />
-              <textarea
-                name="reviewText"
-                placeholder="Your Review"
-                value={reviewData.reviewText}
-                onChange={handleReviewInputChange}
-                className="w-full p-2 mb-2 border border-gray-300 rounded-md"
-              />
-              <button
-                type="submit"
-                className="bg-blue-600 text-white px-6 py-2 rounded-md mt-4 hover:bg-blue-700"
-              >
-                Submit Review
-              </button>
-            </form>
-          )}
         </div>
 
         {/* Like Section */}
