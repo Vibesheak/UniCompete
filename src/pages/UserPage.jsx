@@ -1,107 +1,108 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // Import useNavigate hook
+import homeImage from "./home.jpeg";
+import "animate.css";
 
-function UserPage() {
-  // Replace this with the actual user data fetched from context, state, or API
+const UserPage = () => {
+  const navigate = useNavigate(); // Initialize useNavigate hook
+
   const user = {
     fullName: "Nilojitha Mariyathas",
     email: "n123@gmail.com",
     contactNumber: "123-456-7890",
     address: "123 Main St, Kelaniya",
-    university: "A University",
+    university: "University A",
     userType: "Student",
+    profilePic: homeImage, // Your imported profile picture
   };
-
-  const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Add logout logic here (e.g., clearing tokens, user context, etc.)
-    navigate("/login"); // Navigate to the login page
+    navigate("/"); // Navigate to the home page ("/")
   };
 
-  const handleHome = () => {
-    navigate(-1); // Go back to the previous page in history
-  };
-
-  const getInitials = (name) => {
-    return name
-      .split(" ")
-      .map((n) => n[0])
-      .join("")
-      .toUpperCase();
+  const handleBack = () => {
+    navigate(-1); // Navigate back to the previous page
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <div
-        className="w-full max-w-4xl bg-blue-100 shadow-lg rounded-lg p-6 flex flex-col md:flex-row"
-        style={{ height: "80vh" }}
-      >
-        {/* Left Section */}
-        <div className="w-full md:w-1/2 flex flex-col items-center border-b md:border-b-0 md:border-r-4 border-gray-500 pr-0 md:pr-6 pb-6 md:pb-0">
-          <div
-            className="w-24 h-24 md:w-32 md:h-32 rounded-full shadow-md mb-4 flex items-center justify-center text-white font-bold text-2xl"
-            style={{ backgroundColor: "#6B7280" }} // Default background color
-          >
-            {getInitials(user.fullName)}
+    <div className="flex justify-center items-center h-screen bg-gradient-to-r from-indigo-100 via-indigo-200 to-indigo-300 animate__animated animate__fadeIn">
+      <div className="relative bg-white p-12 rounded-3xl shadow-xl text-center w-full sm:w-[400px] md:w-[600px] lg:w-[800px] transform animate__animated animate__fadeIn animate__faster animate__delay-0.5s">
+        {/* Blue Box */}
+        <div className="absolute left-[-50px] top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-indigo-500 to-indigo-300 w-[300px] h-[500px] rounded-2xl shadow-xl transform animate__animated animate__fadeIn animate__faster animate__delay-1s">
+          {/* Welcome Text */}
+          <div className="absolute top-[50px] left-1/2 transform -translate-x-1/2 text-white text-3xl font-bold animate__animated animate__fadeIn animate__infinite animate__delay-1s">
+            Welcome, {user.fullName}!
           </div>
-          <h2 className="text-2xl md:text-3xl font-extrabold text-blue-900 text-center mb-2">
-            {user.fullName}
-          </h2>
-          <p className="text-sm text-gray-500 mb-6">{user.userType}</p>
-
-          {/* Home Button */}
-          <button
-            onClick={handleHome}
-            className="mt-6 w-3/4 bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition duration-300"
-          >
-            Go Back
-          </button>
-
-          {/* Logout Button */}
-          <button
-            onClick={handleLogout}
-            className="mt-4 w-3/4 bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition duration-300"
-          >
-            Logout
-          </button>
+          {/* Short Note */}
+          <div className="absolute top-[200px] left-1/2 transform -translate-x-1/2 text-white text-lg font-semibold animate__animated animate__fadeIn animate__infinite animate__delay-2s">
+            We're happy to have you here. Explore the competitions and make the
+            most of your time!
+          </div>
         </div>
 
-        {/* Right Section */}
-        <div className="w-full md:w-1/2 pl-0 md:pl-6">
-          <h3 className="text-lg md:text-xl font-semibold text-gray-800 mb-4">
-            User Details
-          </h3>
-          <div className="space-y-4">
-            <div className="flex items-center justify-between border-b pb-2">
-              <p className="text-sm font-semibold text-gray-500">Email</p>
-              <p className="text-base md:text-lg font-medium text-gray-800">
-                {user.email}
+        {/* White Box Content */}
+        <div className="relative z-20 text-center ml-80 animate__animated animate__slideInRight animate__delay-0.5s">
+          {/* Profile Picture */}
+          <div className="mb-8 animate__animated animate__pulse animate__infinite">
+            <img
+              src={user.profilePic}
+              alt="Profile"
+              className="w-48 h-48 rounded-full mx-auto object-cover border-4 border-indigo-500 shadow-lg transform hover:scale-110 hover:shadow-xl transition-transform duration-300"
+            />
+          </div>
+
+          {/* User Information */}
+          <h2 className="text-4xl font-serif text-indigo-800 mb-2 animate__animated animate__fadeIn animate__delay-1s">
+            {user.fullName}
+          </h2>
+          <p className="text-xl text-gray-700 mb-6 animate__animated animate__fadeIn animate__delay-2s">
+            {user.userType} at {user.university}
+          </p>
+
+          <div className="space-y-6 text-left mb-8 animate__animated animate__fadeIn animate__delay-3s">
+            <div className="flex justify-between">
+              <strong className="text-indigo-600 text-lg font-bold">
+                Email:
+              </strong>
+              <p className="text-gray-600 font-medium tracking-wide">
+                <span className="text-gray-600 text-xl font-bold">
+                  {user.email}
+                </span>
               </p>
             </div>
-            <div className="flex items-center justify-between border-b pb-2">
-              <p className="text-sm font-semibold text-gray-500">Contact</p>
-              <p className="text-base md:text-lg font-medium text-gray-800">
-                {user.contactNumber}
-              </p>
+            <div className="flex justify-between">
+              <strong className="text-indigo-600 text-lg font-bold">
+                Contact Number:
+              </strong>
+              <p className="text-gray-600 font-bold">{user.contactNumber}</p>
             </div>
-            <div className="flex items-center justify-between border-b pb-2">
-              <p className="text-sm font-semibold text-gray-500">Address</p>
-              <p className="text-base md:text-lg font-medium text-gray-800">
-                {user.address}
-              </p>
+            <div className="flex justify-between">
+              <strong className="text-indigo-600 text-lg font-bold">
+                Address:
+              </strong>
+              <p className="text-gray-600 font-bold">{user.address}</p>
             </div>
-            <div className="flex items-center justify-between border-b pb-2">
-              <p className="text-sm font-semibold text-gray-500">University</p>
-              <p className="text-base md:text-lg font-medium text-gray-800">
-                {user.university}
-              </p>
-            </div>
+          </div>
+
+          {/* Buttons */}
+          <div className="space-x-6 mt-8">
+            <button
+              className="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-lg hover:bg-indigo-700 transform hover:scale-110 hover:shadow-xl transition-all duration-300 animate__animated animate__pulse animate__infinite animate__delay-4s"
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
+            <button
+              className="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-lg hover:bg-gray-700 transform hover:scale-110 hover:shadow-xl transition-all duration-300 animate__animated animate__pulse animate__infinite animate__delay-4s"
+              onClick={handleBack}
+            >
+              Back
+            </button>
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default UserPage;
