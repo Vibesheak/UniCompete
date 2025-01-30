@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate hook
-import homeImage from "./home.jpeg";
+import homeImage from "./images/home.jpeg";
 import "animate.css";
 
 const UserPage = () => {

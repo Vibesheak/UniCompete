@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import homeImage from "./home.jpeg";
+import homeImage from "./images/home.jpeg";
 import { FaFacebook, FaTwitter, FaLinkedin } from "react-icons/fa";
 
 function UniversityPage() {

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import bannerImage from "./bannerimage.jpg";
+import bannerImage from "./images/bannerimage.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import {

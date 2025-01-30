@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { motion } from "framer-motion";
 
 function Header() {
-  const [isHovered, setIsHovered] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const [isUniversityDropdownOpen, setIsUniversityDropdownOpen] =
     useState(false);
-  const [timeoutId, setTimeoutId] = useState(null);
-
-  const location = useLocation(); // Hook to get the current route
+  const location = useLocation();
+  const handleMouseEnter = () => setIsHovered(true);
+  const handleMouseLeave = () => setIsHovered(false);
 
   const universities = [
     "Colombo",
@@ -23,41 +24,30 @@ function Header() {
     "Wayamba",
   ];
 
-  const handleMouseEnter = () => setIsHovered(true);
-  const handleMouseLeave = () => setIsHovered(false);
-
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const toggleUniversityDropdown = () =>
     setIsUniversityDropdownOpen(!isUniversityDropdownOpen);
 
-  const handleDropdownMouseEnter = () => {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-    setIsUniversityDropdownOpen(true);
-  };
-
-  const handleDropdownMouseLeave = () => {
-    const id = setTimeout(() => {
-      setIsUniversityDropdownOpen(false);
-    }, 300);
-    setTimeoutId(id);
-  };
-
-  // Function to check if the link is active
   const isActive = (path) => location.pathname === path;
-
-  // Check if we are on a university page
   const isUniversityPage = location.pathname.startsWith("/university");
 
   return (
-    <header className="bg-gradient-to-br from-blue-700 via-blue-800 to-blue-900 text-white p-4 shadow-md relative">
-      {/* Background Gradient Animation */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 opacity-30 animate-pulse"></div>
+    <header className="bg-blue-600   text-white p-4 shadow-md flex items-center relative">
+      {/* Menu Toggle Button */}
+      <button
+        onClick={toggleMenu}
+        className="text-white text-3xl focus:outline-none mr-4"
+      >
+        {isMenuOpen ? "✖" : "☰"}
+      </button>
 
-      {/* Navigation Container */}
-      <nav className="container mx-auto flex justify-between items-center relative z-10">
-        {/* Logo */}
+      {/* Webpage Name with Animation */}
+      <motion.h1
+        className="text-2xl font-bold flex-1 text-center"
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         <Link
           to="/"
           onMouseEnter={handleMouseEnter}
@@ -70,103 +60,108 @@ function Header() {
         >
           Eventura
         </Link>
+      </motion.h1>
 
-        {/* Mobile Menu Toggle */}
-        <div className="lg:hidden">
-          <button
-            onClick={toggleMenu}
-            className="text-white text-2xl focus:outline-none"
-            aria-label="Toggle Menu"
-          >
-            {isMenuOpen ? "✖" : "☰"}
-          </button>
+      {/* Search Bar */}
+      <form className="w-full max-w-lg mx-auto mt-4">
+        <div className="relative">
+          <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+            <svg
+              className="w-5 h-5 text-gray-500 dark:text-gray-400"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 20 20"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+              />
+            </svg>
+          </div>
+          <input
+            type="search"
+            className="  w-[400px] h-[15px] block w-full p-4 ps-12 text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Search Universities, Competitions..."
+            required
+          />
         </div>
+      </form>
 
-        {/* Links */}
-        <div
-          className={`lg:flex space-x-6 lg:space-x-8 text-lg font-medium ${
-            isMenuOpen
-              ? "block absolute top-16 left-0 right-0 bg-blue-900 bg-opacity-95 p-4"
-              : "hidden lg:flex"
-          }`}
+      {isMenuOpen && (
+        <motion.div
+          initial={{ x: "100%", opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          exit={{ x: "100%", opacity: 0 }}
+          transition={{ duration: 0.5 }}
+          className="fixed top-[90px] left-0 h-[750px] w-64 bg-opacity-10 shadow-lg p-5 flex flex-col space-y-4 z-50 backdrop-blur-md"
         >
-          <Link
-            to="/"
-            className={`block text-xl font-semibold text-white hover:text-blue-300 transition-all duration-300 transform hover:scale-110 px-4 py-3 rounded-lg shadow-lg hover:shadow-xl ${
-              isActive("/") ? "text-indigo-500  bg-white" : ""
-            }`}
-          >
-            Home
-          </Link>
-
-          <Link
-            to="/login"
-            className={`block text-xl font-semibold text-white hover:text-blue-300 transition-all duration-300 transform hover:scale-110 px-4 py-3 rounded-lg shadow-lg hover:shadow-xl ${
-              isActive("/login") ? "text-indigo-500  bg-white" : ""
-            }`}
-          >
-            Login
-          </Link>
-          <Link
-            to="/about"
-            className={`block text-xl font-semibold text-white hover:text-blue-300 transition-all duration-300 transform hover:scale-110 px-4 py-3 rounded-lg shadow-lg hover:shadow-xl ${
-              isActive("/about") ? "text-indigo-500  bg-white" : ""
-            }`}
-          >
-            About Us
-          </Link>
+          {[
+            { label: "Home", path: "/" },
+            { label: "Login", path: "/login" },
+            { label: "About Us", path: "/about" },
+          ].map((item, index) => (
+            <motion.div
+              key={item.path}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3 * (index + 1) }}
+            >
+              <Link
+                to={item.path}
+                className={`text-blue-900 text-2xl font-semibold hover:text-blue-400 transition-all
+ ${isActive(item.path) ? "text-indigo-500" : ""}`}
+              >
+                {item.label}
+              </Link>
+            </motion.div>
+          ))}
 
           {/* University Dropdown */}
-          <div
-            className="relative"
-            onMouseEnter={handleDropdownMouseEnter}
-            onMouseLeave={handleDropdownMouseLeave}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.8 }}
           >
             <button
-              className={`block text-xl text-white hover:text-blue-300 transition-all duration-200 transform hover:scale-105 px-3 py-2 rounded-md inline-flex items-center gap-x-1.5 ${
-                isUniversityPage ? "text-indigo-500 bg-white" : ""
+              onClick={toggleUniversityDropdown}
+              className={`text-blue-900 text-2xl font-semibold w-full text-left ${
+                isUniversityPage ? "text-indigo-500" : ""
               }`}
-              aria-expanded={isUniversityDropdownOpen}
-              aria-controls="university-dropdown"
             >
-              Universities
-              <svg
-                className="-mr-1 text-gray-400"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                aria-hidden="true"
-                data-slot="icon"
-                style={{ width: "1.25rem", height: "1.25rem" }}
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
-                  clipRule="evenodd"
-                />
-              </svg>
+              Universities ▼
             </button>
-
             {isUniversityDropdownOpen && (
-              <div
-                id="university-dropdown"
-                className="z-10 absolute bg-white dark:bg-gray-700 rounded-lg shadow-md w-56 dark:divide-gray-600 mt-2 transition-all duration-200 ease-in-out opacity-100 scale-100"
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3 }}
+                className="mt-2 space-y-2"
               >
-                <div className="p-2">
-                  {universities.map((university) => (
+                {universities.map((university, index) => (
+                  <motion.div
+                    key={university}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 + 0.1 * index }}
+                  >
                     <Link
-                      key={university}
                       to={`/university/${university}`}
-                      className="block text-gray-900 dark:text-white hover:text-blue-300 px-4 py-1 text-sm rounded-md hover:bg-blue-600 hover:bg-opacity-20 transition-all duration-200"
+                      className="block text-blue-900 text-sm hover:text-blue-300"
                     >
                       {`University of ${university}`}
                     </Link>
-                  ))}
-                </div>
-              </div>
+                  </motion.div>
+                ))}
+              </motion.div>
             )}
-          </div>
-        </div>
-      </nav>
+          </motion.div>
+        </motion.div>
+      )}
     </header>
   );
 }

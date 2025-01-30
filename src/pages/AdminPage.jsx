@@ -1,13 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  FaListAlt,
-  FaHeart,
-  FaRegHeart,
-  FaEdit,
-  FaTrashAlt,
-} from "react-icons/fa"; // Importing necessary icons
-import homeVideo from "./HomeBack-1.mp4";
+import { FaHeart, FaRegHeart, FaEdit, FaTrashAlt } from "react-icons/fa"; // Importing necessary icons
+import homeVideo from "./videos/HomeBack-1.mp4";
 import { FaFacebook, FaTwitter, FaLinkedin, FaYoutube } from "react-icons/fa";
 import KelaniyaUniversity from "./images/Kelaniya.png";
 import MoratuwaUniversity from "./images/Moratuwa.png";
@@ -19,7 +13,7 @@ import SouthUniversity from "./images/south.png";
 import ColomboUniversity from "./images/colombo.png";
 import RuhunaUniversity from "./images/ruhuna.png";
 import EasternUniversity from "./images/eastern.png";
-import homeImage from "./home.jpeg"; // Ensure your profile image is here
+import homeImage from "./images/home.jpeg"; // Ensure your profile image is here
 
 function AdminPage() {
   const navigate = useNavigate();
@@ -29,6 +23,12 @@ function AdminPage() {
   const [profileDropdownVisible, setProfileDropdownVisible] = useState(false);
   const [favorites, setFavorites] = useState([]); // Initialize favorites state
   const [showFavorites, setShowFavorites] = useState(false);
+  const dropdownRef = useRef(null);
+  const [showAddCompetitionModal, setShowAddCompetitionModal] = useState(false);
+  const [showModal, setShowModal] = useState(false); // To control the modal visibility
+  const [showEditModal, setShowEditModal] = useState(false); // Separate state for Edit Modal
+  const [showAddModal, setShowAddModal] = useState(false); // Separate state for Add Modal
+  const [editingCompetition, setEditingCompetition] = useState(null);
   const [competitions, setCompetitions] = useState([
     {
       id: 1,
@@ -114,14 +114,12 @@ function AdminPage() {
     { name: "Eastern University", image: EasternUniversity },
   ];
 
-  const [showAddCompetitionModal, setShowAddCompetitionModal] = useState(false);
-  const [editingCompetition, setEditingCompetition] = useState(null);
   const [newCompetition, setNewCompetition] = useState({
     name: "",
     date: "",
     location: "",
     description: "",
-    rating: 0,
+    rating: 2,
     image: "",
   });
 
@@ -129,7 +127,6 @@ function AdminPage() {
     fullName: "Nilojitha Mariyathas",
   };
 
-  const dropdownRef = useRef(null);
   const handleUniversityClick = (university) =>
     navigate(`/university/${university}`);
 
@@ -189,35 +186,37 @@ function AdminPage() {
 
   const handleAddCompetition = () => {
     if (editingCompetition) {
-      // If editing, update the competition
+      // If editing, update the competition in the existing list
       setCompetitions(
         competitions.map((comp) =>
           comp.id === editingCompetition.id
-            ? { ...newCompetition, id: comp.id }
+            ? { ...newCompetition, id: comp.id } // Keep the existing id
             : comp
         )
       );
     } else {
-      // Add new competition
+      // Add new competition to the existing list
       setCompetitions([...competitions, { ...newCompetition, id: Date.now() }]);
     }
+
+    // Reset form and close modal after adding or editing
     setShowAddCompetitionModal(false);
     setNewCompetition({
       name: "",
       date: "",
       location: "",
       description: "",
-      rating: 0,
-      image: "",
+      registrationLink: "",
+      picture: null,
     });
     setEditingCompetition(null);
   };
-
+  // Handle when you click on Edit Competition button
   const handleEditCompetition = (id) => {
     const competitionToEdit = competitions.find((comp) => comp.id === id);
     setEditingCompetition(competitionToEdit);
     setNewCompetition({ ...competitionToEdit });
-    setShowAddCompetitionModal(true);
+    setShowEditModal(true); // Show Edit Competition modal
   };
 
   const handleDeleteCompetition = (id) => {
@@ -230,6 +229,17 @@ function AdminPage() {
       ...prev,
       [name]: value,
     }));
+  };
+
+  // Handle file input change
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setNewCompetition((prevState) => ({
+        ...prevState,
+        picture: file,
+      }));
+    }
   };
 
   const renderStars = (rating) => {
@@ -284,15 +294,33 @@ function AdminPage() {
       </div>
     );
   };
-  const handleFileChange = (e) => {
-    const file = e.target.files[0]; // Get the first selected file
-    if (file) {
-      // You can store the file in state or handle it accordingly
-      setNewCompetition((prevState) => ({
-        ...prevState,
-        picture: file,
-      }));
+  const handleSaveCompetition = () => {
+    if (editingCompetition) {
+      // Update existing competition
+      setCompetitions(
+        competitions.map((comp) =>
+          comp.id === editingCompetition.id
+            ? { ...newCompetition, id: comp.id }
+            : comp
+        )
+      );
+    } else {
+      // Add new competition
+      setCompetitions([...competitions, { ...newCompetition, id: Date.now() }]);
     }
+
+    // Close modal after saving
+    setShowEditModal(false);
+    setShowAddModal(false);
+    setNewCompetition({
+      name: "",
+      date: "",
+      location: "",
+      description: "",
+      rating: 0,
+      image: "",
+    });
+    setEditingCompetition(null);
   };
 
   const filterCompetitions = () => {
@@ -570,7 +598,7 @@ function AdminPage() {
         </form>
 
         <header className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 text-center flex-grow">
+          <h1 className=" text-3xl sm:text-4xl font-bold text-gray-900 text-center flex-grow">
             Explore Competitions
           </h1>
 
@@ -739,13 +767,12 @@ function AdminPage() {
             )}
           </div>
         </div>
-        {/* Add/Edit Competition Modal */}
-        {showAddCompetitionModal && (
+
+        {/* Edit Competition  */}
+        {showEditModal && (
           <div className="fixed inset-0 flex justify-center items-center z-20 bg-gray-900 bg-opacity-50">
             <div className="bg-white p-6 rounded-lg w-full sm:w-96">
-              <h2 className="text-2xl font-semibold mb-4">
-                {editingCompetition ? "Edit" : "Add"} Competition
-              </h2>
+              <h2 className="text-2xl font-semibold mb-4">Edit Competition</h2>
               <form>
                 <div className="mb-4">
                   <label className="block text-sm text-gray-700 mb-2">
@@ -767,9 +794,9 @@ function AdminPage() {
                   <input
                     type="date"
                     name="date"
-                    required
                     value={newCompetition.date}
                     onChange={handleInputChange}
+                    required
                     className="bg-gray-100 text-gray-800 px-4 py-2 rounded-lg w-full"
                   />
                 </div>
@@ -798,7 +825,6 @@ function AdminPage() {
                     className="bg-gray-100 text-gray-800 px-4 py-2 rounded-lg w-full"
                   />
                 </div>
-
                 <div className="mb-4">
                   <label className="block text-sm text-gray-700 mb-2">
                     Registration Link
@@ -830,17 +856,126 @@ function AdminPage() {
                 <div className="flex justify-between">
                   <button
                     type="button"
-                    onClick={() => setShowAddCompetitionModal(false)}
+                    onClick={() => setShowEditModal(false)} // Close edit modal
                     className="bg-gray-500 text-white px-4 py-2 rounded-lg"
                   >
                     Cancel
                   </button>
                   <button
                     type="button"
-                    onClick={handleAddCompetition}
+                    onClick={handleSaveCompetition} // Save competition (Add or Edit)
                     className="bg-blue-600 text-white px-4 py-2 rounded-lg"
                   >
-                    {editingCompetition ? "Save Changes" : "Add Competition"}
+                    Save Changes
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* Add Competition Modal */}
+        {/* Add Competition Modal */}
+        {showAddCompetitionModal && (
+          <div className="fixed inset-0 flex justify-center items-center z-20 bg-gray-900 bg-opacity-50">
+            <div className="bg-white p-6 rounded-lg w-full sm:w-96">
+              <h2 className="text-2xl font-semibold mb-4">Add Competition</h2>
+              <form>
+                {/* Similar form fields for Add Competition as in Edit */}
+                <div className="mb-4">
+                  <label className="block text-sm text-gray-700 mb-2">
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={newCompetition.name}
+                    onChange={handleInputChange}
+                    required
+                    className="bg-gray-100 text-gray-800 px-4 py-2 rounded-lg w-full"
+                  />
+                </div>
+                {/* Other form fields for Add Competition */}
+                <div className="mb-4">
+                  <label className="block text-sm text-gray-700 mb-2">
+                    Date
+                  </label>
+                  <input
+                    type="date"
+                    name="date"
+                    value={newCompetition.date}
+                    onChange={handleInputChange}
+                    required
+                    className="bg-gray-100 text-gray-800 px-4 py-2 rounded-lg w-full"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-sm text-gray-700 mb-2">
+                    Location
+                  </label>
+                  <input
+                    type="text"
+                    name="location"
+                    value={newCompetition.location}
+                    onChange={handleInputChange}
+                    required
+                    className="bg-gray-100 text-gray-800 px-4 py-2 rounded-lg w-full"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-sm text-gray-700 mb-2">
+                    Description
+                  </label>
+                  <textarea
+                    name="description"
+                    value={newCompetition.description}
+                    onChange={handleInputChange}
+                    required
+                    className="bg-gray-100 text-gray-800 px-4 py-2 rounded-lg w-full"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-sm text-gray-700 mb-2">
+                    Registration Link
+                  </label>
+                  <input
+                    type="url"
+                    name="registrationLink"
+                    value={newCompetition.registrationLink}
+                    onChange={handleInputChange}
+                    required
+                    className="bg-gray-100 text-gray-800 px-4 py-2 rounded-lg w-full"
+                    placeholder="Enter registration URL"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-sm text-gray-700 mb-2">
+                    Upload Picture (JPG or PNG)
+                  </label>
+                  <input
+                    type="file"
+                    name="picture"
+                    accept="image/jpeg, image/png"
+                    onChange={handleFileChange}
+                    required
+                    className="bg-gray-100 text-gray-800 px-4 py-2 rounded-lg w-full"
+                  />
+                </div>
+
+                <div className="flex justify-between">
+                  <button
+                    type="button"
+                    onClick={() => setShowAddCompetitionModal(false)} // Close edit modal
+                    className="bg-gray-500 text-white px-4 py-2 rounded-lg"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleAddCompetition} // Save competition (Add or Edit)
+                    className="bg-blue-600 text-white px-4 py-2 rounded-lg"
+                  >
+                    Add Competition
                   </button>
                 </div>
               </form>

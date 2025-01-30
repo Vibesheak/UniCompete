@@ -7,7 +7,7 @@ import { IoMdPhonePortrait } from "react-icons/io";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { motion } from "framer-motion";
-import img2 from "./img2.jpg";
+import img2 from "./images/img2.jpg";
 
 function RegisterPage() {
   const navigate = useNavigate();
