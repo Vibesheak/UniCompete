@@ -14,6 +14,7 @@ module.exports = {
         fadeInText: 'fadeInText 1s ease-out',
         slideIn: 'slideIn 0.5s ease-out',
         bounce: 'bounce 1s infinite',
+        
       },
       keyframes: {
         fadeIn: {

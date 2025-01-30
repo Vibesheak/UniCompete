@@ -87,13 +87,13 @@ const UserPage = () => {
           {/* Buttons */}
           <div className="space-x-6 mt-8">
             <button
-              className="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-lg hover:bg-indigo-700 transform hover:scale-110 hover:shadow-xl transition-all duration-300 animate__animated animate__pulse animate__infinite animate__delay-4s"
+              className="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-lg hover:bg-indigo-700 transform hover:scale-110 hover:shadow-xl transition-all duration-300 animate__animated  animate-bounce animate__infinite animate__delay-1s"
               onClick={handleLogout}
             >
               Logout
             </button>
             <button
-              className="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-lg hover:bg-gray-700 transform hover:scale-110 hover:shadow-xl transition-all duration-300 animate__animated animate__pulse animate__infinite animate__delay-4s"
+              className="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-lg hover:bg-gray-700 transform hover:scale-110 hover:shadow-xl transition-all duration-300 animate__animated  animate-bounce animate__infinite animate__delay-1s"
               onClick={handleBack}
             >
               Back

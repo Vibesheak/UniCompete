@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 function Header() {
   const [isHovered, setIsHovered] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // For mobile menu toggle
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUniversityDropdownOpen, setIsUniversityDropdownOpen] =
     useState(false);
-  const [timeoutId, setTimeoutId] = useState(null); // To manage the delay
+  const [timeoutId, setTimeoutId] = useState(null);
+
+  const location = useLocation(); // Hook to get the current route
 
   const universities = [
     "Colombo",
@@ -30,17 +32,23 @@ function Header() {
 
   const handleDropdownMouseEnter = () => {
     if (timeoutId) {
-      clearTimeout(timeoutId); // Clear any existing timeout
+      clearTimeout(timeoutId);
     }
-    setIsUniversityDropdownOpen(true); // Show the dropdown immediately
+    setIsUniversityDropdownOpen(true);
   };
 
   const handleDropdownMouseLeave = () => {
     const id = setTimeout(() => {
-      setIsUniversityDropdownOpen(false); // Close the dropdown after delay
-    }, 300); // Delay in milliseconds (adjust as needed)
-    setTimeoutId(id); // Save the timeout ID
+      setIsUniversityDropdownOpen(false);
+    }, 300);
+    setTimeoutId(id);
   };
+
+  // Function to check if the link is active
+  const isActive = (path) => location.pathname === path;
+
+  // Check if we are on a university page
+  const isUniversityPage = location.pathname.startsWith("/university");
 
   return (
     <header className="bg-gradient-to-br from-blue-700 via-blue-800 to-blue-900 text-white p-4 shadow-md relative">
@@ -84,19 +92,26 @@ function Header() {
         >
           <Link
             to="/"
-            className="block text-xl font-semibold text-white hover:text-blue-300 transition-all duration-300 transform hover:scale-110 px-4 py-3 rounded-lg shadow-lg hover:shadow-xl"
+            className={`block text-xl font-semibold text-white hover:text-blue-300 transition-all duration-300 transform hover:scale-110 px-4 py-3 rounded-lg shadow-lg hover:shadow-xl ${
+              isActive("/") ? "text-indigo-500  bg-white" : ""
+            }`}
           >
             Home
           </Link>
+
           <Link
             to="/login"
-            className="block text-xl font-semibold text-white hover:text-blue-300 transition-all duration-300 transform hover:scale-110 px-4 py-3 rounded-lg shadow-lg hover:shadow-xl"
+            className={`block text-xl font-semibold text-white hover:text-blue-300 transition-all duration-300 transform hover:scale-110 px-4 py-3 rounded-lg shadow-lg hover:shadow-xl ${
+              isActive("/login") ? "text-indigo-500  bg-white" : ""
+            }`}
           >
             Login
           </Link>
           <Link
             to="/about"
-            className="block text-xl font-semibold text-white hover:text-blue-300 transition-all duration-300 transform hover:scale-110 px-4 py-3 rounded-lg shadow-lg hover:shadow-xl"
+            className={`block text-xl font-semibold text-white hover:text-blue-300 transition-all duration-300 transform hover:scale-110 px-4 py-3 rounded-lg shadow-lg hover:shadow-xl ${
+              isActive("/about") ? "text-indigo-500  bg-white" : ""
+            }`}
           >
             About Us
           </Link>
@@ -104,11 +119,13 @@ function Header() {
           {/* University Dropdown */}
           <div
             className="relative"
-            onMouseEnter={handleDropdownMouseEnter} // Show on hover
-            onMouseLeave={handleDropdownMouseLeave} // Hide after delay
+            onMouseEnter={handleDropdownMouseEnter}
+            onMouseLeave={handleDropdownMouseLeave}
           >
             <button
-              className="block text-xl text-white hover:text-blue-300 transition-all duration-200 transform hover:scale-105 px-3 py-2 rounded-md inline-flex items-center gap-x-1.5"
+              className={`block text-xl text-white hover:text-blue-300 transition-all duration-200 transform hover:scale-105 px-3 py-2 rounded-md inline-flex items-center gap-x-1.5 ${
+                isUniversityPage ? "text-indigo-500 bg-white" : ""
+              }`}
               aria-expanded={isUniversityDropdownOpen}
               aria-controls="university-dropdown"
             >
