@@ -32,7 +32,7 @@ function About() {
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 flex items-center justify-center p-4">
-      <div className="w-full max-w-4xl p-6 sm:p-8 bg-blue-200 rounded-xl shadow-lg space-y-6 animate__animated animate__fadeIn">
+      <div className="w-full max-w-4xl p-6 sm:p-8 bg-blue-200 rounded-xl shadow-lg space-y-6 animate__animated animate__fadeIn relative top-[20px]">
         {/* Header */}
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-blue-800 mb-4 text-center">
           About Eventura 🎉

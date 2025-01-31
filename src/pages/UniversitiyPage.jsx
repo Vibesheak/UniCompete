@@ -160,8 +160,8 @@ function UniversityPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 text-gray-900">
-      <header className="bg-blue-600 text-white p-6">
+    <div className="relative top-[40px] min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 text-gray-900">
+      <header className="bg-blue-600 text-white p-6 ">
         <h1 className="text-3xl font-bold text-center">
           Competitions at {university}
         </h1>

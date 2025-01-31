@@ -97,7 +97,7 @@ function LoginPage() {
   };
 
   return (
-    <div className="flex items-center justify-center relative inset-0 w-full h-full">
+    <div className=" top-[40px] flex items-center justify-center relative inset-0 w-full h-full">
       {/* Light Blue Background Blur */}
 
       <div className="relative w-full max-w-8xl p-8 rounded-2xl shadow-2xl bg-blue-100">

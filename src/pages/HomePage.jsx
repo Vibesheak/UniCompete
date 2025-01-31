@@ -13,6 +13,8 @@ import SouthUniversity from "./images/south.png";
 import ColomboUniversity from "./images/colombo.png";
 import RuhunaUniversity from "./images/ruhuna.png";
 import EasternUniversity from "./images/eastern.png";
+import image3 from "./images/ico1.png";
+import { Link } from "react-router-dom";
 
 // import other images similarly
 
@@ -218,21 +220,20 @@ function HomePage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br ">
       <div className="min-h-screen flex">
-        <div className="relative w-full h-[95vh]">
+        <div className="relative w-full h-[1000px] top-[40px]">
           <video
             src={homeVideo} // Ensure this path is correct
             autoPlay
             loop
             muted
-            className="w-full h-full object-cover rounded-lg" // Apply rounded corners here
+            className="w-full h-full object-cover rounded-lg"
+            style={{
+              clipPath: "ellipse(80% 78% at 50% 0%)", // Apply the same clip-path for the video
+            }}
           />
-          <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 rounded-lg flex items-center justify-center h-[15vh] md:h-[8vh] lg:h-[6vh] px-4">
-            <p className="text-white text-lg md:text-xl lg:text-3xl font-bold uppercase tracking-wide md:tracking-widest lg:tracking-[0.8em] text-center">
-              The challenge is waiting for you!
-            </p>
-          </div>
+
           <div className="absolute right-[40%] top-[10%]  -translate-y-3/4 flex flex-col justify-center items-end text-blue-600 p-4 sm:p-8">
             <div className="bg-gray-500 bg-opacity-10 backdrop-blur-md absolute inset-0 max-w-[450px] max-h-[650px] w-full h-full sm:w-[650px] sm:h-[850px] rounded-xl">
               {/* Content goes here */}
@@ -329,7 +330,60 @@ function HomePage() {
           </div>
         </div>
       </div>
-      <div className="relative w-full h-40 overflow-hidden">
+      {/* Image Section with Blue Background */}
+      <section className="w-full py-16 -mt-80 ">
+        <div className="max-w-screen-xl mx-auto relative h-16">
+          {/* Home Section */}
+          <div className="absolute -top-[140px] -left-32 w-36 h-36 bg-blue-900 rounded-full overflow-hidden shadow-lg flex items-center justify-center transform transition-all duration-300 hover:bg-blue-500 hover:scale-110">
+            <Link to="/">
+              <img
+                src={image3}
+                alt="Image 3"
+                className="w-28 h-28 object-cover object-center cursor-pointer transform transition-transform duration-300 hover:scale-110"
+              />
+            </Link>
+          </div>
+          <span className="absolute top-[5px] mt-2 -left-[4%] transform -translate-x-1/2 text-3xl font-bold text-blue-800 transition-all duration-300 hover:bg-blue-500 hover:scale-110 hover:text-white px-2 py-1 rounded">
+            <Link to="/" className="hover:underline">
+              Home
+            </Link>
+          </span>
+
+          {/* Login Section */}
+          <div className="absolute -top-[40px] left-[45%] w-36 h-36 bg-blue-900 rounded-full overflow-hidden shadow-lg flex items-center justify-center transform transition-all duration-300 hover:bg-blue-500 hover:scale-110">
+            <Link to="/login">
+              <img
+                src={image3}
+                alt="Image 3"
+                className="w-28 h-28 object-cover object-center cursor-pointer transform transition-transform duration-300 hover:scale-110"
+              />
+            </Link>
+          </div>
+          <span className="absolute top-[100px] mt-2 left-[51%] transform -translate-x-1/2 text-3xl font-bold text-blue-800 transition-all duration-300 hover:bg-blue-500 hover:scale-110 hover:text-white px-2 py-1 rounded">
+            <Link to="/login" className="hover:underline">
+              Login
+            </Link>
+          </span>
+
+          {/* About Us Section */}
+          <div className="absolute -top-[130px] -right-32 w-36 h-36 bg-blue-900 rounded-full overflow-hidden shadow-lg flex items-center justify-center transform transition-all duration-300 hover:bg-blue-500 hover:scale-110">
+            <Link to="/about">
+              <img
+                src={image3}
+                alt="Image 4"
+                className="w-28 h-28 object-cover object-center cursor-pointer transform transition-transform duration-300 hover:scale-110"
+              />
+            </Link>
+          </div>
+          <span className="absolute top-[10px] mt-2 -right-[17%] transform -translate-x-1/2 text-3xl font-bold text-blue-800 transition-all duration-300 hover:bg-blue-500 hover:scale-110 hover:text-white px-2 py-1 rounded">
+            <Link to="/about" className="hover:underline">
+              About Us
+            </Link>
+          </span>
+        </div>
+      </section>
+
+      <div className="relative w-full top-[50px] h-40 overflow-hidden">
         {/* Container for the images and names */}
         <div className="flex animate-move">
           {/* Loop through the university images array */}
@@ -406,7 +460,15 @@ function HomePage() {
 
       <br></br>
       {/* Main Content */}
-      <div className="flex-1 p-6 md:p-6 bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 text-gray-900">
+      <div
+        className="flex-1 p-6 md:p-6 bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 text-gray-900 -mt-32"
+        style={{
+          position: "relative", // Ensure the footer has positioning
+          top: "120px", // Move it 120px down
+        }}
+      >
+        {/* Content here */}
+
         <form className="max-w-md mx-auto mt-4">
           {" "}
           {/* Increased bottom margin */}
