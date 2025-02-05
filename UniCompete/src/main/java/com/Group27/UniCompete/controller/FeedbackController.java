@@ -35,5 +35,4 @@ public class FeedbackController {
     public ResponseEntity<List<Feedback>> getFeedbacksByUniversity(@PathVariable String University) {
         return ResponseEntity.ok(feedbackService.getFeedbacksByUniversity(University));
     }
-
 }

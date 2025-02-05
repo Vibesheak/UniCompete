@@ -7,9 +7,12 @@ import java.util.List;
 
 public interface ApplicationRepository extends MongoRepository<Application, String> {
     List<Application> findByCompetitionId(String competitionId);
+    //List<Application> findByUsername(String username);
     List<Application> findByUsername(String username);
 
-    Application findByCompetitionIdAndUsername(String competitionId, String username);
+
+    List<Application> findByCompetitionIdAndUsername(String competitionId, String username);
+
 
 
 

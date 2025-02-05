@@ -31,14 +31,16 @@ public class ApplicationController {
     }
 
     // Admin: Update Application Status
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @PutMapping("/admin/update-status/{id}")
+    // Update application status by competitionId and username
+    @PutMapping("/update-status/{competitionId}/{username}")
     public ResponseEntity<Application> updateApplicationStatus(
-            @PathVariable String id,
+            @PathVariable String competitionId,
+            @PathVariable String username,
             @RequestParam String status) {
-        return ResponseEntity.ok(applicationService.updateApplicationStatus(id, status));
-    }
 
+        Application updatedApplication = applicationService.updateApplicationStatus(competitionId, username, status);
+        return ResponseEntity.ok(updatedApplication);
+    }
     // Admin: Get Applications by Competition ID
 
     @GetMapping("/user/applications/{competitionId}")
@@ -46,6 +48,9 @@ public class ApplicationController {
             @PathVariable String competitionId) {
         return ResponseEntity.ok(applicationService.getApplicationsByCompetitionId(competitionId));
     }
+
+    // Update application status by username
+
 
     //@PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')") // Adjust authority as needed
     @GetMapping("/user/applications/{competitionId}/{username}")

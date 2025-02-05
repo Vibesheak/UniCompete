@@ -2,11 +2,14 @@ package com.Group27.UniCompete.models;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.FieldType;
 
 @Document(collection = "Competitions")
 public class Competition {
     @Id
-    private Long id;
+    @Field(targetType = FieldType.STRING) // ✅ Changed ID type to String
+    private String id;
     private String name;
     private String description;
     private String prizes;
@@ -17,84 +20,34 @@ public class Competition {
     private String date; // Stored in ISO-8601 format
     private String imageUrl;
 
+    // Getters and Setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
-    public String getPrizes() {
-        return prizes;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    public void setPrizes(String prizes) {
-        this.prizes = prizes;
-    }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
-    public String getRegistrationDeadline() {
-        return registrationDeadline;
-    }
+    public String getPrizes() { return prizes; }
+    public void setPrizes(String prizes) { this.prizes = prizes; }
 
-    public void setRegistrationDeadline(String registrationDeadline) {
-        this.registrationDeadline = registrationDeadline;
-    }
+    public String getRegistrationDeadline() { return registrationDeadline; }
+    public void setRegistrationDeadline(String registrationDeadline) { this.registrationDeadline = registrationDeadline; }
 
-    public String getRules() {
-        return rules;
-    }
+    public String getRules() { return rules; }
+    public void setRules(String rules) { this.rules = rules; }
 
-    public void setRules(String rules) {
-        this.rules = rules;
-    }
+    public String getCategory() { return category; }
+    public void setCategory(String category) { this.category = category; }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
+    public String getUniversity() { return university; }
+    public void setUniversity(String university) { this.university = university; }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
+    public String getDate() { return date; }
+    public void setDate(String date) { this.date = date; }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getUniversity() {
-        return university;
-    }
-
-    public void setUniversity(String university) {
-        this.university = university;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 }

@@ -28,14 +28,26 @@ public class ApplicationServiceImpl implements ApplicationService {
         return applicationRepository.findByUsername(username);
     }
 
-    public Application getApplicationByCompetitionIdAndUsername(String competitionId, String username) {
-        return applicationRepository.findByCompetitionIdAndUsername(competitionId, username);
+//    public Application getApplicationByCompetitionIdAndUsername(String competitionId, String username) {
+//        return applicationRepository.findByCompetitionIdAndUsername(competitionId, username);
+//    }
+
+    @Override
+    public Application updateApplicationStatus(String competitionId, String username, String status) {
+        Application application = getApplicationByCompetitionIdAndUsername(competitionId, username);
+
+        application.setStatus(status);
+        return applicationRepository.save(application);
     }
 
     @Override
-    public Application updateApplicationStatus(String id, String status) {
-        Application application = applicationRepository.findById(id).orElseThrow();
-        application.setStatus(status);
-        return applicationRepository.save(application);
+    public Application getApplicationByCompetitionIdAndUsername(String competitionId, String username) {
+        List<Application> applications = applicationRepository.findByCompetitionIdAndUsername(competitionId, username);
+
+        if (applications.isEmpty()) {
+            throw new RuntimeException("Application not found for username: " + username + " in competition: " + competitionId);
+        }
+
+        return applications.get(0); // Assuming only one application per user per competition
     }
 }
