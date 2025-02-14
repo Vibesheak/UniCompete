@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import homeImage from "./images/home.jpeg";
-import homeVideo from "./videos/HomeBack.mp4";
+import homeVideo from "./videos/HomeBack-1.mp4";
 import { FaFacebook, FaTwitter, FaLinkedin, FaYoutube } from "react-icons/fa";
 import KelaniyaUniversity from "./images/Kelaniya.png";
 import MoratuwaUniversity from "./images/Moratuwa.png";
