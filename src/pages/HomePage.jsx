@@ -14,7 +14,9 @@ import ColomboUniversity from "./images/colombo.png";
 import RuhunaUniversity from "./images/ruhuna.png";
 import EasternUniversity from "./images/eastern.png";
 import image3 from "./images/ico1.png";
+import image5 from "./images/aboutus.png";
 import { Link } from "react-router-dom";
+import image4 from "./images/login.png";
 
 // import other images similarly
 
@@ -353,8 +355,8 @@ function HomePage() {
           <div className="absolute -top-[40px] left-[45%] w-36 h-36 bg-blue-900 rounded-full overflow-hidden shadow-lg flex items-center justify-center transform transition-all duration-300 hover:bg-blue-500 hover:scale-110">
             <Link to="/login">
               <img
-                src={image3}
-                alt="Image 3"
+                src={image4}
+                alt="Image 4"
                 className="w-28 h-28 object-cover object-center cursor-pointer transform transition-transform duration-300 hover:scale-110"
               />
             </Link>
@@ -369,8 +371,8 @@ function HomePage() {
           <div className="absolute -top-[130px] -right-32 w-36 h-36 bg-blue-900 rounded-full overflow-hidden shadow-lg flex items-center justify-center transform transition-all duration-300 hover:bg-blue-500 hover:scale-110">
             <Link to="/about">
               <img
-                src={image3}
-                alt="Image 4"
+                src={image5}
+                alt="Image 5"
                 className="w-28 h-28 object-cover object-center cursor-pointer transform transition-transform duration-300 hover:scale-110"
               />
             </Link>
