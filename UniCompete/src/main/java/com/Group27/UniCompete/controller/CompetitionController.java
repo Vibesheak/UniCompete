@@ -60,4 +60,10 @@ public class CompetitionController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PutMapping("/admin/update/{id}")
+    public ResponseEntity<Competition> updateCompetition(@PathVariable String id, @RequestBody Competition competition) {
+        return ResponseEntity.ok(competitionService.updateCompetition(id, competition));
+    }
+
 }

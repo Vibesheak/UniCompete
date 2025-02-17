@@ -10,9 +10,12 @@ public interface CompetitionService {
     List<String> getCategories();
     List<Competition> getCompetitionsByCategory(String category);
     List<Competition> getCompetitionsByuniversity(String university);
-    Competition updateCompetition(String id, Competition competition);
+
     void deleteCompetition(String id);
     String uploadCompetitionImage(String id, MultipartFile file);
     byte[] getCompetitionImage(String id);
     Competition getCompetitionById(String id);
+
+    Competition updateCompetition(String id, Competition competition);
+
 }

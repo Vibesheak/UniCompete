@@ -47,11 +47,7 @@ public class CompetitionServiceImpl implements CompetitionService {
         return competitionRepository.findByUniversity(university);
     }
 
-    @Override
-    public Competition updateCompetition(String id, Competition competition) {
-        competition.setId(id);
-        return competitionRepository.save(competition);
-    }
+
 
     @Override
     public void deleteCompetition(String id) {
@@ -99,4 +95,11 @@ public class CompetitionServiceImpl implements CompetitionService {
             throw new RuntimeException("Competition with id " + id + " not found");
         }
     }
+
+    @Override
+    public Competition updateCompetition(String id, Competition competition) {
+        competition.setId(id);
+        return competitionRepository.save(competition);
+    }
+
 }
