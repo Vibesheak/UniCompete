@@ -321,10 +321,17 @@ function HomePage() {
                   </motion.div>
                 </div>
 
-                {/* Center: Logo and Heading */}
-                <div className="flex items-center justify-center">
+                {/* Center: Logo Above Heading */}
+                <div className="flex flex-col items-center justify-center gap-y-1">
+                  {/* Logo with less margin below */}
+                  <img
+                    src={logo}
+                    alt="Eventura Logo"
+                    className="absolute bottom-[230px] w-[100px] h-auto"
+                  />
+
                   <motion.h1
-                    className="text-4xl font-extrabold text-center"
+                    className="text-4xl font-extrabold text-center leading-tight"
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
