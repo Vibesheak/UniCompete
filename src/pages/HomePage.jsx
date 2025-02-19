@@ -279,54 +279,50 @@ function HomePage() {
             />
 
             <div
-              className="absolute -top-[10%] left-[10%]  w-full"
+              className="absolute -top-[10%] -left-[5%]  w-[110%]"
               style={{
                 zIndex: 1, // Set text in front of the video
               }}
             >
-              <div className="h-[450px] py-10 flex items-center justify-between  w-full mx-auto">
+              <div className="h-[450px] py-10 flex items-center justify-evenly w-full mx-auto">
                 {/* Left Side: Navigation Links */}
-                <div className="flex w-1/3 justify-between">
-                  {/* Home and Login Links */}
-                  <div className="flex space-x-4 w-full">
-                    <motion.div
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.8 }}
+                <div className="flex justify-evenly w-1/3">
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.8 }}
+                  >
+                    <Link
+                      to="/"
+                      className={`${
+                        isActive("/")
+                          ? "text-blue-800 font-bold text-xl"
+                          : "text-gray-800"
+                      } hover:text-blue-500 transition-all duration-300 transform hover:scale-105`}
                     >
-                      <Link
-                        to="/"
-                        className={`${
-                          isActive("/")
-                            ? "text-blue-800 font-bold text-xl"
-                            : "text-gray-800"
-                        } hover:text-blue-500 transition-all duration-300 transform hover:scale-105`}
-                      >
-                        Home
-                      </Link>
-                    </motion.div>
-                    <motion.div
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.8 }}
+                      Home
+                    </Link>
+                  </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.8 }}
+                  >
+                    <Link
+                      to="/login"
+                      className={`${
+                        isActive("/login")
+                          ? "text-blue-800 font-bold text-xl"
+                          : "text-gray-800"
+                      } hover:text-blue-500 transition-all duration-300 transform hover:scale-105`}
                     >
-                      <Link
-                        to="/login"
-                        className={`${
-                          isActive("/login")
-                            ? "text-blue-800 font-bold text-xl"
-                            : "text-gray-800"
-                        } hover:text-blue-500 transition-all duration-300 transform hover:scale-105`}
-                      >
-                        Login
-                      </Link>
-                    </motion.div>
-                  </div>
+                      Login
+                    </Link>
+                  </motion.div>
                 </div>
 
                 {/* Center: Logo and Heading */}
-                <div className="flex items-center justify-center w-1/3">
-                  {/* Center Content: Title */}
+                <div className="flex items-center justify-center">
                   <motion.h1
                     className="text-4xl font-extrabold text-center"
                     initial={{ opacity: 0, y: -10 }}
@@ -343,42 +339,39 @@ function HomePage() {
                 </div>
 
                 {/* Right Side: Contact Information */}
-                <div className="flex w-1/3 justify-between">
-                  {/* About Us and Email */}
-                  <div className="flex space-x-4 w-full">
-                    <motion.div
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.8 }}
+                <div className="flex justify-evenly w-1/3">
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.8 }}
+                  >
+                    <Link
+                      to="/about"
+                      className={`${
+                        isActive("/about")
+                          ? "text-blue-800 font-bold text-xl"
+                          : "text-gray-800"
+                      } hover:text-blue-500 transition-all duration-300 transform hover:scale-105`}
                     >
-                      <Link
-                        to="/about"
-                        className={`${
-                          isActive("/about")
-                            ? "text-blue-800 font-bold text-xl"
-                            : "text-gray-800"
-                        } hover:text-blue-500 transition-all duration-300 transform hover:scale-105`}
-                      >
-                        About Us
-                      </Link>
-                    </motion.div>
-                    <motion.div
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.8 }}
+                      About Us
+                    </Link>
+                  </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.8 }}
+                  >
+                    <button
+                      onClick={() => setIsSidebarOpen(true)}
+                      className={`${
+                        isUniversityPage
+                          ? "text-blue-800 font-bold text-xl"
+                          : "text-gray-800"
+                      } hover:text-blue-500 transition-all duration-300 transform hover:scale-105 flex items-center`}
                     >
-                      <button
-                        onClick={() => setIsSidebarOpen(true)}
-                        className={`${
-                          isUniversityPage
-                            ? "text-blue-800 font-bold text-xl"
-                            : "text-gray-800"
-                        } hover:text-blue-500 transition-all duration-300 transform hover:scale-105 flex items-center`}
-                      >
-                        Universities ▼
-                      </button>
-                    </motion.div>
-                  </div>
+                      Universities ▼
+                    </button>
+                  </motion.div>
                 </div>
               </div>
 
