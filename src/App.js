@@ -19,15 +19,7 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <Header />
-        <main
-  className="w-full"
-  style={{
-    marginTop: "0.5cm",
-    marginBottom: "0.5cm",
-
-  }}
->
+       
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
@@ -37,13 +29,10 @@ function App() {
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/verify" element={<VerifyPage />} />
             <Route path="/userpage" element={<UserPage />} />
-            <Route path="/adminpage" element={<AdminPage/>}/>
-            <Route path="/admincompetition/:id" element={<AdminCompetitionDetails/>}/>
+            <Route path="/adminpage" element={<AdminPage />} />
+            <Route path="/admincompetition/:id" element={<AdminCompetitionDetails />} />
             <Route path="/university/:university" element={<UniversitiyPage/>}/>
-           
-  {/* Add the route for CompetitionDetails */}
           </Routes>
-        </main>
         <Footer />
       </div>
     </Router>
