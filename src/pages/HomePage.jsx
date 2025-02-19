@@ -284,13 +284,11 @@ function HomePage() {
                 zIndex: 1, // Set text in front of the video
               }}
             >
-              <div className="h-[450px] py-10 flex items-center justify-center relative">
+              <div className="h-[450px] py-10 flex items-center justify-between w-[400%] mx-auto">
                 {/* Left Side: Navigation Links */}
-                <div className="flex justify-between w-full sm:w-auto space-x-12 mb-6 sm:mb-0">
-                  {" "}
-                  {/* Increased gap */}
+                <div className="flex w-1/3 justify-between">
                   {/* Home and Login Links */}
-                  <div className="flex space-x-4">
+                  <div className="flex space-x-4 w-full">
                     <motion.div
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
@@ -300,7 +298,7 @@ function HomePage() {
                         to="/"
                         className={`${
                           isActive("/")
-                            ? "text-blue-800 font-bold"
+                            ? "text-blue-800 font-bold text-xl"
                             : "text-gray-800"
                         } hover:text-blue-500 transition-all duration-300 transform hover:scale-105`}
                       >
@@ -316,7 +314,7 @@ function HomePage() {
                         to="/login"
                         className={`${
                           isActive("/login")
-                            ? "text-blue-800 font-bold"
+                            ? "text-blue-800 font-bold text-xl"
                             : "text-gray-800"
                         } hover:text-blue-500 transition-all duration-300 transform hover:scale-105`}
                       >
@@ -327,27 +325,17 @@ function HomePage() {
                 </div>
 
                 {/* Center: Logo and Heading */}
-                <div className="flex items-center justify-center space-x-12 mb-6 sm:mb-0">
-                  {" "}
-                  {/* Increased gap */}
-                  {/* Left Side: Logo */}
-                  <div className="flex items-center">
-                    <img
-                      src={logo}
-                      alt="Logo"
-                      className="h-[200px] w-[200px] transform hover:scale-110"
-                    />
-                  </div>
+                <div className="flex items-center justify-center w-1/3">
                   {/* Center Content: Title */}
                   <motion.h1
-                    className="text-2xl font-bold flex-1 text-center space-x-16"
+                    className="text-4xl font-extrabold text-center"
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
                   >
                     <Link
                       to="/"
-                      className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-800 text-transparent bg-clip-text text-6xl md:text-7xl font-extrabold tracking-tight transition-all duration-300 transform"
+                      className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-800 text-transparent bg-clip-text text-4xl md:text-4xl font-extrabold tracking-tight transition-all duration-300 transform"
                     >
                       Eventura
                     </Link>
@@ -355,11 +343,9 @@ function HomePage() {
                 </div>
 
                 {/* Right Side: Contact Information */}
-                <div className="flex justify-between w-full sm:w-auto space-x-16">
-                  {" "}
-                  {/* Increased gap */}
+                <div className="flex w-1/3 justify-between">
                   {/* About Us and Email */}
-                  <div className="flex space-x-16">
+                  <div className="flex space-x-4 w-full">
                     <motion.div
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
@@ -368,7 +354,7 @@ function HomePage() {
                       <Link
                         to="/about"
                         className={`${
-                          isActive("/aboutus")
+                          isActive("/about")
                             ? "text-blue-800 font-bold text-xl"
                             : "text-gray-800"
                         } hover:text-blue-500 transition-all duration-300 transform hover:scale-105`}
@@ -381,12 +367,16 @@ function HomePage() {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.8 }}
                     >
-                      <a
-                        href="mailto:eventura@universitycomp.com"
-                        className="text-sm sm:text-lg text-blue-500 hover:underline"
+                      <button
+                        onClick={() => setIsSidebarOpen(true)}
+                        className={`${
+                          isUniversityPage
+                            ? "text-blue-800 font-bold text-xl"
+                            : "text-gray-800"
+                        } hover:text-blue-500 transition-all duration-300 transform hover:scale-105 flex items-center`}
                       >
-                        eventura@universitycomp.com
-                      </a>
+                        Universities ▼
+                      </button>
                     </motion.div>
                   </div>
                 </div>
