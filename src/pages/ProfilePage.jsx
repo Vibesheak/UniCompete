@@ -632,31 +632,29 @@ function HomePage() {
           onClick={handleProfileClick}
         >
           <div className="relative">
-            <div className="relative">
-              {/* Profile Circle with Initials */}
-              <div className="w-16 h-16 rounded-full flex items-center justify-center text-xl font-semibold text-white bg-indigo-600">
-                {getInitials(user.fullName)}
-              </div>
+            {/* Profile Circle with Initials */}
+            <div className="w-16 h-16 rounded-full flex items-center justify-center text-xl font-semibold text-white bg-indigo-600">
+              {getInitials(user.fullName)}
             </div>
-
-            {/* Profile Dropdown */}
-            {profileDropdownVisible && (
-              <div className="absolute top-16 right-0 w-48 bg-white shadow-lg rounded-lg p-4 z-10">
-                <button
-                  onClick={() => navigate("/userpage")}
-                  className="w-full text-left text-blue-900 font-semibold text-lg py-2 rounded-lg hover:bg-blue-100 transition duration-300"
-                >
-                  Profile
-                </button>
-                <button
-                  onClick={handleLogout}
-                  className="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition duration-300 mt-2"
-                >
-                  Logout
-                </button>
-              </div>
-            )}
           </div>
+
+          {/* Profile Dropdown */}
+          {profileDropdownVisible && (
+            <div className="absolute top-16 right-0 w-48 bg-white shadow-lg rounded-lg p-4 z-10">
+              <button
+                onClick={() => navigate("/userpage")}
+                className="w-full text-left text-blue-900 font-semibold text-lg py-2 rounded-lg hover:bg-blue-100 transition duration-300"
+              >
+                Profile
+              </button>
+              <button
+                onClick={handleLogout}
+                className="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition duration-300 mt-2"
+              >
+                Logout
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

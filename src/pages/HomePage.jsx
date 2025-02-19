@@ -429,7 +429,7 @@ function HomePage() {
                 )}
               </AnimatePresence>
             </div>
-            <div className="absolute right-[40%] top-[25%]  -translate-y-3/4 flex flex-col justify-center items-end text-blue-600 p-4 sm:p-8">
+            <div className="absolute right-[40%] top-[15%]  -translate-y-3/4 flex flex-col justify-center items-end text-blue-600 p-4 sm:p-8">
               <div className="bg-gray-500 bg-opacity-10 backdrop-blur-md absolute inset-0 max-w-[450px] max-h-[650px] w-full h-full sm:w-[650px] sm:h-[850px] rounded-xl">
                 {/* Content goes here */}
 
