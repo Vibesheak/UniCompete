@@ -279,12 +279,12 @@ function HomePage() {
             />
 
             <div
-              className="absolute -top-[10%] left-[10%] "
+              className="absolute -top-[10%] left-[10%]  w-full"
               style={{
                 zIndex: 1, // Set text in front of the video
               }}
             >
-              <div className="h-[450px] py-10 flex items-center justify-between w-[400%] mx-auto">
+              <div className="h-[450px] py-10 flex items-center justify-between  w-full mx-auto">
                 {/* Left Side: Navigation Links */}
                 <div className="flex w-1/3 justify-between">
                   {/* Home and Login Links */}
@@ -335,7 +335,7 @@ function HomePage() {
                   >
                     <Link
                       to="/"
-                      className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-800 text-transparent bg-clip-text text-4xl md:text-4xl font-extrabold tracking-tight transition-all duration-300 transform"
+                      className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-800 text-transparent bg-clip-text text-6xl md:text-7xl font-extrabold tracking-tight transition-all duration-300 transform"
                     >
                       Eventura
                     </Link>
@@ -390,7 +390,7 @@ function HomePage() {
                     animate={{ x: 0, opacity: 1 }}
                     exit={{ x: "100%", opacity: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="fixed top-[50px] left-0 h-[750px] w-64 bg-transparent shadow-lg p-5 flex flex-col space-y-4 z-50 backdrop-blur-md"
+                    className="fixed top-[90px] left-0 h-[750px] w-64 bg-transparent shadow-lg p-5 flex flex-col space-y-4 z-50 backdrop-blur-md"
                   >
                     {/* Sidebar Header */}
                     <div className="flex justify-between items-center">
