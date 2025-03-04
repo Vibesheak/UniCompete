@@ -26,7 +26,7 @@ public class FeedbackController {
     // User: View feedbacks for a competition
 //    @PreAuthorize("hasAuthority('USER')")
     @GetMapping("/competition/id/{competitionId}")
-    public ResponseEntity<List<Feedback>> getFeedbacksByCompetition(@PathVariable Long competitionId) {
+    public ResponseEntity<List<Feedback>> getFeedbacksByCompetition(@PathVariable String competitionId) {
         return ResponseEntity.ok(feedbackService.getFeedbacksByCompetition(competitionId));
     }
 

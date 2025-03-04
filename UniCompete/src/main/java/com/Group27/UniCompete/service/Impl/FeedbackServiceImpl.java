@@ -20,7 +20,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public List<Feedback> getFeedbacksByCompetition(Long competitionId) {
+    public List<Feedback> getFeedbacksByCompetition(String competitionId) {
         return feedbackRepository.findByCompetitionId(competitionId);
     }
 

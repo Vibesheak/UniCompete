@@ -9,5 +9,4 @@ public interface CompetitionRepository extends MongoRepository<Competition, Stri
     List<Competition> findByUniversity(String university);
     List<Competition> findByDate(String date);
 
-
 }

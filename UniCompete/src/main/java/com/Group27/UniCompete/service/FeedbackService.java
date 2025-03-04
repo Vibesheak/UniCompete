@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface FeedbackService {
     Feedback addFeedback(Feedback feedback);
-    List<Feedback> getFeedbacksByCompetition(Long competitionId);
+    List<Feedback> getFeedbacksByCompetition(String competitionId);
     List<Feedback> getFeedbacksByUniversity(String University);
 }

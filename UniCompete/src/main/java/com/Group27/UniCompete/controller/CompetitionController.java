@@ -66,4 +66,11 @@ public class CompetitionController {
         return ResponseEntity.ok(competitionService.updateCompetition(id, competition));
     }
 
+    @DeleteMapping("/admin/delete/{id}")
+    public ResponseEntity<String> deleteCompetition(@PathVariable String id) {
+        competitionService.deleteCompetition(id);
+        return ResponseEntity.ok("Competition with ID " + id + " has been deleted.");
+    }
+
+
 }
