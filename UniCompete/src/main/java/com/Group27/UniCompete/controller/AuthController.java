@@ -161,4 +161,21 @@ public class AuthController {
         Random random = new Random();
         return String.valueOf(random.nextInt(900000) + 100000);
     }
+
+    @GetMapping("/user/{username}")
+    public ResponseEntity<?> getUserDetails(@PathVariable String username) {
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        if (userOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+        User user = userOptional.get();
+        Map<String, Object> userDetails = new HashMap<>();
+        userDetails.put("username", user.getUsername());
+        userDetails.put("email", user.getEmail());
+        userDetails.put("roles", user.getRoles());
+        userDetails.put("phonenumber", user.getPhonenumber());
+        userDetails.put("universityName", user.getUniversityName());
+        userDetails.put("enabled", user.isEnabled());
+        return ResponseEntity.ok(userDetails);
+    }
 }

@@ -39,19 +39,28 @@ public class User {
     private LocalDateTime verificationCodeExpiresAt;
 
     private String universityName;
+    private long phonenumber;
 
 
 
     public User() {
     }
 
-    public User(String username, String email, String password,String universityName) {
+    public User(String username, String email, String password,String universityName, long phonenumber) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.universityName=universityName;
+        this.phonenumber=phonenumber;
     }
 
+    public long getPhonenumber() {
+        return phonenumber;
+    }
+
+    public void setPhonenumber(long phonenumber) {
+        this.phonenumber = phonenumber;
+    }
 
     public String getUniversityName() {
         return universityName;
