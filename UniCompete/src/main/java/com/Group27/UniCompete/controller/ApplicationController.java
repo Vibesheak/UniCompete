@@ -65,4 +65,12 @@ public class ApplicationController {
         }
     }
 
+    // User: Get list of competition IDs by username
+    @GetMapping("/user/competitions/{username}")
+    public ResponseEntity<List<String>> getCompetitionIdsByUsername(@PathVariable String username) {
+        List<String> competitionIds = applicationService.getCompetitionIdsByUsername(username);
+        return ResponseEntity.ok(competitionIds);
+    }
+
+
 }

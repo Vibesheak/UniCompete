@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
@@ -49,5 +50,11 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
 
         return applications.get(0); // Assuming only one application per user per competition
+    }
+
+    @Override
+    public List<String> getCompetitionIdsByUsername(String username) {
+        List<Application> applications = applicationRepository.findCompetitionIdsByUsername(username);
+        return applications.stream().map(Application::getCompetitionId).collect(Collectors.toList());
     }
 }
