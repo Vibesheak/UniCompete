@@ -1,14 +1,16 @@
-import React, { useState } from "react";
-import logo from "./images/logo3.png";
-import { Link, useLocation } from "react-router-dom";
-import { MailIcon, PhoneIcon } from "@heroicons/react/outline";
+import React, { useState, useRef } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import logo from "./images/logo2.jpg";
 
 const Header = () => {
   const [isUniversityDropdownOpen, setIsUniversityDropdownOpen] =
     useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Added this state for the sidebar
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [profileDropdownVisible, setProfileDropdownVisible] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const dropdownRef = useRef(null);
   let closeTimeout;
 
   const universities = [
@@ -24,222 +26,170 @@ const Header = () => {
     "Wayamba",
   ];
 
-  const toggleUniversityDropdown = () => {
-    setIsUniversityDropdownOpen(true);
-    clearTimeout(closeTimeout); // Prevent closing if user hovers back quickly
+  const handleLogout = () => {
+    navigate("/login");
   };
 
-  const closeUniversityDropdown = () => {
-    closeTimeout = setTimeout(() => {
-      setIsUniversityDropdownOpen(false);
-    }, 1000); // Close after 1 second
+  const handleProfileClick = () => {
+    setProfileDropdownVisible(!profileDropdownVisible);
   };
-
-  const isActive = (path) => location.pathname === path;
-  const isUniversityPage = location.pathname.startsWith("/university");
 
   return (
-    <header className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-800 w-full h-[250px] py-10 flex items-center justify-center relative">
-      <div className="bg-white w-[70%] max-w-screen-xl shadow-2xl rounded-2xl py-6 px-8 flex items-center flex-col sm:flex-row justify-between absolute -bottom-16 sm:-bottom-10">
-        {/* Left Side: Logo */}
-        <div className="flex items-center mb-6 sm:mb-0 sm:mr-8">
+    <header className="bg-gradient-to-br from-blue-800 via-blue-700 to-blue-900 text-white p-4 shadow-md relative">
+      <div className="bg-gradient-to-br from-blue-600 via-blue-500 to-blue-400 text-white p-4 shadow-md relative"></div>
+      <nav className="container mx-auto flex justify-between items-center relative z-10">
+        <div className="flex items-center">
           <img
             src={logo}
-            alt="Logo"
-            className="h-[200px] w-[200px] transform hover:scale-110"
+            alt="Eventura Logo"
+            className="absolute bottom-[230px] w-[100px] h-auto"
           />
+          <Link
+            to="/"
+            className="font-bold text-3xl md:text-4xl tracking-tight text-white transition-all duration-300"
+          >
+            EVENTURA
+          </Link>
         </div>
 
-        {/* Center Content: Title */}
-        <motion.h1
-          className="text-2xl font-bold flex-1 text-center"
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+        {/* Mobile Menu Toggle */}
+        <div className="lg:hidden">
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="text-white text-2xl focus:outline-none"
+          >
+            {isMenuOpen ? "✖" : "☰"}
+          </button>
+        </div>
+
+        {/* Links */}
+        <div
+          className={`${
+            isMenuOpen
+              ? "block absolute top-16 left-0 right-0 bg-blue-900 bg-opacity-95 p-4"
+              : "hidden lg:flex"
+          } space-x-6 lg:space-x-8 text-lg font-medium`}
         >
           <Link
             to="/"
-            className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-800 text-transparent bg-clip-text text-6xl md:text-7xl font-extrabold tracking-tight transition-all duration-300 transform"
+            className="block text-white hover:text-blue-300 px-3 py-2 rounded-md"
           >
-            Eventura
+            Home
           </Link>
-        </motion.h1>
+          <Link
+            to="/login"
+            className="block text-white hover:text-blue-300 px-3 py-2 rounded-md"
+          >
+            Login
+          </Link>
+          <Link
+            to="/about"
+            className="block text-white hover:text-blue-300 px-3 py-2 rounded-md"
+          >
+            About Us
+          </Link>
 
-        {/* Right Side Content */}
-        <div className="flex flex-col justify-between h-full sm:pl-5 md:pl-10">
-          {/* Top Section: Contact Information */}
-          <div className="text-gray-700 mb-4 sm:mb-0">
-            <div className="flex flex-wrap space-x-4 sm:space-x-8 justify-center sm:justify-start">
-              <motion.h1
-                className="text-2xl font-bold flex-1 text-center"
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
+          {/* University Dropdown */}
+          <div
+            className="relative"
+            onMouseEnter={() => setIsUniversityDropdownOpen(true)}
+            onMouseLeave={() => setIsUniversityDropdownOpen(false)}
+          >
+            <button className="block text-white hover:text-blue-300 px-3 py-2 rounded-md inline-flex items-center gap-x-1.5">
+              Universities
+              <svg
+                className="w-5 h-5 text-gray-400"
+                viewBox="0 0 20 20"
+                fill="currentColor"
               >
-                <p className="text-sm sm:text-lg flex items-center">
-                  <MailIcon className="h-5 w-5 text-blue-500 mr-2 cursor-pointer hover:text-blue-700" />
-                  <a
-                    href="mailto:eventura@universitycomp.com"
-                    className="hover:underline"
-                  >
-                    eventura@universitycomp.com
-                  </a>
-                </p>
-              </motion.h1>
-              <motion.h1
-                className="text-2xl font-bold flex-1 text-center"
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <p className="text-sm sm:text-lg flex items-center">
-                  <PhoneIcon className="h-5 w-5 text-green-500 mr-2 cursor-pointer hover:text-green-700" />
-                  <a href="tel:+1234567890" className="hover:underline">
-                    +1234567890
-                  </a>
-                </p>
-              </motion.h1>
-            </div>
+                <path
+                  fillRule="evenodd"
+                  d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </button>
+
+            {isUniversityDropdownOpen && (
+              <div className="absolute bg-white dark:bg-gray-700 rounded-lg shadow-md w-56 mt-2">
+                <div className="p-2">
+                  {universities.map((university) => (
+                    <Link
+                      key={university}
+                      to={`/university/${university}`}
+                      className="block text-gray-900 dark:text-white px-4 py-1 text-sm rounded-md hover:bg-blue-600 hover:bg-opacity-20"
+                    >
+                      {university}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
-          {/* Line Separator */}
-          <motion.h1
-            className="text-2xl font-bold flex-1 text-center"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+          {/* Profile Dropdown */}
+          <div
+            className="absolute top-4 right-4 cursor-pointer"
+            ref={dropdownRef}
           >
-            <div className="border-t-2 sm:border-t-4 border-blue-800 my-6 mx-auto w-[80%] sm:w-[90%] md:w-[100%]"></div>
-          </motion.h1>
-          {/* Bottom Section: Navigation Links */}
-          <nav>
-            <ul className="flex flex-wrap space-x-4 sm:space-x-8 justify-center sm:justify-start text-sm sm:text-lg md:text-lg lg:text-lg xl:text-lg">
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.8 }}
+            {/* Profile Circle */}
+            <div
+              className="absolute left-8 w-12 h-12 rounded-full flex items-center justify-center text-lg bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 shadow-lg border-2 border-white hover:scale-110 transition-transform duration-300"
+              onClick={handleProfileClick}
+              title="Profile"
+              style={{
+                boxShadow: "0px 4px 15px rgba(128, 90, 213, 0.6)",
+              }}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-6 h-6 text-white"
+                fill="currentColor"
+                viewBox="0 0 24 24"
               >
-                <li>
-                  <Link
-                    to="/"
-                    className={`${
-                      isActive("/")
-                        ? "text-blue-800 font-bold"
-                        : "text-gray-800"
-                    } hover:text-blue-500 transition-all duration-300 transform hover:scale-105`}
-                  >
-                    Home
-                  </Link>
-                </li>
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.8 }}
-              >
-                <li>
-                  <Link
-                    to="/login"
-                    className={`${
-                      isActive("/login")
-                        ? "text-blue-800 font-bold"
-                        : "text-gray-800"
-                    } hover:text-blue-500 transition-all duration-300 transform hover:scale-105`}
-                  >
-                    Login
-                  </Link>
-                </li>
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.8 }}
-              >
-                <li>
-                  <Link
-                    to="/about"
-                    className={`${
-                      isActive("/aboutus")
-                        ? "text-blue-800 font-bold text-xl"
-                        : "text-gray-800"
-                    } hover:text-blue-500 transition-all duration-300 transform hover:scale-105`}
-                  >
-                    About Us
-                  </Link>
-                </li>
-              </motion.div>
-
-              {/* Universities Sidebar Toggle */}
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.8 }}
-              >
-                <li>
-                  <button
-                    onClick={() => setIsSidebarOpen(true)}
-                    className={`${
-                      isUniversityPage
-                        ? "text-blue-800 font-bold"
-                        : "text-gray-800"
-                    } hover:text-blue-500 transition-all duration-300 transform hover:scale-105 flex items-center`}
-                  >
-                    Universities ▼
-                  </button>
-                </li>
-              </motion.div>
-            </ul>
-          </nav>
-        </div>
-      </div>
-
-      {/* Sidebar for Universities */}
-
-      <AnimatePresence>
-        {isSidebarOpen && (
-          <motion.div
-            initial={{ x: "-100%", opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: "100%", opacity: 0 }}
-            transition={{ duration: 0.5 }}
-            className="fixed top-[50px] left-0 h-[750px] w-64 bg-transparent shadow-lg p-5 flex flex-col space-y-4 z-50 backdrop-blur-md"
-          >
-            {/* Sidebar Header */}
-            <div className="flex justify-between items-center">
-              <button
-                onClick={() => setIsSidebarOpen(false)}
-                className="text-gray-900 hover:text-blue-900 text-2xl "
-              >
-                ✕
-              </button>
+                <path d="M12 12c2.209 0 4-1.791 4-4s-1.791-4-4-4-4 1.791-4 4 1.791 4 4 4zm0 2c-2.67 0-8 1.336-8 4v2h16v-2c0-2.664-5.33-4-8-4z" />
+              </svg>
             </div>
 
-            {/* University List */}
-            <div className="mt-4 flex flex-col space-y-2">
-              {universities.map((university, index) => (
-                <motion.div
-                  key={university}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.1 * index }}
+            {/* Profile Dropdown */}
+            {profileDropdownVisible && (
+              <div
+                className="absolute top-16 right-1 w-48 bg-gradient-to-br from-white via-gray-50 to-gray-100 shadow-xl rounded-xl p-4 z-20 border border-gray-200 animate-fade-in"
+                style={{
+                  borderTop: "4px solid #8b5cf6",
+                  transition: "all 0.3s ease-in-out",
+                }}
+              >
+                {/* Profile Button */}
+                <button
+                  onClick={() => navigate("/userpage")}
+                  className="w-full text-left text-gray-900 font-semibold text-md py-2 rounded-lg hover:bg-gray-200 transition duration-300 flex items-center space-x-2"
                 >
-                  <Link
-                    to={`/university/${university}`}
-                    className={` text-purple-800 block text-lg font-medium px-4 py-2 rounded-md transition-all duration-300
-                ${
-                  isActive(`/university/${university}`)
-                    ? "bg-blue-800 text-white" // Active university link with different blue
-                    : "text-blue-500 hover:bg-blue-100"
-                }`}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-4 h-4 text-purple-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
                   >
-                    University of {university}
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                    <path d="M12 12c2.209 0 4-1.791 4-4s-1.791-4-4-4-4 1.791-4 4 1.791 4 4 4zm0 2c-2.67 0-8 1.336-8 4v2h16v-2c0-2.664-5.33-4-8-4z" />
+                  </svg>
+                  <span>Profile</span>
+                </button>
+
+                {/* Logout Button */}
+                <button
+                  onClick={handleLogout}
+                  className="w-full bg-gradient-to-r from-red-500 via-pink-500 to-yellow-500 text-white py-2 rounded-lg hover:shadow-lg hover:scale-105 transition duration-300 mt-4 flex items-center justify-center space-x-2"
+                >
+                  <span>Logout</span>
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </nav>
     </header>
   );
 };
