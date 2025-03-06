@@ -1,5 +1,4 @@
 package com.Group27.UniCompete.controller;
-
 import com.Group27.UniCompete.models.Application;
 import com.Group27.UniCompete.service.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,16 +15,13 @@ public class ApplicationController {
     @Autowired
     private ApplicationService applicationService;
 
-    // User: Submit Application
     @PreAuthorize("hasAuthority('USER')")
     @PostMapping("/submit")
     public ResponseEntity<?> submitApplication(@RequestBody Application application) {
         try {
-            // Attempt to submit the application
             Application submittedApplication = applicationService.submitApplication(application);
-            return ResponseEntity.ok(submittedApplication); // Return the submitted application
+            return ResponseEntity.ok(submittedApplication);
         } catch (IllegalStateException e) {
-            // Handle the case where a user has already applied
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Alerady exists");
         }
     }
@@ -41,16 +37,12 @@ public class ApplicationController {
         Application updatedApplication = applicationService.updateApplicationStatus(competitionId, username, status);
         return ResponseEntity.ok(updatedApplication);
     }
-    // Admin: Get Applications by Competition ID
 
     @GetMapping("/user/applications/{competitionId}")
     public ResponseEntity<List<Application>> getApplicationsByCompetitionId(
             @PathVariable String competitionId) {
         return ResponseEntity.ok(applicationService.getApplicationsByCompetitionId(competitionId));
     }
-
-    // Update application status by username
-
 
     //@PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')") // Adjust authority as needed
     @GetMapping("/user/applications/{competitionId}/{username}")
@@ -65,7 +57,6 @@ public class ApplicationController {
         }
     }
 
-    // User: Get list of competition IDs by username
     @GetMapping("/user/competitions/{username}")
     public ResponseEntity<List<String>> getCompetitionIdsByUsername(@PathVariable String username) {
         List<String> competitionIds = applicationService.getCompetitionIdsByUsername(username);

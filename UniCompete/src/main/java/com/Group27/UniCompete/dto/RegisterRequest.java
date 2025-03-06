@@ -1,7 +1,5 @@
 package com.Group27.UniCompete.dto;
-
 import com.Group27.UniCompete.models.Role;
-
 import java.util.Set;
 
 public class RegisterRequest {

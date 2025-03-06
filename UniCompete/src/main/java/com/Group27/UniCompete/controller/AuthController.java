@@ -1,5 +1,4 @@
 package com.Group27.UniCompete.controller;
-
 import com.Group27.UniCompete.dto.RegisterRequest;
 import com.Group27.UniCompete.dto.VerifyRequest;
 import com.Group27.UniCompete.models.Role;
@@ -15,7 +14,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import com.Group27.UniCompete.dto.LoginRequest;
-
 import java.time.LocalDateTime;
 import java.util.*;
 

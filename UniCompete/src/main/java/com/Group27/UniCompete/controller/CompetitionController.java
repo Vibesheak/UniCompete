@@ -5,6 +5,7 @@ import com.Group27.UniCompete.service.CompetitionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
@@ -41,12 +42,14 @@ public class CompetitionController {
         return ResponseEntity.ok(competitionService.getCompetitionById(id));
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/admin/add")
     public ResponseEntity<Competition> createCompetition(@RequestBody Competition competition) {
         return ResponseEntity.ok(competitionService.createCompetition(competition));
     }
 
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/admin/upload-image/{id}")
     public ResponseEntity<String> uploadCompetitionImage(@PathVariable String id, @RequestParam("image") MultipartFile file) {
         return ResponseEntity.ok(competitionService.uploadCompetitionImage(id, file));
@@ -61,11 +64,13 @@ public class CompetitionController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/admin/update/{id}")
     public ResponseEntity<Competition> updateCompetition(@PathVariable String id, @RequestBody Competition competition) {
         return ResponseEntity.ok(competitionService.updateCompetition(id, competition));
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/admin/delete/{id}")
     public ResponseEntity<String> deleteCompetition(@PathVariable String id) {
         competitionService.deleteCompetition(id);
