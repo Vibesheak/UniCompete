@@ -16,15 +16,13 @@ public class FeedbackController {
     @Autowired
     private FeedbackService feedbackService;
 
-    // User: Add feedback for a competition
+
     @PreAuthorize("hasAuthority('USER')")
     @PostMapping("user/add")
     public ResponseEntity<Feedback> addFeedback(@RequestBody Feedback feedback) {
         return ResponseEntity.ok(feedbackService.addFeedback(feedback));
     }
 
-    // User: View feedbacks for a competition
-//    @PreAuthorize("hasAuthority('USER')")
     @GetMapping("/competition/id/{competitionId}")
     public ResponseEntity<List<Feedback>> getFeedbacksByCompetition(@PathVariable String competitionId) {
         return ResponseEntity.ok(feedbackService.getFeedbacksByCompetition(competitionId));

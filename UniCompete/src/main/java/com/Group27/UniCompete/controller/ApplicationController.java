@@ -26,8 +26,7 @@ public class ApplicationController {
         }
     }
 
-    // Admin: Update Application Status
-    // Update application status by competitionId and username
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/update-status/{competitionId}/{username}")
     public ResponseEntity<Application> updateApplicationStatus(
             @PathVariable String competitionId,
@@ -44,7 +43,6 @@ public class ApplicationController {
         return ResponseEntity.ok(applicationService.getApplicationsByCompetitionId(competitionId));
     }
 
-    //@PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')") // Adjust authority as needed
     @GetMapping("/user/applications/{competitionId}/{username}")
     public ResponseEntity<Application> getApplicationByCompetitionIdAndUsername(
             @PathVariable String competitionId,

@@ -31,8 +31,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll() // Public endpoints for login/register
                         .requestMatchers("/competitions/admin/**").hasAuthority("ADMIN")
-                        .requestMatchers("/applications/**").permitAll() // Admin-only
-                        .requestMatchers("/competitions/user/**").permitAll() // User-only
+                        .requestMatchers("/applications/**").permitAll()
+                        .requestMatchers("/applications/update-status/**").hasAuthority("ADMIN")
+                        .requestMatchers("/applications/submit").hasAuthority("USER")
+                        .requestMatchers("/competitions/user/**").permitAll()
                         .requestMatchers("/feedback/competitions/**").permitAll()
                         .requestMatchers("/feedback/user/**").hasAuthority("USER")
                         .requestMatchers("/competitions/user1/**").permitAll()
