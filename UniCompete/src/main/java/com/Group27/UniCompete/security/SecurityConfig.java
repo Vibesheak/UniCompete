@@ -26,27 +26,27 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf(AbstractHttpConfigurer::disable)
-                .cors(cors -> cors.disable()) // Allow requests from different origins
+        return http.csrf().disable()
+                .cors()
+                .and()
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/auth/**").permitAll() // Public endpoints for login/register
+                        .requestMatchers("/competitions/admin/**").permitAll()
+                        .requestMatchers("/applications/**").permitAll()
+                        .requestMatchers("/applications/update-status/**").hasAuthority("ADMIN")
+                        .requestMatchers("/applications/submit").permitAll()
+                        .requestMatchers("/competitions/user/**").permitAll()
+                        .requestMatchers("/feedback/competitions/**").permitAll()
+                        .requestMatchers("/feedback/user/**").permitAll()
+                        .requestMatchers("/competitions/user1/**").permitAll()
+                        .requestMatchers("/competitions/user2/**").permitAll()
+                        .requestMatchers("/competitions/images/**").permitAll()
                         .requestMatchers(
                                 "/auth/**",
                                 "/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**",
                                 "/swagger-ui.html", "/webjars/**"
                         ).permitAll() // Allow Swagger UI & Authentication
-                        .requestMatchers("/competitions/admin/**").hasAuthority("ADMIN")
-                        .requestMatchers("/applications/**").permitAll()
-                        .requestMatchers("/applications/update-status/**").hasAuthority("ADMIN")
-                        .requestMatchers("/applications/submit").hasAuthority("USER")
-                        .requestMatchers("/competitions/user/**").permitAll()
-                        .requestMatchers("/feedback/competitions/**").permitAll()
-                        .requestMatchers("/feedback/user/**").hasAuthority("USER")
-                        .requestMatchers("/competitions/user1/**").permitAll()
-                        .requestMatchers("/competitions/user2/**").permitAll()
-                        .requestMatchers("/competitions/images/**").permitAll()
-                        .anyRequest().authenticated()
-                )
+                        .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
@@ -63,4 +63,3 @@ public class SecurityConfig {
         return configuration.getAuthenticationManager();
     }
 }
-
