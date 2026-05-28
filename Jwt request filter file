@@ -1,0 +1,47 @@
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.server.ServletServerHttpResponse;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+public class JwtFilter extends OncePerRequestFilter {
+
+    private final JwtUtil jwtUtil;
+
+    public JwtFilter(JwtUtil jwtUtil) {
+        this.jwtUtil = jwtUtil;
+    }
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+            throws ServletException, IOException {
+        
+        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
+        
+        if (token == null || !token.startsWith("Bearer ")) {
+            chain.doFilter(request, response);
+            return;
+        }
+
+        token = token.substring(7);
+        try {
+            String username = jwtUtil.extractUsername(token);
+            if (jwtUtil.validateToken(token, username)) {
+                request.setAttribute("username", username);
+            } else {
+                response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                return;
+            }
+        } catch (Exception e) {
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            return;
+        }
+
+        chain.doFilter(request, response);
+    }
+}
