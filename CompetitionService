@@ -1,0 +1,59 @@
+package com.Group27.UniCompete.service;
+
+import com.Group27.UniCompete.models.Competition;
+
+import java.util.List;
+
+/**
+ * Service interface for managing Competitions in UniCompete.
+ * This includes operations for creating, fetching, updating, 
+ * and deleting competitions, as well as retrieving specific categories.
+ */
+public interface CompetitionService {
+
+    /**
+     * Creates a new competition.
+     * 
+     * @param competition The competition object to be created.
+     * @return The created competition object.
+     */
+    Competition createCompetition(Competition competition);
+
+    /**
+     * Fetches all competitions.
+     * 
+     * @return A list of all competition objects.
+     */
+    List<Competition> getCompetitions(); 
+
+    /**
+     * Fetches all unique competition categories.
+     * 
+     * @return A list of unique competition category strings.
+     */
+    List<String> getCategories();
+
+    /**
+     * Fetches competitions by a specific category.
+     * 
+     * @param category The category to filter competitions.
+     * @return A list of competitions in the specified category.
+     */
+    List<Competition> getCompetitionsByCategory(String category);
+
+    /**
+     * Updates an existing competition by its ID.
+     * 
+     * @param id The ID of the competition to update.
+     * @param competition The updated competition object.
+     * @return The updated competition object.
+     */
+    Competition updateCompetition(Long id, Competition competition);
+
+    /**
+     * Deletes a competition by its ID.
+     * 
+     * @param id The ID of the competition to delete.
+     */
+    void deleteCompetition(Long id);
+}

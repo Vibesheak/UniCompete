@@ -18,12 +18,11 @@ import java.util.stream.Collectors;
 @Component
 public class JwtUtil {
 
-    // Secure static secret key for HS512 (at least 64 bytes)
     private static final SecretKey secretKey = Keys.hmacShaKeyFor(
             "my-super-secret-key-my-super-secret-key-my-super-secret-key-my-key-123".getBytes());
 
-    // Expiration time (1 day)
-    private final int jwtExpirationMs = 86400000;
+    // Expiration - 1 day
+    private final int jwtExpirationMs = 86400000;  //86400000
     private final UserRepository userRepository;
 
     public JwtUtil(UserRepository userRepository) {
@@ -38,12 +37,14 @@ public class JwtUtil {
         }
 
         Set<Role> roles = user.get().getRoles();
+        String universityName = user.get().getUniversityName();
 
         return Jwts.builder()
                 .setSubject(username)
                 .claim("roles", roles.stream()
                         .map(Role::getname)
                         .collect(Collectors.joining(",")))
+                .claim("universityName", universityName)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
                 .signWith(secretKey, SignatureAlgorithm.HS512)
@@ -59,6 +60,16 @@ public class JwtUtil {
                 .getBody()
                 .getSubject();
     }
+
+    public String extractUniversity(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
+    }
+
 
     // Extract Roles
     public Set<String> extractRoles(String token) {
@@ -80,5 +91,9 @@ public class JwtUtil {
         } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
+    }
+
+    public Object jwtExpirationMs() {
+        return jwtExpirationMs;
     }
 }

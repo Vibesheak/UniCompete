@@ -10,6 +10,7 @@ import jakarta.validation.constraints.Size;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import java.time.LocalDateTime;
 
 @Document(collection = "users")
 public class User {
@@ -29,42 +30,68 @@ public class User {
     @Size(max = 120)
     private String password;
 
-    @NotBlank
-    @Size(max = 20)
-    private int age;
-
-    @NotBlank
-    @Size(max=20)
-    private int phonenumber;
 
     @DBRef
     private Set<Role> roles = new HashSet<>();
 
+    private boolean enabled;
+    private String verificationCode;
+    private LocalDateTime verificationCodeExpiresAt;
+
+    private String universityName;
+    private long phonenumber;
+
+
+
     public User() {
     }
 
-    public User(String username, String email, String password, int age, int phonenumber) {
+    public User(String username, String email, String password,String universityName, long phonenumber) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.age=age;
+        this.universityName=universityName;
         this.phonenumber=phonenumber;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public long getPhonenumber() {
+        return phonenumber;
     }
 
-    public void setPhonenumber(int phonenumber) {
+    public void setPhonenumber(long phonenumber) {
         this.phonenumber = phonenumber;
     }
 
-    public int getAge() {
-        return age;
+    public String getUniversityName() {
+        return universityName;
     }
 
-    public int getPhonenumber() {
-        return phonenumber;
+    public void setUniversityName(String universityName) {
+        this.universityName = universityName;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+
+    public LocalDateTime getVerificationCodeExpiresAt() {
+        return verificationCodeExpiresAt;
+    }
+
+    public void setVerificationCodeExpiresAt(LocalDateTime verificationCodeExpiresAt) {
+        this.verificationCodeExpiresAt = verificationCodeExpiresAt;
     }
 
     public String getId() {

@@ -1,0 +1,348 @@
+
+
+Feedback Controller :-
+
+package com.Group27.UniCompete.controller;
+
+
+
+import com.Group27.UniCompete.models.Feedback;
+
+import com.Group27.UniCompete.service.FeedbackService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.http.ResponseEntity;
+
+import org.springframework.security.access.prepost.PreAuthorize;
+
+import org.springframework.web.bind.annotation.*;
+
+
+
+import java.util.List;
+
+
+
+@RestController
+
+@RequestMapping("/feedbacks")
+
+public class FeedbackController {
+
+
+
+    @Autowired
+
+    private FeedbackService feedbackService;
+
+
+
+    // User: Add feedback for a competition
+
+    @PreAuthorize("hasAuthority('USER')")
+
+    @PostMapping("user/add")
+
+    public ResponseEntity<Feedback> addFeedback(@RequestBody Feedback feedback) {
+
+        return ResponseEntity.ok(feedbackService.addFeedback(feedback));
+
+    }
+
+
+
+    // User: View feedbacks for a competition
+
+    @PreAuthorize("hasAuthority('USER')")
+
+    @GetMapping("/competition/{competitionId}")
+
+    public ResponseEntity<List<Feedback>> getFeedbacksByCompetition(@PathVariable Long competitionId) {
+
+        return ResponseEntity.ok(feedbackService.getFeedbacksByCompetition(competitionId));
+
+    }
+
+
+
+    @PreAuthorize("hasAuthority('USER')")
+
+    @GetMapping("/competition/{University}")
+
+    public ResponseEntity<List<Feedback>> getFeedbacksByUniversity(@PathVariable String University) {
+
+        return ResponseEntity.ok(feedbackService.getFeedbacksByUniversity(University));
+
+    }
+
+
+
+}
+
+
+
+Feedback (Model) :-
+
+package com.Group27.UniCompete.models;
+
+
+
+import org.springframework.data.annotation.Id;
+
+import org.springframework.data.mongodb.core.mapping.Document;
+
+
+
+@Document(collection = "Feedbacks")
+
+public class Feedback {
+
+    @Id
+
+    private Long id;
+
+    private Long competitionId; // Reference to the competition
+
+    private String userId; // User who provided feedback
+
+    private String userName;
+
+    private String University;
+
+    private String comment; // Feedback comment
+
+    private int rating; // Rating out of 5
+
+
+
+    public String getUserName() {
+
+        return userName;
+
+    }
+
+
+
+    public void setUserName(String userName) {
+
+        this.userName = userName;
+
+    }
+
+
+
+    public String getUniversity() {
+
+        return University;
+
+    }
+
+
+
+    public void setUniversity(String university) {
+
+        University = university;
+
+    }
+
+
+
+    public Long getId() {
+
+        return id;
+
+    }
+
+
+
+    public void setId(Long id) {
+
+        this.id = id;
+
+    }
+
+
+
+    public Long getCompetitionId() {
+
+        return competitionId;
+
+    }
+
+
+
+    public void setCompetitionId(Long competitionId) {
+
+        this.competitionId = competitionId;
+
+    }
+
+
+
+    public String getUserId() {
+
+        return userId;
+
+    }
+
+
+
+    public void setUserId(String userId) {
+
+        this.userId = userId;
+
+    }
+
+
+
+    public String getComment() {
+
+        return comment;
+
+    }
+
+
+
+    public void setComment(String comment) {
+
+        this.comment = comment;
+
+    }
+
+
+
+    public int getRating() {
+
+        return rating;
+
+    }
+
+
+
+    public void setRating(int rating) {
+
+        this.rating = rating;
+
+    }
+
+}
+
+
+
+FeedbackRepository :-
+
+package com.Group27.UniCompete.repository;
+
+
+
+import com.Group27.UniCompete.models.Feedback;
+
+import org.springframework.data.mongodb.repository.MongoRepository;
+
+
+
+import java.util.List;
+
+
+
+public interface FeedbackRepository extends MongoRepository<Feedback, Long> {
+
+    List<Feedback> findByCompetitionId(Long competitionId);
+
+    List<Feedback> findByUniversity(String University);
+
+}
+
+
+
+FeedbackService Impl :-
+
+package com.Group27.UniCompete.service.Impl;
+
+
+
+import com.Group27.UniCompete.models.Feedback;
+
+import com.Group27.UniCompete.repository.FeedbackRepository;
+
+import com.Group27.UniCompete.service.FeedbackService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.stereotype.Service;
+
+
+
+import java.util.List;
+
+
+
+@Service
+
+public class FeedbackServiceImpl implements FeedbackService {
+
+
+
+    @Autowired
+
+    private FeedbackRepository feedbackRepository;
+
+
+
+    @Override
+
+    public Feedback addFeedback(Feedback feedback) {
+
+        return feedbackRepository.save(feedback);
+
+    }
+
+
+
+    @Override
+
+    public List<Feedback> getFeedbacksByCompetition(Long competitionId) {
+
+        return feedbackRepository.findByCompetitionId(competitionId);
+
+    }
+
+
+
+    @Override
+
+    public List<Feedback> getFeedbacksByUniversity(String University){
+
+        return feedbackRepository.findByUniversity(University);
+
+    }
+
+}
+
+
+
+FeedbackServices :-
+
+package com.Group27.UniCompete.service;
+
+
+
+import com.Group27.UniCompete.models.Feedback;
+
+
+
+import java.util.List;
+
+
+
+public interface FeedbackService {
+
+    Feedback addFeedback(Feedback feedback);
+
+    List<Feedback> getFeedbacksByCompetition(Long competitionId);
+
+    List<Feedback> getFeedbacksByUniversity(String University);
+
+}
+

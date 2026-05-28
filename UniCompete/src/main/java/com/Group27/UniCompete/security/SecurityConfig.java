@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,13 +26,29 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf().disable()
+        return http
+                .csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.disable()) // Allow requests from different origins
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll() // Public endpoints for login/register
-                        .requestMatchers("/competitions/admin/**").hasAuthority("ADMIN") // Admin-only
-                        .requestMatchers("/competitions/user/**").hasAuthority("USER") // User-only
-                        .anyRequest().authenticated())
+                        .requestMatchers(
+                                "/auth/**",
+                                "/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**",
+                                "/swagger-ui.html", "/webjars/**"
+                        ).permitAll() // Allow Swagger UI & Authentication
+                        .requestMatchers("/competitions/admin/**").hasAuthority("ADMIN")
+                        .requestMatchers("/applications/**").permitAll()
+                        .requestMatchers("/applications/update-status/**").hasAuthority("ADMIN")
+                        .requestMatchers("/applications/submit").hasAuthority("USER")
+                        .requestMatchers("/competitions/user/**").permitAll()
+                        .requestMatchers("/feedback/competitions/**").permitAll()
+                        .requestMatchers("/feedback/user/**").hasAuthority("USER")
+                        .requestMatchers("/competitions/user1/**").permitAll()
+                        .requestMatchers("/competitions/user2/**").permitAll()
+                        .requestMatchers("/competitions/images/**").permitAll()
+                        .anyRequest().authenticated()
+                )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .httpBasic(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
@@ -46,3 +63,4 @@ public class SecurityConfig {
         return configuration.getAuthenticationManager();
     }
 }
+

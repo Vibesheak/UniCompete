@@ -1,5 +1,5 @@
 package com.Group27.UniCompete.dto;
-
+import com.Group27.UniCompete.models.Role;
 import java.util.Set;
 
 public class RegisterRequest {
@@ -9,7 +9,15 @@ public class RegisterRequest {
     private String email;
     private int age;
     private int phonenumber;
+    private String universityName;
 
+    public String getUniversityName() {
+        return universityName;
+    }
+
+    public void setUniversityName(String universityName) {
+        this.universityName = universityName;
+    }
 
     public int getAge() {
         return age;
@@ -30,8 +38,8 @@ public class RegisterRequest {
     public String getEmail(){
         return email;
     }
-    public String setEmail(String email){
-        return email;
+    public void setEmail(String email){
+        this.email=email;
     }
 
     public String getUsername() {
